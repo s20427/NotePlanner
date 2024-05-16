@@ -20,3 +20,15 @@ javafx {
 application {
     mainClass = 'com.example.Main'
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+tasks.withType(ProcessResources) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

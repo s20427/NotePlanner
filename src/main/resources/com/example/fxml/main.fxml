@@ -7,34 +7,27 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
-
 <?import java.lang.String?>
+<?import javafx.scene.control.SplitPane?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainController">
     <top>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-            <TextField fx:id="searchField" promptText="Wyszukaj..." HBox.hgrow="ALWAYS"/>
-            <ComboBox fx:id="filterOptions">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="All"/>
-                        <String fx:value="Notes"/>
-                        <String fx:value="Events"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <Button text="Search" onAction="#handleSearch"/>
+            <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="filterOptions"/>
+            <ComboBox fx:id="languageSelector"/>
         </HBox>
     </top>
     <center>
-        <HBox spacing="10" style="-fx-padding: 10;">
+        <SplitPane dividerPositions="0.3">
             <VBox fx:id="notesPanel" spacing="10" style="-fx-padding: 10;">
-                <ListView fx:id="notesListView"/>
+                <Button fx:id="addNoteButton" text="Add Note" onAction="#openAddNoteWindow"/>
+                <ListView fx:id="notesListView" VBox.vgrow="ALWAYS"/>
             </VBox>
             <VBox fx:id="calendarPanel" spacing="10" style="-fx-padding: 10;">
                 <HBox spacing="10" alignment="CENTER">
-                    <Button text="Previous" onAction="#handlePrevious"/>
+                    <Button fx:id="previousButton" text="Previous" onAction="#handlePrevious"/>
                     <ComboBox fx:id="viewSelector">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
@@ -44,10 +37,10 @@
                             </FXCollections>
                         </items>
                     </ComboBox>
-                    <Button text="Next" onAction="#handleNext"/>
+                    <Button fx:id="nextButton" text="Next" onAction="#handleNext"/>
                 </HBox>
-                <BorderPane fx:id="calendarView"/>
+                <BorderPane fx:id="calendarView" VBox.vgrow="ALWAYS"/>
             </VBox>
-        </HBox>
+        </SplitPane>
     </center>
 </BorderPane>

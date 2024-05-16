@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/main.fxml"));
         BorderPane root = loader.load();
         primaryStage.setTitle("Note Planner");
         primaryStage.setScene(new Scene(root, 800, 600));
