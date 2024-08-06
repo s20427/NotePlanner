@@ -44,7 +44,9 @@ public class NoteController {
 
     @FXML
     private void initialize() {
-        noteContentArea.setPromptText(resources.getString("note.contentPlaceholder"));
+        if (resources != null) {
+            noteContentArea.setPromptText(resources.getString("note.contentPlaceholder"));
+        }
     }
 
     @FXML

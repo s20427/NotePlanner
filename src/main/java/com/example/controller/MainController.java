@@ -7,11 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
@@ -30,55 +26,43 @@ public class MainController {
 
     @FXML
     private TextField searchField;
-
     @FXML
     private ComboBox<String> filterOptions;
-
     @FXML
     private ListView<Note> notesListView;
-
-    @FXML
-    private ComboBox<String> viewSelector;
-
-    @FXML
-    private BorderPane calendarView;
-
-    @FXML
-    private VBox notesPanel;
-
-    @FXML
-    private VBox calendarPanel;
-
     @FXML
     private ComboBox<String> languageSelector;
-
+    @FXML
+    private ComboBox<String> viewSelector;
+    @FXML
+    private BorderPane calendarView;
+    @FXML
+    private VBox notesPanel;
     @FXML
     private Button addNoteButton;
-
     @FXML
     private Button previousButton;
-
     @FXML
     private Button nextButton;
 
     private CalendarController calendarController;
-
     private LocalDate currentDate;
-
     private ObservableList<Note> notes;
-
     private AtomicInteger noteIdCounter = new AtomicInteger(4); // Assuming there are 3 sample notes initially
-
     private ResourceBundle bundle;
+
+    private ResourceBundle loadBundle(Locale locale) {
+        return ResourceBundle.getBundle("com.example.i18n.messages", locale);
+    }
 
     @FXML
     private void initialize() {
-        // Initialize language selector
+        bundle = loadBundle(new Locale("pl"));
+
         languageSelector.setItems(FXCollections.observableArrayList("Polski", "English"));
         languageSelector.setValue("Polski");
         languageSelector.setOnAction(event -> changeLanguage());
 
-        loadBundle(new Locale("pl"));
         updateTexts();
 
         notes = FXCollections.observableArrayList(
@@ -87,7 +71,6 @@ public class MainController {
                 new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", "")
         );
         notesListView.setItems(notes);
-
         notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
             @Override
             public ListCell<Note> call(ListView<Note> listView) {
@@ -110,18 +93,17 @@ public class MainController {
             }
         });
 
-        currentDate = LocalDate.now(); // Initialize currentDate
+        currentDate = LocalDate.now();
+
         calendarController = new CalendarController();
-        calendarController.setViewSelector(viewSelector);
         calendarController.setCalendarView(calendarView);
         calendarController.setCurrentDate(currentDate);
-        calendarController.updateCalendarView(viewSelector.getValue());
+        calendarController.setViewSelector(viewSelector, bundle);
+        updateCalendarView(viewSelector.getValue());
 
-        // Set the growth priority for notesListView and calendarView
         VBox.setVgrow(notesListView, Priority.ALWAYS);
         VBox.setVgrow(calendarView, Priority.ALWAYS);
 
-        // Set double-click handler for notesListView
         notesListView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 Note selectedNote = notesListView.getSelectionModel().getSelectedItem();
@@ -134,18 +116,10 @@ public class MainController {
 
     private void changeLanguage() {
         String selectedLanguage = languageSelector.getValue();
-        Locale locale;
-        if (selectedLanguage.equals("Polski")) {
-            locale = new Locale("pl");
-        } else {
-            locale = new Locale("en");
-        }
-        loadBundle(locale);
+        Locale locale = selectedLanguage.equals("Polski") ? new Locale("pl") : new Locale("en");
+        bundle = loadBundle(locale);
         updateTexts();
-    }
-
-    private void loadBundle(Locale locale) {
-        bundle = ResourceBundle.getBundle("com.example.i18n.messages", locale);
+        updateCalendarView(viewSelector.getValue());
     }
 
     private void updateTexts() {
@@ -167,12 +141,13 @@ public class MainController {
 
     @FXML
     private void openAddNoteWindow() {
-        openNoteWindow(new Note(), false);
+        Note newNote = new Note();
+        openNoteWindow(newNote, false);
     }
 
     private void openNoteWindow(Note note, boolean isEditMode) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/NoteView.fxml"), bundle);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/note.fxml"), bundle);
             Parent root = loader.load();
 
             NoteController noteController = loader.getController();
@@ -207,7 +182,16 @@ public class MainController {
 
     @FXML
     private void handleSearch() {
-        // Implement search functionality
+        String searchText = searchField.getText().toLowerCase();
+        ObservableList<Note> filteredNotes = FXCollections.observableArrayList();
+
+        for (Note note : notes) {
+            if (note.getTitle().toLowerCase().contains(searchText) || note.getContent().toLowerCase().contains(searchText)) {
+                filteredNotes.add(note);
+            }
+        }
+
+        notesListView.setItems(filteredNotes);
     }
 
     @FXML
@@ -220,8 +204,7 @@ public class MainController {
         calendarController.handleNext();
     }
 
-    @FXML
-    public void handleExit() {
-        // Implement any necessary cleanup here
+    private void updateCalendarView(String selectedView) {
+        calendarController.updateCalendarView(selectedView);
     }
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.NoteController" spacing="10" style="-fx-padding: 10;">
-    <TextArea fx:id="noteContentArea"/>
-    <Button fx:id="saveButton" text="Add" onAction="#handleSave"/>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.NoteController">
+    <TextArea fx:id="noteContentArea" VBox.vgrow="ALWAYS" />
+    <Button fx:id="saveButton" text="Save" onAction="#handleSave" />
 </VBox>

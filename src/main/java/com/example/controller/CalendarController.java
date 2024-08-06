@@ -15,19 +15,24 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CalendarController {
 
     private ComboBox<String> viewSelector;
-
     private BorderPane calendarView;
-
     private LocalDate currentDate;
+    private ResourceBundle resources;
 
-    public void setViewSelector(ComboBox<String> viewSelector) {
+    public void setViewSelector(ComboBox<String> viewSelector, ResourceBundle resources) {
         this.viewSelector = viewSelector;
-        this.viewSelector.setItems(FXCollections.observableArrayList("Month", "Week", "Day"));
-        this.viewSelector.setValue("Month");
+        this.resources = resources;
+        this.viewSelector.setItems(FXCollections.observableArrayList(
+                resources.getString("calendar.month"),
+                resources.getString("calendar.week"),
+                resources.getString("calendar.day")
+        ));
+        this.viewSelector.setValue(resources.getString("calendar.month"));
         this.viewSelector.setOnAction(event -> updateCalendarView(this.viewSelector.getValue()));
     }
 
@@ -41,7 +46,7 @@ public class CalendarController {
 
     public void handlePrevious() {
         if (currentDate != null) {
-            switch (viewSelector.getValue()) {
+            switch (getLocalizedView(viewSelector.getValue())) {
                 case "Month":
                     currentDate = currentDate.minusMonths(1);
                     break;
@@ -58,7 +63,7 @@ public class CalendarController {
 
     public void handleNext() {
         if (currentDate != null) {
-            switch (viewSelector.getValue()) {
+            switch (getLocalizedView(viewSelector.getValue())) {
                 case "Month":
                     currentDate = currentDate.plusMonths(1);
                     break;
@@ -74,20 +79,36 @@ public class CalendarController {
     }
 
     public void updateCalendarView(String selectedView) {
-        if (calendarView != null) {
-            calendarView.setCenter(null); // Reset widoku
-            switch (selectedView) {
-                case "Month":
-                    displayMonthView();
-                    break;
-                case "Week":
-                    displayWeekView();
-                    break;
-                case "Day":
-                    displayDayView();
-                    break;
-            }
+        if (calendarView == null) {
+            return;
         }
+
+        String localizedView = getLocalizedView(selectedView);
+        calendarView.setCenter(null); // Reset view
+        switch (localizedView) {
+            case "Month":
+                displayMonthView();
+                break;
+            case "Week":
+                displayWeekView();
+                break;
+            case "Day":
+                displayDayView();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown view: " + localizedView);
+        }
+    }
+
+    private String getLocalizedView(String view) {
+        if (view.equals(resources.getString("calendar.month"))) {
+            return "Month";
+        } else if (view.equals(resources.getString("calendar.week"))) {
+            return "Week";
+        } else if (view.equals(resources.getString("calendar.day"))) {
+            return "Day";
+        }
+        return view;
     }
 
     private void showDialog(String message) {
