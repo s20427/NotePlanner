@@ -23,6 +23,7 @@
         <SplitPane dividerPositions="0.3">
             <VBox fx:id="notesPanel" spacing="10" style="-fx-padding: 10;">
                 <Button fx:id="addNoteButton" text="Add Note" onAction="#openAddNoteWindow"/>
+                <Button fx:id="addEventButton" text="Add Event" onAction="#openAddEventWindow"/> <!-- Dodaj to -->
                 <ListView fx:id="notesListView" VBox.vgrow="ALWAYS"/>
             </VBox>
             <VBox fx:id="calendarPanel" spacing="10" style="-fx-padding: 10;">

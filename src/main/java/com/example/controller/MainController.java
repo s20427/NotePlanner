@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Event;
 import com.example.model.Note;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +42,8 @@ public class MainController {
     @FXML
     private Button addNoteButton;
     @FXML
+    private Button addEventButton; // Nowy przycisk do dodawania wydarzeń
+    @FXML
     private Button previousButton;
     @FXML
     private Button nextButton;
@@ -48,7 +51,9 @@ public class MainController {
     private CalendarController calendarController;
     private LocalDate currentDate;
     private ObservableList<Note> notes;
+    private ObservableList<Event> events; // Lista wydarzeń
     private AtomicInteger noteIdCounter = new AtomicInteger(4); // Assuming there are 3 sample notes initially
+    private AtomicInteger eventIdCounter = new AtomicInteger(1); // Inicjalizujemy dla wydarzeń
     private ResourceBundle bundle;
 
     private ResourceBundle loadBundle(Locale locale) {
@@ -70,6 +75,7 @@ public class MainController {
                 new Note(2, "Note 2", "Note 2\nContent 2\nLine 2\nLine 3", "", ""),
                 new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", "")
         );
+        events = FXCollections.observableArrayList(); // Inicjalizujemy listę wydarzeń
         notesListView.setItems(notes);
         notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
             @Override
@@ -99,6 +105,7 @@ public class MainController {
         calendarController.setCalendarView(calendarView);
         calendarController.setCurrentDate(currentDate);
         calendarController.setViewSelector(viewSelector, bundle);
+        calendarController.setEvents(events); // Przekazujemy listę wydarzeń do kontrolera kalendarza
         updateCalendarView(viewSelector.getValue());
 
         VBox.setVgrow(notesListView, Priority.ALWAYS);
@@ -112,6 +119,8 @@ public class MainController {
                 }
             }
         });
+
+        addEventButton.setOnAction(event -> openAddEventWindow()); // Obsługa dodawania wydarzeń
     }
 
     private void changeLanguage() {
@@ -130,6 +139,7 @@ public class MainController {
         addNoteButton.setText(bundle.getString("note.addButton"));
         previousButton.setText(bundle.getString("note.previousButton"));
         nextButton.setText(bundle.getString("note.nextButton"));
+        addEventButton.setText(bundle.getString("event.addButton")); // Dodajemy tekst do przycisku wydarzeń
 
         viewSelector.setItems(FXCollections.observableArrayList(
                 bundle.getString("calendar.month"),
@@ -168,6 +178,35 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void openAddEventWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), bundle);
+            Parent root = loader.load();
+
+            EventController eventController = loader.getController();
+            eventController.setMainController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle(bundle.getString("event.title"));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(notesPanel.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+        updateCalendarView(viewSelector.getValue());
+    }
+
+    public int generateNewEventId() {
+        return eventIdCounter.getAndIncrement();
+    }
+
     public void addNote(Note note) {
         notes.add(note);
     }
@@ -184,6 +223,7 @@ public class MainController {
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
         ObservableList<Note> filteredNotes = FXCollections.observableArrayList();
+        ObservableList<Event> filteredEvents = FXCollections.observableArrayList();
 
         for (Note note : notes) {
             if (note.getTitle().toLowerCase().contains(searchText) || note.getContent().toLowerCase().contains(searchText)) {
@@ -191,7 +231,15 @@ public class MainController {
             }
         }
 
+        for (Event event : events) {
+            if (event.getTitle().toLowerCase().contains(searchText) || event.getDescription().toLowerCase().contains(searchText)) {
+                filteredEvents.add(event);
+            }
+        }
+
         notesListView.setItems(filteredNotes);
+        // Możesz również zaktualizować widok kalendarza, aby wyświetlał tylko znalezione wydarzenia
+        calendarController.updateCalendarView(viewSelector.getValue());
     }
 
     @FXML

@@ -1,14 +1,11 @@
 package com.example.controller;
 
+import com.example.model.Event;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.time.LocalDate;
@@ -23,6 +20,7 @@ public class CalendarController {
     private BorderPane calendarView;
     private LocalDate currentDate;
     private ResourceBundle resources;
+    private ObservableList<Event> events;
 
     public void setViewSelector(ComboBox<String> viewSelector, ResourceBundle resources) {
         this.viewSelector = viewSelector;
@@ -42,6 +40,10 @@ public class CalendarController {
 
     public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public void setEvents(ObservableList<Event> events) {
+        this.events = events;
     }
 
     public void handlePrevious() {
@@ -162,12 +164,8 @@ public class CalendarController {
 
             for (int day = firstDayOfMonth.getDayOfWeek().getValue() % 7; day < 7; day++) {
                 Text dayText = new Text(String.valueOf(dayCounter++));
-                dayText.setOnMouseClicked(event -> {
-                    if (event.getClickCount() == 2) {
-                        showDialog("Dodaj wydarzenie na dzień " + dayText.getText());
-                    }
-                });
                 monthView.add(dayText, day, row);
+                addEventHandlers(dayText, LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), dayCounter - 1));
             }
 
             row++;
@@ -175,12 +173,8 @@ public class CalendarController {
                 for (int day = 0; day < 7; day++) {
                     if (dayCounter <= lastDayOfMonth.getDayOfMonth()) {
                         Text dayText = new Text(String.valueOf(dayCounter++));
-                        dayText.setOnMouseClicked(event -> {
-                            if (event.getClickCount() == 2) {
-                                showDialog("Dodaj wydarzenie na dzień " + dayText.getText());
-                            }
-                        });
                         monthView.add(dayText, day, row);
+                        addEventHandlers(dayText, LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), dayCounter - 1));
                     }
                 }
                 row++;
@@ -222,6 +216,21 @@ public class CalendarController {
             VBox.setVgrow(dayView, Priority.ALWAYS);
             dayView.getChildren().add(new Text(currentDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH) + " " + currentDate.getDayOfMonth()));
             calendarView.setCenter(dayView);
+        }
+    }
+
+    private void addEventHandlers(Text dayText, LocalDate date) {
+        dayText.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                showDialog("Dodaj wydarzenie na dzień " + dayText.getText());
+            }
+        });
+
+        // Wyświetlanie wydarzeń w odpowiednim dniu
+        for (Event event : events) {
+            if (event.getDateTime().toLocalDate().equals(date)) {
+                dayText.setText(dayText.getText() + "\n" + event.getTitle());
+            }
         }
     }
 }
