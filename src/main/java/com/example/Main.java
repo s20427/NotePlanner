@@ -14,8 +14,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/main.fxml"));
         BorderPane root = loader.load();
+
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(800);
+
         primaryStage.setTitle("Note Planner");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
 

@@ -41,19 +41,13 @@ public class MainController {
     private VBox notesPanel;
     @FXML
     private Button addNoteButton;
-    @FXML
-    private Button addEventButton; // Nowy przycisk do dodawania wydarzeń
-    @FXML
-    private Button previousButton;
-    @FXML
-    private Button nextButton;
 
     private CalendarController calendarController;
     private LocalDate currentDate;
     private ObservableList<Note> notes;
-    private ObservableList<Event> events; // Lista wydarzeń
-    private AtomicInteger noteIdCounter = new AtomicInteger(4); // Assuming there are 3 sample notes initially
-    private AtomicInteger eventIdCounter = new AtomicInteger(1); // Inicjalizujemy dla wydarzeń
+    private ObservableList<Event> events;
+    private AtomicInteger noteIdCounter = new AtomicInteger(4);
+    private AtomicInteger eventIdCounter = new AtomicInteger(1);
     private ResourceBundle bundle;
 
     private ResourceBundle loadBundle(Locale locale) {
@@ -63,6 +57,15 @@ public class MainController {
     @FXML
     private void initialize() {
         bundle = loadBundle(new Locale("pl"));
+
+        events = FXCollections.observableArrayList();
+
+        calendarController = new CalendarController();
+        calendarController.setMainController(this);
+        calendarController.setCalendarView(calendarView);
+        calendarController.setCurrentDate(LocalDate.now());
+        calendarController.setEvents(events);
+        calendarController.setViewSelector(viewSelector, bundle);
 
         languageSelector.setItems(FXCollections.observableArrayList("Polski", "English"));
         languageSelector.setValue("Polski");
@@ -75,7 +78,6 @@ public class MainController {
                 new Note(2, "Note 2", "Note 2\nContent 2\nLine 2\nLine 3", "", ""),
                 new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", "")
         );
-        events = FXCollections.observableArrayList(); // Inicjalizujemy listę wydarzeń
         notesListView.setItems(notes);
         notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
             @Override
@@ -101,12 +103,8 @@ public class MainController {
 
         currentDate = LocalDate.now();
 
-        calendarController = new CalendarController();
-        calendarController.setCalendarView(calendarView);
-        calendarController.setCurrentDate(currentDate);
         calendarController.setViewSelector(viewSelector, bundle);
-        calendarController.setEvents(events); // Przekazujemy listę wydarzeń do kontrolera kalendarza
-        updateCalendarView(viewSelector.getValue());
+        updateCalendarView(calendarController.getLastActiveView());
 
         VBox.setVgrow(notesListView, Priority.ALWAYS);
         VBox.setVgrow(calendarView, Priority.ALWAYS);
@@ -119,8 +117,6 @@ public class MainController {
                 }
             }
         });
-
-        addEventButton.setOnAction(event -> openAddEventWindow()); // Obsługa dodawania wydarzeń
     }
 
     private void changeLanguage() {
@@ -128,7 +124,8 @@ public class MainController {
         Locale locale = selectedLanguage.equals("Polski") ? new Locale("pl") : new Locale("en");
         bundle = loadBundle(locale);
         updateTexts();
-        updateCalendarView(viewSelector.getValue());
+        calendarController.updateButtonLabels(bundle);
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
     private void updateTexts() {
@@ -137,16 +134,18 @@ public class MainController {
         filterOptions.setValue(bundle.getString("note.filterOptions").split(",")[0]);
 
         addNoteButton.setText(bundle.getString("note.addButton"));
-        previousButton.setText(bundle.getString("note.previousButton"));
-        nextButton.setText(bundle.getString("note.nextButton"));
-        addEventButton.setText(bundle.getString("event.addButton")); // Dodajemy tekst do przycisku wydarzeń
 
         viewSelector.setItems(FXCollections.observableArrayList(
                 bundle.getString("calendar.month"),
                 bundle.getString("calendar.week"),
                 bundle.getString("calendar.day")
         ));
-        viewSelector.setValue(bundle.getString("calendar.month"));
+        viewSelector.setValue(bundle.getString(calendarController.getLastActiveView().getResourceKey()));
+
+        viewSelector.setOnAction(event -> {
+            CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
+            calendarController.updateCalendarView(selectedView);
+        });
     }
 
     @FXML
@@ -178,29 +177,9 @@ public class MainController {
         }
     }
 
-    @FXML
-    private void openAddEventWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), bundle);
-            Parent root = loader.load();
-
-            EventController eventController = loader.getController();
-            eventController.setMainController(this);
-
-            Stage stage = new Stage();
-            stage.setTitle(bundle.getString("event.title"));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(notesPanel.getScene().getWindow());
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void addEvent(Event event) {
         events.add(event);
-        updateCalendarView(viewSelector.getValue());
+        updateCalendarView(calendarController.getLastActiveView());
     }
 
     public int generateNewEventId() {
@@ -238,21 +217,10 @@ public class MainController {
         }
 
         notesListView.setItems(filteredNotes);
-        // Możesz również zaktualizować widok kalendarza, aby wyświetlał tylko znalezione wydarzenia
-        calendarController.updateCalendarView(viewSelector.getValue());
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
-    @FXML
-    private void handlePrevious() {
-        calendarController.handlePrevious();
-    }
-
-    @FXML
-    private void handleNext() {
-        calendarController.handleNext();
-    }
-
-    private void updateCalendarView(String selectedView) {
+    private void updateCalendarView(CalendarView selectedView) {
         calendarController.updateCalendarView(selectedView);
     }
 }
