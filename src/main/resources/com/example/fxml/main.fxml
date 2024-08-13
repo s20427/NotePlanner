@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import java.lang.String?>
 <?import javafx.scene.control.SplitPane?>
 
+<?import javafx.scene.control.Button?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainController">
     <top>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-            <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
             <ComboBox fx:id="filterOptions"/>
+            <TextField fx:id="searchField" onKeyReleased="#handleSearch" HBox.hgrow="ALWAYS"/>
             <ComboBox fx:id="languageSelector"/>
         </HBox>
     </top>
@@ -27,15 +25,7 @@
             </VBox>
             <VBox fx:id="calendarPanel" spacing="10" style="-fx-padding: 10;">
                 <HBox spacing="10" alignment="CENTER">
-                    <ComboBox fx:id="viewSelector">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Month"/>
-                                <String fx:value="Week"/>
-                                <String fx:value="Day"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
+                    <ComboBox fx:id="viewSelector"/>
                 </HBox>
                 <BorderPane fx:id="calendarView" VBox.vgrow="ALWAYS"/>
             </VBox>

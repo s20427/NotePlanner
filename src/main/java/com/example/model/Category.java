@@ -1,5 +1,8 @@
 package com.example.model;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 public enum Category {
     WORK("Work", "#5C361C"),
     HOME("Home", "#115C30"),
@@ -24,8 +27,11 @@ public enum Category {
         return color;
     }
 
-    @Override
-    public String toString() {
-        return name;
+    public String getTranslatedName(ResourceBundle bundle) {
+        try {
+            return bundle.getString("category." + name.toLowerCase());
+        } catch (MissingResourceException e) {
+            return name; // Fallback na nazwę domyślną
+        }
     }
 }

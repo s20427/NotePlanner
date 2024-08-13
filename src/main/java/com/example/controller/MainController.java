@@ -21,6 +21,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,7 +59,7 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        bundle = loadBundle(new Locale("pl"));
+        bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
 
         events = FXCollections.observableArrayList();
 
@@ -73,14 +74,32 @@ public class MainController {
         languageSelector.setValue("Polski");
         languageSelector.setOnAction(event -> changeLanguage());
 
+        filterOptions.setItems(FXCollections.observableArrayList(
+                bundle.getString("filter.all"),
+                bundle.getString("filter.title"),
+                bundle.getString("filter.description"),
+                bundle.getString("filter.category"),
+                bundle.getString("filter.tags")
+        ));
+        filterOptions.setValue(bundle.getString("filter.all"));
+
+        filterOptions.valueProperty().addListener((observable, oldValue, newValue) -> handleSearch());
+
         updateTexts();
 
         notes = FXCollections.observableArrayList(
-                new Note(1, "Note 1", "Note 1\nContent 1\nLine 2\nLine 3", "", Category.WORK),
-                new Note(2, "Note 2", "Note 2\nContent 2\nLine 2\nLine 3", "", Category.PRIVATE),
-                new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", Category.VISIT)
+                new Note(1, "Note 1", "This is the first note", "work, urgent", Category.WORK),
+                new Note(2, "Shopping List", "Buy milk and bread", "home, shopping", Category.HOME)
         );
+
+        events = FXCollections.observableArrayList(
+                new Event(1, "Meeting with Bob", LocalDateTime.of(2024, 8, 14, 0, 30), LocalDateTime.of(2024, 8, 14, 2, 30), "Discuss project details", "work, important", Category.WORK),
+                new Event(2, "Dentist Appointment", LocalDateTime.of(2024, 8, 15, 1, 0), LocalDateTime.of(2024, 8, 15, 1, 30), "Regular check-up", "health", Category.PRIVATE)
+        );
+
         notesListView.setItems(notes);
+        calendarController.setEvents(events);
+        calendarController.updateCalendarView(CalendarView.MONTH);
         notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
             @Override
             public ListCell<Note> call(ListView<Note> listView) {
@@ -142,7 +161,16 @@ public class MainController {
         String selectedLanguage = languageSelector.getValue();
         Locale locale = selectedLanguage.equals("Polski") ? new Locale("pl") : new Locale("en");
         bundle = loadBundle(locale);
+
+        // Debugowanie
+        System.out.println("Notatki po zmianie języka: " + notes.size());
+        System.out.println("Wydarzenia po zmianie języka: " + events.size());
+
+        notesListView.setItems(notes);
+        notesListView.refresh();
         updateTexts();
+        updateFilterOptions();
+        refreshViews();
 
         calendarController.updateButtonLabels(bundle);
 
@@ -160,11 +188,16 @@ public class MainController {
         }
     }
 
+    public void refreshViews() {
+        // Odśwież ListView z notatkami
+        notesListView.refresh();
+
+        // Odśwież widok kalendarza
+        updateCalendarView(calendarController.getLastActiveView());
+    }
 
     private void updateTexts() {
         searchField.setPromptText(bundle.getString("note.searchPlaceholder"));
-        filterOptions.setItems(FXCollections.observableArrayList(bundle.getString("note.filterOptions").split(",")));
-        filterOptions.setValue(bundle.getString("note.filterOptions").split(",")[0]);
 
         addNoteButton.setText(bundle.getString("note.addButton"));
 
@@ -181,7 +214,32 @@ public class MainController {
                 calendarController.updateCalendarView(selectedView);
             }
         });
+    }
 
+    private void updateFilterOptions() {
+        filterOptions.getItems().clear();
+        // Pobierz aktualne wartości z bundle
+        String allOption = bundle.getString("filter.all");
+        String titleOption = bundle.getString("filter.title");
+        String descriptionOption = bundle.getString("filter.description");
+        String categoryOption = bundle.getString("filter.category");
+        String tagsOption = bundle.getString("filter.tags");
+
+        // Aktualizuj ComboBox z nowymi wartościami
+        filterOptions.setItems(FXCollections.observableArrayList(
+                allOption,
+                titleOption,
+                descriptionOption,
+                categoryOption,
+                tagsOption
+        ));
+
+        // Jeśli poprzednia opcja istnieje w nowym języku, ustaw ją; jeśli nie, ustaw domyślną
+        if (filterOptions.getValue() != null && filterOptions.getItems().contains(filterOptions.getValue())) {
+            filterOptions.setValue(filterOptions.getValue());
+        } else {
+            filterOptions.setValue(allOption); // Domyślna wartość
+        }
     }
 
     @FXML
@@ -215,7 +273,7 @@ public class MainController {
 
     public void addEvent(Event event) {
         events.add(event);
-        updateCalendarView(calendarController.getLastActiveView());
+        handleSearch();
     }
 
     public int generateNewEventId() {
@@ -224,6 +282,8 @@ public class MainController {
 
     public void addNote(Note note) {
         notes.add(note);
+        notesListView.setItems(notes);
+        notesListView.refresh();
     }
 
     public void updateNote() {
@@ -237,22 +297,72 @@ public class MainController {
     @FXML
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
+        String filterOption = filterOptions.getValue();
         ObservableList<Note> filteredNotes = FXCollections.observableArrayList();
         ObservableList<Event> filteredEvents = FXCollections.observableArrayList();
 
+        String allOption = bundle.getString("filter.all");
+        String titleOption = bundle.getString("filter.title");
+        String descriptionOption = bundle.getString("filter.description");
+        String categoryOption = bundle.getString("filter.category");
+        String tagsOption = bundle.getString("filter.tags");
+
+        if (filterOption == null || searchText == null) {
+            // Jeśli opcja filtrowania lub tekst wyszukiwania jest null, zakończ metodę.
+            return;
+        }
+
         for (Note note : notes) {
-            if (note.getTitle().toLowerCase().contains(searchText) || note.getContent().toLowerCase().contains(searchText)) {
+            boolean matches = false;
+            String translatedCategory = note.getCategory().getTranslatedName(bundle).toLowerCase();
+
+            if (filterOption.equals(allOption)) {
+                matches = note.getTitle().toLowerCase().contains(searchText) ||
+                        note.getContent().toLowerCase().contains(searchText) ||
+                        translatedCategory.contains(searchText) ||
+                        note.getTagsAsString().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(titleOption)) {
+                matches = note.getTitle().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(descriptionOption)) {
+                matches = note.getContent().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(categoryOption)) {
+                matches = translatedCategory.contains(searchText);
+            } else if (filterOption.equals(tagsOption)) {
+                matches = note.getTagsAsString().toLowerCase().contains(searchText);
+            }
+            if (matches) {
                 filteredNotes.add(note);
             }
         }
 
         for (Event event : events) {
-            if (event.getTitle().toLowerCase().contains(searchText) || event.getDescription().toLowerCase().contains(searchText)) {
+            boolean matches = false;
+            String translatedCategory = event.getCategory().getTranslatedName(bundle).toLowerCase();
+
+            if (filterOption.equals(allOption)) {
+                matches = event.getTitle().toLowerCase().contains(searchText) ||
+                        event.getDescription().toLowerCase().contains(searchText) ||
+                        translatedCategory.contains(searchText) ||
+                        event.getTagsAsString().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(titleOption)) {
+                matches = event.getTitle().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(descriptionOption)) {
+                matches = event.getDescription().toLowerCase().contains(searchText);
+            } else if (filterOption.equals(categoryOption)) {
+                matches = translatedCategory.contains(searchText);
+            } else if (filterOption.equals(tagsOption)) {
+                matches = event.getTagsAsString().toLowerCase().contains(searchText);
+            }
+            if (matches) {
                 filteredEvents.add(event);
             }
         }
 
+        // Aktualizacja listy notatek
         notesListView.setItems(filteredNotes);
+
+        // Aktualizacja widoku kalendarza na podstawie filtrowanych wydarzeń
+        calendarController.setEvents(filteredEvents);
         calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 

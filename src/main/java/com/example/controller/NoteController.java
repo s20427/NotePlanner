@@ -4,15 +4,13 @@ import com.example.model.Category;
 import com.example.model.Note;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class NoteController {
 
@@ -61,6 +59,31 @@ public class NoteController {
         if (resources != null) {
             noteContentArea.setPromptText(resources.getString("note.contentPlaceholder"));
             categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
+
+            // Ustawienie niestandardowego renderera, aby wyświetlać przetłumaczone nazwy kategorii
+            categoryComboBox.setCellFactory(comboBox -> new ListCell<Category>() {
+                @Override
+                protected void updateItem(Category item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getTranslatedName(resources));
+                    }
+                }
+            });
+
+            categoryComboBox.setButtonCell(new ListCell<Category>() {
+                @Override
+                protected void updateItem(Category item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getTranslatedName(resources));
+                    }
+                }
+            });
         }
     }
 
@@ -68,8 +91,13 @@ public class NoteController {
     private void handleSave() {
         String content = noteContentArea.getText();
         String tagsText = tagsField.getText();
-        List<String> tags = Arrays.asList(tagsText.split(","));
+        List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
         Category selectedCategory = categoryComboBox.getValue();
+
+        String translatedCategory = selectedCategory.getTranslatedName(resources);
+        if (selectedCategory != null && !tags.contains(translatedCategory)) {
+            tags.add(0, translatedCategory.toLowerCase());
+        }
 
         if (content != null && !content.trim().isEmpty()) {
             String title = content.split("\n", 2)[0];
@@ -81,9 +109,10 @@ public class NoteController {
                 mainController.updateNote();
             } else {
                 int newId = mainController.generateNewNoteId();
-                Note newNote = new Note(newId, title, content, tagsText, selectedCategory);
+                Note newNote = new Note(newId, title, content, String.join(", ", tags), selectedCategory);
                 mainController.addNote(newNote);
             }
+            mainController.refreshViews();
             closeWindow();
         }
     }

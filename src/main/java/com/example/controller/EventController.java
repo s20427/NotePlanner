@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EventController {
 
@@ -55,9 +56,35 @@ public class EventController {
 
         categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
 
+        // Ustawienie niestandardowego renderera, aby wyświetlać przetłumaczone nazwy kategorii
+        categoryComboBox.setCellFactory(comboBox -> new ListCell<Category>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTranslatedName(resources));
+                }
+            }
+        });
+
+        categoryComboBox.setButtonCell(new ListCell<Category>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTranslatedName(resources));
+                }
+            }
+        });
+
         startTimeComboBox.setPromptText(resources.getString("event.startTime"));
         endTimeComboBox.setPromptText(resources.getString("event.endTime"));
     }
+
 
     @FXML
     private void handleSave() {
@@ -66,8 +93,16 @@ public class EventController {
         String startTime = startTimeComboBox.getValue();
         String endTime = endTimeComboBox.getValue();
         String tagsText = tagsField.getText();
-        List<String> tags = Arrays.asList(tagsText.split(","));
+        List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
         Category selectedCategory = categoryComboBox.getValue();
+
+        // Dodaj przetłumaczoną nazwę kategorii jako pierwszy tag, jeśli jeszcze nie jest dodana
+        if (selectedCategory != null) {
+            String translatedCategory = selectedCategory.getTranslatedName(resources);
+            if (!tags.contains(translatedCategory)) {
+                tags.add(0, translatedCategory.toLowerCase()); // Dodaj przetłumaczoną kategorię jako pierwszy tag
+            }
+        }
 
         if (title != null && date != null && startTime != null && endTime != null) {
             LocalTime startLocalTime = LocalTime.parse(startTime);
@@ -78,10 +113,11 @@ public class EventController {
 
             String description = descriptionArea.getText();
 
-            Event event = new Event(mainController.generateNewEventId(), title, startDateTime, endDateTime, description, tagsText, selectedCategory);
+            Event event = new Event(mainController.generateNewEventId(), title, startDateTime, endDateTime, description, String.join(", ", tags), selectedCategory);
             event.setTags(tags);
             mainController.addEvent(event);
             closeWindow();
+            mainController.refreshViews();
         } else {
             showAlert(resources.getString("event.errorTitle"), resources.getString("event.errorMessage"));
         }
