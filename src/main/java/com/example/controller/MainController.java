@@ -124,9 +124,23 @@ public class MainController {
         Locale locale = selectedLanguage.equals("Polski") ? new Locale("pl") : new Locale("en");
         bundle = loadBundle(locale);
         updateTexts();
+
         calendarController.updateButtonLabels(bundle);
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
+
+        viewSelector.setItems(FXCollections.observableArrayList(
+                bundle.getString("calendar.month"),
+                bundle.getString("calendar.week"),
+                bundle.getString("calendar.day")
+        ));
+
+        viewSelector.setValue(bundle.getString(calendarController.getLastActiveView().getResourceKey()));
+
+        CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
+        if (selectedView != null) {
+            calendarController.updateCalendarView(selectedView);
+        }
     }
+
 
     private void updateTexts() {
         searchField.setPromptText(bundle.getString("note.searchPlaceholder"));
@@ -144,8 +158,11 @@ public class MainController {
 
         viewSelector.setOnAction(event -> {
             CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
-            calendarController.updateCalendarView(selectedView);
+            if (selectedView != null) {
+                calendarController.updateCalendarView(selectedView);
+            }
         });
+
     }
 
     @FXML

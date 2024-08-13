@@ -36,11 +36,9 @@
                             </FXCollections>
                         </items>
                     </ComboBox>
-                    <Button fx:id="addEventButton" text="Add Event"/>
                 </HBox>
                 <BorderPane fx:id="calendarView" VBox.vgrow="ALWAYS"/>
             </VBox>
-
         </SplitPane>
     </center>
 </BorderPane>

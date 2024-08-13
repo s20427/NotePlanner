@@ -23,6 +23,6 @@ public enum CalendarView {
                 return view;
             }
         }
-        return null;
+        return CalendarView.MONTH;
     }
 }

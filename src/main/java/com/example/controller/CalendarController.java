@@ -20,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -109,37 +110,33 @@ public class CalendarController {
     }
 
     public void handlePrevious() {
-        if (currentDate != null) {
-            switch (lastActiveView) {
-                case MONTH:
-                    currentDate = currentDate.minusMonths(1);
-                    break;
-                case WEEK:
-                    currentDate = currentDate.minusWeeks(1);
-                    break;
-                case DAY:
-                    currentDate = currentDate.minusDays(1);
-                    break;
-            }
-            updateCalendarView(lastActiveView);
+        switch (lastActiveView) {
+            case MONTH:
+                currentDate = currentDate.minusMonths(1);
+                break;
+            case WEEK:
+                currentDate = currentDate.minusWeeks(1);
+                break;
+            case DAY:
+                currentDate = currentDate.minusDays(1);
+                break;
         }
+        updateCalendarView(lastActiveView);
     }
 
     public void handleNext() {
-        if (currentDate != null) {
-            switch (lastActiveView) {
-                case MONTH:
-                    currentDate = currentDate.plusMonths(1);
-                    break;
-                case WEEK:
-                    currentDate = currentDate.plusWeeks(1);
-                    break;
-                case DAY:
-                    currentDate = currentDate.plusDays(1);
-                    break;
-            }
-            updateCalendarView(lastActiveView);
+        switch (lastActiveView) {
+            case MONTH:
+                currentDate = currentDate.plusMonths(1);
+                break;
+            case WEEK:
+                currentDate = currentDate.plusWeeks(1);
+                break;
+            case DAY:
+                currentDate = currentDate.plusDays(1);
+                break;
         }
+        updateCalendarView(lastActiveView);
     }
 
     private void handleAddEvent() {
@@ -162,10 +159,10 @@ public class CalendarController {
     }
 
     public void updateCalendarView(CalendarView selectedView) {
-        if (resources == null) {
-            throw new IllegalStateException("Resources not set");
+        if (selectedView == null) {
+            throw new IllegalArgumentException("Selected view cannot be null");
         }
-
+        this.lastActiveView = selectedView;
         switch (selectedView) {
             case MONTH:
                 displayMonthView();
@@ -189,18 +186,16 @@ public class CalendarController {
 
             GridPane monthView = new GridPane();
             monthView.setGridLinesVisible(true);
-            monthView.setMaxWidth(Double.MAX_VALUE);  // Zapobiegamy wystawaniu poza marginesy
+            monthView.setMaxWidth(Double.MAX_VALUE);
 
             VBox monthContainer = new VBox(monthView);
-            monthContainer.setPadding(new Insets(10));  // Dodanie paddingu
+            monthContainer.setPadding(new Insets(10));
 
             VBox.setVgrow(monthContainer, Priority.ALWAYS);
             VBox.setVgrow(monthView, Priority.ALWAYS);
 
-            // Stylowanie siatki kalendarza
             monthView.setStyle("-fx-border-color: transparent;");
 
-            // Ustawienie ograniczonej wysokości dla wiersza z dniami tygodnia
             RowConstraints dayNameRow = new RowConstraints();
             dayNameRow.setMinHeight(25);
             dayNameRow.setMaxHeight(25);
@@ -216,24 +211,23 @@ public class CalendarController {
                 monthView.add(dayName, i, 0);
             }
 
-            // Ustawienia kolumn i wierszy
             for (int i = 0; i < 7; i++) {
                 ColumnConstraints cc = new ColumnConstraints();
                 cc.setHgrow(Priority.ALWAYS);
-                cc.setMinWidth(100);  // Minimalna szerokość kolumny dni tygodnia
+                cc.setMinWidth(100);
                 monthView.getColumnConstraints().add(cc);
             }
 
             int dayCounter = 1;
-            int startDayColumn = firstDayOfMonth.getDayOfWeek().getValue();  // 1 to Poniedziałek, 7 to Niedziela
-            startDayColumn = (startDayColumn == 7) ? 0 : startDayColumn;  // Przesuwamy niedzielę na pierwszy indeks
+            int startDayColumn = firstDayOfMonth.getDayOfWeek().getValue();
+            startDayColumn = (startDayColumn == 7) ? 0 : startDayColumn;
 
             int row = 1;
 
             for (int day = startDayColumn; day < 7; day++) {
                 Text dayText = new Text(String.valueOf(dayCounter++));
                 dayText.setTextAlignment(TextAlignment.CENTER);
-                GridPane.setValignment(dayText, VPos.TOP); // Wycentrowanie numeru dnia do góry
+                GridPane.setValignment(dayText, VPos.TOP);
                 GridPane.setHalignment(dayText, HPos.CENTER);
                 monthView.add(dayText, day, row);
             }
@@ -247,13 +241,12 @@ public class CalendarController {
                     if (dayCounter <= lastDayOfMonth.getDayOfMonth()) {
                         Text dayText = new Text(String.valueOf(dayCounter++));
                         dayText.setTextAlignment(TextAlignment.CENTER);
-                        GridPane.setValignment(dayText, VPos.TOP); // Wycentrowanie numeru dnia do góry
+                        GridPane.setValignment(dayText, VPos.TOP);
                         GridPane.setHalignment(dayText, HPos.CENTER);
                         monthView.add(dayText, day, row);
                     }
                 }
 
-                // Dodajemy tylko te wiersze, które mają faktycznie dni
                 if (dayCounter <= lastDayOfMonth.getDayOfMonth() + 7) {
                     monthView.getRowConstraints().add(rc);
                 }
@@ -276,52 +269,44 @@ public class CalendarController {
 
             GridPane weekView = new GridPane();
             weekView.setGridLinesVisible(true);
-            weekView.setMaxWidth(Double.MAX_VALUE);  // Zapobiegamy wystawaniu poza marginesy
+            weekView.setMaxWidth(Double.MAX_VALUE);
 
-            // Dodanie paddingu za pomocą VBox
             VBox weekContainer = new VBox(weekView);
-
             ScrollPane scrollPane = new ScrollPane(weekContainer);
             scrollPane.setFitToWidth(true);
-            scrollPane.setPadding(new Insets(5, 5, 5, 5)); // Ustawienie paddingu na 5px ze wszystkich stron
+            scrollPane.setPadding(new Insets(5, 5, 5, 5));
 
             VBox.setVgrow(scrollPane, Priority.ALWAYS);
             VBox.setVgrow(weekView, Priority.ALWAYS);
 
-            // Stylowanie siatki kalendarza (usunięcie obramowania)
             weekView.setStyle("-fx-border-color: transparent;");
 
-            // Ustawienie ograniczonej wysokości dla wiersza z dniami tygodnia
             RowConstraints dayNameRow = new RowConstraints();
             dayNameRow.setMinHeight(25);
             dayNameRow.setMaxHeight(25);
             dayNameRow.setPrefHeight(25);
             weekView.getRowConstraints().add(dayNameRow);
 
-            // Kolumna na godziny z minimalną i maksymalną szerokością
             ColumnConstraints hourColumn = new ColumnConstraints();
-            hourColumn.setMinWidth(50);  // Minimalna szerokość na godziny
-            hourColumn.setMaxWidth(50);  // Maksymalna szerokość na godziny
+            hourColumn.setMinWidth(50);
+            hourColumn.setMaxWidth(50);
             weekView.getColumnConstraints().add(hourColumn);
 
-            // Kolumny na dni tygodnia, z równomiernym podziałem
             for (int i = 0; i < 7; i++) {
                 ColumnConstraints dayColumn = new ColumnConstraints();
                 dayColumn.setHgrow(Priority.ALWAYS);
-                dayColumn.setMinWidth(100);  // Minimalna szerokość kolumny dni tygodnia
+                dayColumn.setMinWidth(100);
                 weekView.getColumnConstraints().add(dayColumn);
             }
 
-            // Wiersze: jedna godzina na wiersz (24 wiersze, od 0 do 23)
             for (int i = 0; i < 24; i++) {
                 RowConstraints rc = new RowConstraints();
                 rc.setVgrow(Priority.ALWAYS);
-                rc.setPrefHeight(50);  // Ustawienie jednolitej preferowanej wysokości wierszy
+                rc.setPrefHeight(50);
                 rc.setMinHeight(50);
                 weekView.getRowConstraints().add(rc);
             }
 
-            // Dodanie nagłówków dni tygodnia
             for (int day = 0; day < 7; day++) {
                 LocalDate dayDate = startOfWeek.plusDays(day);
                 Text dayHeader = new Text(dayDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH) + " " + dayDate.getDayOfMonth());
@@ -330,28 +315,27 @@ public class CalendarController {
                 weekView.add(dayHeader, day + 1, 0);
             }
 
-            // Dodanie godzin w pierwszej kolumnie
             for (int hour = 0; hour < 24; hour++) {
                 Text hourText = new Text(hour + ":00");
-                hourText.setStyle("-fx-font-size: 12px; -fx-fill: #333333;"); // Stylizacja godzin
+                hourText.setStyle("-fx-font-size: 12px; -fx-fill: #333333;");
                 weekView.add(hourText, 0, hour + 1);
             }
 
-            // Dodanie wydarzeń w odpowiednich godzinach
             for (Event event : events) {
                 LocalDateTime eventDateTime = event.getDateTime();
                 LocalDate eventDate = eventDateTime.toLocalDate();
                 if (!eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek)) {
-                    int dayColumn = eventDate.getDayOfWeek().getValue() - 1; // Dzień tygodnia, poniedziałek jako 0
-                    int hourRow = eventDateTime.getHour(); // Godzina wydarzenia
+                    int dayColumn = eventDate.getDayOfWeek().getValue();
+                    if (dayColumn == 7) dayColumn = 0; // Niedziela jako pierwszy dzień
+                    int hourRow = eventDateTime.getHour();
 
                     Label eventLabel = new Label(event.getTitle());
                     eventLabel.setStyle("-fx-background-color: #4285f4; -fx-text-fill: white; -fx-padding: 5px; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-wrap-text: true;");
-                    weekView.add(eventLabel, dayColumn + 1, hourRow + 1); // Dodajemy +1, ponieważ pierwsza kolumna to godziny
+                    weekView.add(eventLabel, dayColumn + 1, hourRow + 1);
                 }
             }
 
-            calendarView.setCenter(scrollPane);  // Ustawienie scrollPane jako głównego widoku
+            calendarView.setCenter(scrollPane);
         }
     }
 
@@ -373,7 +357,6 @@ public class CalendarController {
             VBox.setVgrow(scrollPane, Priority.ALWAYS);
             VBox.setVgrow(dayView, Priority.ALWAYS);
 
-            // Stylowanie siatki kalendarza
             dayView.setStyle("-fx-border-color: transparent;");
 
             // Kolumna na godziny z minimalną i maksymalną szerokością
