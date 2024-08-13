@@ -7,9 +7,11 @@
     <list default="true" id="2eb65e4d-2c5f-4d4d-8a74-b724cb455c84" name="Changes" comment="WIP app window and calendar view">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/CalendarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/CalendarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/CalendarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/CalendarView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/fxml/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/fxml/main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/EventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/fxml/event.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/fxml/event.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +132,7 @@
       <workItem from="1722957670902" duration="6199000" />
       <workItem from="1723473244890" duration="19309000" />
       <workItem from="1723506490655" duration="4232000" />
-      <workItem from="1723543243615" duration="2309000" />
+      <workItem from="1723543243615" duration="30105000" />
     </task>
     <task id="LOCAL-00001" summary="WIP app window and calendar view">
       <created>1723506074976</created>
@@ -139,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1723506074976</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="WIP app window and calendar view">
+      <created>1723546012558</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723546012558</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

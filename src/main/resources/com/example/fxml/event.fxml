@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.EventController">
     <TextField fx:id="titleField" promptText="Title" />
     <DatePicker fx:id="datePicker" />
-    <TextField fx:id="timeField" promptText="Time (HH:mm)" />
+    <HBox spacing="10">
+        <ComboBox fx:id="startTimeComboBox" promptText="Start Time" />
+        <Label text="-" />
+        <ComboBox fx:id="endTimeComboBox" promptText="End Time" />
+    </HBox>
     <TextArea fx:id="descriptionArea" promptText="Description" />
     <TextField fx:id="tagsField" promptText="Tags (comma separated)" />
     <Button fx:id="saveButton" text="Save" onAction="#handleSave" />
 </VBox>
-

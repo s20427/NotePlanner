@@ -6,6 +6,7 @@ public class Event {
     private int id;
     private String title;
     private LocalDateTime dateTime;
+    private LocalDateTime endDateTime;
     private String description;
     private String tags;
     private String category;
@@ -15,10 +16,11 @@ public class Event {
     }
 
     // Konstruktor z pełnym zestawem argumentów
-    public Event(int id, String title, LocalDateTime dateTime, String description, String tags, String category) {
+    public Event(int id, String title, LocalDateTime dateTime, LocalDateTime endDateTime, String description, String tags, String category) {
         this.id = id;
         this.title = title;
         this.dateTime = dateTime;
+        this.endDateTime = endDateTime;
         this.description = description;
         this.tags = tags;
         this.category = category;
@@ -51,6 +53,14 @@ public class Event {
 
     public String getDescription() {
         return description;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public void setDescription(String description) {
