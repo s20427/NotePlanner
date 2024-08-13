@@ -299,11 +299,18 @@ public class CalendarController {
 
         for (Event event : eventsForDay) {
             Label eventLabel = new Label(formatEventLabel(event));
-            eventLabel.setStyle("-fx-background-color: #4285f4; -fx-text-fill: white; -fx-padding: 2px; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-color: #000000; -fx-border-width: 1px;");
+            eventLabel.setStyle(
+                    "-fx-background-color: " + event.getCategory().getColor() + "; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-padding: 2px; " +
+                            "-fx-border-radius: 4px; " +
+                            "-fx-background-radius: 4px; " +
+                            "-fx-border-color: #000000; " +
+                            "-fx-border-width: 1px;"
+            );
             eventLabel.setMaxWidth(Double.MAX_VALUE);
             eventLabel.setWrapText(false);
             eventLabel.setEllipsisString("...");
-
             dayBox.getChildren().add(eventLabel);
         }
 
@@ -313,9 +320,7 @@ public class CalendarController {
     private String formatEventLabel(Event event) {
         LocalTime startTime = event.getDateTime().toLocalTime();
         String title = event.getTitle();
-        if (title.length() > 10) { // Ustawienie limitu znaków na przykładzie 10 znaków
-            title = title.substring(0, 10) + "...";
-        }
+        String color = event.getCategory().getColor();
         return startTime + " " + title;
     }
 
@@ -399,7 +404,15 @@ public class CalendarController {
 
                 List<Label> eventList = eventMap.getOrDefault(key, new ArrayList<>());
                 Label eventLabel = new Label(event.getTitle());
-                eventLabel.setStyle("-fx-background-color: #4285f4; -fx-text-fill: white; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-color: #000000; -fx-border-width: 2px;"); // Zwiększono szerokość obramowania do 2px
+                eventLabel.setStyle(
+                        "-fx-background-color: " + event.getCategory().getColor() + "; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-padding: 2px; " +
+                                "-fx-border-radius: 4px; " +
+                                "-fx-background-radius: 4px; " +
+                                "-fx-border-color: #000000; " +
+                                "-fx-border-width: 1px;"
+                );
                 eventLabel.setPrefHeight(eventDuration - 4);  // Odejmujemy 4px na padding od góry i dołu
                 eventLabel.setAlignment(Pos.TOP_LEFT);
                 eventLabel.setPadding(new Insets(2)); // Ustawienie paddingu na 2px dookoła

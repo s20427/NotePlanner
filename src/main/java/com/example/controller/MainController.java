@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Category;
 import com.example.model.Event;
 import com.example.model.Note;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -74,9 +76,9 @@ public class MainController {
         updateTexts();
 
         notes = FXCollections.observableArrayList(
-                new Note(1, "Note 1", "Note 1\nContent 1\nLine 2\nLine 3", "", ""),
-                new Note(2, "Note 2", "Note 2\nContent 2\nLine 2\nLine 3", "", ""),
-                new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", "")
+                new Note(1, "Note 1", "Note 1\nContent 1\nLine 2\nLine 3", "", Category.WORK),
+                new Note(2, "Note 2", "Note 2\nContent 2\nLine 2\nLine 3", "", Category.PRIVATE),
+                new Note(3, "Note 3", "Note 3\nContent 3\nLine 2\nLine 3", "", Category.VISIT)
         );
         notesListView.setItems(notes);
         notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
@@ -88,13 +90,30 @@ public class MainController {
                         super.updateItem(note, empty);
                         if (empty || note == null) {
                             setText(null);
+                            setGraphic(null);
                         } else {
                             String[] lines = note.getContent().split("\n", 4);
                             StringBuilder displayText = new StringBuilder(note.getTitle());
                             for (int i = 1; i < lines.length && i <= 2; i++) {
                                 displayText.append("\n").append(lines[i]);
                             }
-                            setText(displayText.toString());
+
+                            Label textLabel = new Label(displayText.toString());
+                            textLabel.setStyle("-fx-padding: 5px;");
+
+                            Label tagsLabel = new Label(note.getTagsAsString());
+                            tagsLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 10px;");
+
+                            VBox coloredBox = new VBox();
+                            coloredBox.setStyle("-fx-background-color: " + note.getCategory().getColor() + "; -fx-min-width: 5px;");
+
+                            VBox contentBox = new VBox(textLabel, tagsLabel);
+                            contentBox.setSpacing(5);
+
+                            HBox hBox = new HBox(coloredBox, contentBox);
+                            hBox.setSpacing(10);
+
+                            setGraphic(hBox);
                         }
                     }
                 };

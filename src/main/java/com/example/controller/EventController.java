@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Category;
 import com.example.model.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,8 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventController {
@@ -27,6 +30,8 @@ public class EventController {
     @FXML
     private TextField tagsField;
     @FXML
+    private ComboBox<Category> categoryComboBox;
+    @FXML
     private Button saveButton;
 
     private MainController mainController;
@@ -40,7 +45,6 @@ public class EventController {
 
     @FXML
     private void initialize() {
-        // Inicjalizacja listy godzin co pół godziny
         ObservableList<String> timeOptions = FXCollections.observableArrayList();
         for (int hour = 0; hour < 24; hour++) {
             timeOptions.add(String.format("%02d:00", hour));
@@ -49,7 +53,8 @@ public class EventController {
         startTimeComboBox.setItems(timeOptions);
         endTimeComboBox.setItems(timeOptions);
 
-        // Tłumaczenie dla start time, end time
+        categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
+
         startTimeComboBox.setPromptText(resources.getString("event.startTime"));
         endTimeComboBox.setPromptText(resources.getString("event.endTime"));
     }
@@ -60,6 +65,9 @@ public class EventController {
         LocalDate date = datePicker.getValue();
         String startTime = startTimeComboBox.getValue();
         String endTime = endTimeComboBox.getValue();
+        String tagsText = tagsField.getText();
+        List<String> tags = Arrays.asList(tagsText.split(","));
+        Category selectedCategory = categoryComboBox.getValue();
 
         if (title != null && date != null && startTime != null && endTime != null) {
             LocalTime startLocalTime = LocalTime.parse(startTime);
@@ -69,9 +77,9 @@ public class EventController {
             LocalDateTime endDateTime = LocalDateTime.of(date, endLocalTime);
 
             String description = descriptionArea.getText();
-            String tags = tagsField.getText();
 
-            Event event = new Event(mainController.generateNewEventId(), title, startDateTime, endDateTime, description, tags, "");
+            Event event = new Event(mainController.generateNewEventId(), title, startDateTime, endDateTime, description, tagsText, selectedCategory);
+            event.setTags(tags);
             mainController.addEvent(event);
             closeWindow();
         } else {

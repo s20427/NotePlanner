@@ -1,22 +1,33 @@
 package com.example.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Note {
     private int id;
     private String title;
     private String content;
-    private String tags;
-    private String category;
+    private List<String> tags;
+    private Category category;
 
-    public Note() {}
+    public Note() {
+        this.tags = new ArrayList<>();
+    }
 
-    public Note(int id, String title, String content, String tags, String category) {
+    public Note(int id, String title, String content, String tags, Category category) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.tags = tags;
+        this.tags = new ArrayList<>();
+        if (tags != null && !tags.isEmpty()) {
+            for (String tag : tags.split(",")) {
+                this.tags.add(tag.trim());
+            }
+        }
         this.category = category;
     }
 
+    // Gettery i Settery
     public int getId() {
         return id;
     }
@@ -41,19 +52,27 @@ public class Note {
         this.content = content;
     }
 
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public String getCategory() {
+    public void addTag(String tag) {
+        this.tags.add(tag.trim());
+    }
+
+    public String getTagsAsString() {
+        return String.join(", ", tags);
+    }
+
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

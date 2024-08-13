@@ -1,6 +1,8 @@
 package com.example.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
     private int id;
@@ -8,21 +10,25 @@ public class Event {
     private LocalDateTime dateTime;
     private LocalDateTime endDateTime;
     private String description;
-    private String tags;
-    private String category;
+    private List<String> tags;
+    private Category category;
 
-    // Konstruktor bez argumentów
     public Event() {
+        this.tags = new ArrayList<>();
     }
 
-    // Konstruktor z pełnym zestawem argumentów
-    public Event(int id, String title, LocalDateTime dateTime, LocalDateTime endDateTime, String description, String tags, String category) {
+    public Event(int id, String title, LocalDateTime dateTime, LocalDateTime endDateTime, String description, String tags, Category category) {
         this.id = id;
         this.title = title;
         this.dateTime = dateTime;
         this.endDateTime = endDateTime;
         this.description = description;
-        this.tags = tags;
+        this.tags = new ArrayList<>();
+        if (tags != null && !tags.isEmpty()) {
+            for (String tag : tags.split(",")) {
+                this.tags.add(tag.trim());
+            }
+        }
         this.category = category;
     }
 
@@ -51,10 +57,6 @@ public class Event {
         this.dateTime = dateTime;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
@@ -63,66 +65,40 @@ public class Event {
         this.endDateTime = endDateTime;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public String getCategory() {
+    public void addTag(String tag) {
+        this.tags.add(tag.trim());
+    }
+
+    public String getTagsAsString() {
+        return String.join(", ", tags);
+    }
+
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
     @Override
     public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", tags='" + tags + '\'' +
-                ", category='" + category + '\'' +
-                '}';
-    }
-
-    // Dodatkowe metody pomocnicze
-
-    /**
-     * Sprawdza, czy wydarzenie zawiera podany tag.
-     *
-     * @param tag Tag do sprawdzenia.
-     * @return True, jeśli wydarzenie zawiera podany tag, w przeciwnym razie False.
-     */
-    public boolean hasTag(String tag) {
-        if (tags == null || tags.isEmpty()) {
-            return false;
-        }
-        String[] tagArray = tags.split(",");
-        for (String t : tagArray) {
-            if (t.trim().equalsIgnoreCase(tag)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Sprawdza, czy wydarzenie jest z określonej kategorii.
-     *
-     * @param category Kategoria do sprawdzenia.
-     * @return True, jeśli wydarzenie jest z podanej kategorii, w przeciwnym razie False.
-     */
-    public boolean isInCategory(String category) {
-        return this.category != null && this.category.equalsIgnoreCase(category);
+        return title + " (" + getTagsAsString() + ")";
     }
 }

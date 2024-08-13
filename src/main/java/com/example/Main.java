@@ -15,8 +15,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/main.fxml"));
         BorderPane root = loader.load();
 
-        primaryStage.setMinWidth(1200);
-        primaryStage.setMinHeight(800);
+        primaryStage.setMinWidth(1280);
+        primaryStage.setMinHeight(720);
 
         primaryStage.setTitle("Note Planner");
         primaryStage.setScene(new Scene(root, 1200, 800));
