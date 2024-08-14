@@ -1,0 +1,81 @@
+[ {
+  "id" : 1,
+  "title" : "Spotkanie z klientem",
+  "dateTime" : "2024-08-27T10:00:00",
+  "endDateTime" : "2024-08-27T11:00:00",
+  "description" : "Spotkanie w sprawie omówienia wymagań do projektu.",
+  "tags" : [ "praca", "spotkanie" ],
+  "category" : "WORK"
+}, {
+  "id" : 2,
+  "title" : "Wizyta u dentysty",
+  "dateTime" : "2024-08-25T14:30:00",
+  "endDateTime" : "2024-08-25T15:00:00",
+  "description" : "Regularna kontrola zębów.",
+  "tags" : [ "zdrowie", "osobiste" ],
+  "category" : "PRIVATE"
+}, {
+  "id" : 3,
+  "title" : "Warsztaty programistyczne",
+  "dateTime" : "2024-08-25T09:00:00",
+  "endDateTime" : "2024-08-25T16:00:00",
+  "description" : "Całodniowe warsztaty z JavaScript.",
+  "tags" : [ "praca", "szkolenie" ],
+  "category" : "WORK"
+}, {
+  "id" : 4,
+  "title" : "Obiad z rodziną",
+  "dateTime" : "2024-08-25T13:00:00",
+  "endDateTime" : "2024-08-25T15:00:00",
+  "description" : "Obiad z rodzicami i rodzeństwem.",
+  "tags" : [ "rodzina", "osobiste" ],
+  "category" : "PRIVATE"
+}, {
+  "id" : 5,
+  "title" : "Spotkanie zespołu projektowego",
+  "dateTime" : "2024-08-27T11:00:00",
+  "endDateTime" : "2024-08-27T12:30:00",
+  "description" : "Omówienie postępów w projekcie Z.",
+  "tags" : [ "praca", "projekt" ],
+  "category" : "WORK"
+}, {
+  "id" : 6,
+  "title" : "Trening biegowy",
+  "dateTime" : "2024-08-25T07:00:00",
+  "endDateTime" : "2024-08-25T08:00:00",
+  "description" : "Poranny bieg w parku.",
+  "tags" : [ "sport", "zdrowie" ],
+  "category" : "PRIVATE"
+}, {
+  "id" : 7,
+  "title" : "Koncert muzyki klasycznej",
+  "dateTime" : "2024-08-27T19:00:00",
+  "endDateTime" : "2024-08-27T21:00:00",
+  "description" : "Koncert w filharmonii.",
+  "tags" : [ "kultura", "muzyka" ],
+  "category" : "PRIVATE"
+}, {
+  "id" : 8,
+  "title" : "Prezentacja dla zarządu",
+  "dateTime" : "2024-08-27T10:00:00",
+  "endDateTime" : "2024-08-27T11:30:00",
+  "description" : "Prezentacja wyników projektu.",
+  "tags" : [ "praca", "prezentacja" ],
+  "category" : "WORK"
+}, {
+  "id" : 9,
+  "title" : "Wizyta u fryzjera",
+  "dateTime" : "2024-08-27T16:00:00",
+  "endDateTime" : "2024-08-27T16:45:00",
+  "description" : "Strzyżenie i stylizacja.",
+  "tags" : [ "osobiste", "uroda" ],
+  "category" : "VISIT"
+}, {
+  "id" : 10,
+  "title" : "Wakacje w górach",
+  "dateTime" : "2024-08-29T08:00:00",
+  "endDateTime" : "2024-09-02T18:00:00",
+  "description" : "Wyjazd na wakacje w Tatry.",
+  "tags" : [ "wakacje", "góry" ],
+  "category" : "PRIVATE"
+} ]
