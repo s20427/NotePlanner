@@ -2,7 +2,9 @@ package com.example.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -82,11 +84,8 @@ public class Event {
     }
 
     public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public void addTag(String tag) {
-        this.tags.add(tag.trim());
+        Set<String> uniqueTags = new HashSet<>(tags);
+        this.tags = new ArrayList<>(uniqueTags);
     }
 
     @JsonIgnore

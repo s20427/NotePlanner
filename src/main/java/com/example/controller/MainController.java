@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.Category;
 import com.example.service.DataStorage;
 import com.example.model.Event;
 import com.example.model.Note;
@@ -7,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,18 +17,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -43,6 +50,8 @@ public class MainController {
     @FXML
     private BorderPane calendarView;
     @FXML
+    private BorderPane mainLayout;
+    @FXML
     private VBox notesPanel;
     @FXML
     private Button addNoteButton;
@@ -54,7 +63,7 @@ public class MainController {
     private AtomicInteger noteIdCounter = new AtomicInteger(4);
     private AtomicInteger eventIdCounter = new AtomicInteger(1);
     private ResourceBundle bundle;
-
+    private List<CheckBox> categoryCheckboxes;
     private ScheduledExecutorService autosaveScheduler;
 
 
@@ -64,6 +73,8 @@ public class MainController {
 
     @FXML
     private void initialize() {
+        bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
+
         notes = FXCollections.observableArrayList(DataStorage.loadNotes());
         events = FXCollections.observableArrayList(DataStorage.loadEvents());
 
@@ -73,8 +84,7 @@ public class MainController {
 
         // Inicjalizacja funkcji Autosave
         startAutosave();
-
-        bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
+        addCategoryDisplay();
 
         calendarController = new CalendarController();
         calendarController.setMainController(this);
@@ -166,6 +176,86 @@ public class MainController {
             }
         });
     }
+
+    private void addCategoryDisplay() {
+        HBox categoryBox = new HBox(20); // Create an HBox to hold all categories
+        categoryBox.setStyle("-fx-padding: 10px; -fx-background-color: #f4f4f4;");
+        categoryCheckboxes = new ArrayList<>();
+
+        for (Category category : Category.values()) {
+            // Create a custom circle for the category
+            Circle colorCircle = new Circle(8);
+            colorCircle.setFill(Color.web(category.getColor()));
+            colorCircle.setStroke(Color.web(category.getColor())); // Initially, no outline
+
+            // Create a checkbox for the category but without the default box
+            CheckBox categoryCheckBox = new CheckBox();
+            categoryCheckBox.setStyle("-fx-opacity: 0;"); // Hide the default checkbox
+            categoryCheckBox.setSelected(true); // Default to selected
+
+            // Bind the circle's fill and stroke based on the checkbox's selected state
+            categoryCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+                if (isNowSelected) {
+                    colorCircle.setFill(Color.web(category.getColor())); // Filled when selected
+                    colorCircle.setStroke(Color.web(category.getColor())); // No outline when selected
+                } else {
+                    colorCircle.setFill(Color.TRANSPARENT); // Transparent when not selected
+                    colorCircle.setStroke(Color.web(category.getColor())); // Outline when not selected
+                }
+                filterNotesAndEvents(); // Apply the filter whenever a checkbox is toggled
+            });
+
+            // Create a label with the translated category name
+            Label categoryLabel = new Label(category.getTranslatedName(bundle));
+            categoryLabel.setStyle("-fx-font-size: 12px;");
+
+            // Combine the circle and label into an HBox
+            HBox itemBox = new HBox(5, colorCircle, categoryLabel);
+            itemBox.setAlignment(Pos.CENTER_LEFT); // Align elements to the left
+
+            // Ensure the itemBox grows to fill available space
+            HBox.setHgrow(itemBox, Priority.ALWAYS);
+            itemBox.setMaxWidth(Double.MAX_VALUE); // Ensure it takes up all available space
+
+            // Center content within the itemBox
+            itemBox.setStyle("-fx-alignment: center;");
+
+            // Add the itemBox to the main category box
+            categoryBox.getChildren().add(itemBox);
+
+            // Add the invisible checkbox to the list for later reference
+            categoryCheckboxes.add(categoryCheckBox);
+
+            // Ensure clicking on the circle or label toggles the checkbox
+            itemBox.setOnMouseClicked(event -> categoryCheckBox.setSelected(!categoryCheckBox.isSelected()));
+        }
+
+        // Add the HBox to the bottom of the BorderPane
+        mainLayout.setBottom(categoryBox);
+    }
+
+    private void filterNotesAndEvents() {
+        // Collect selected categories
+        List<Category> selectedCategories = categoryCheckboxes.stream()
+                .filter(CheckBox::isSelected)
+                .map(cb -> Category.values()[categoryCheckboxes.indexOf(cb)])
+                .collect(Collectors.toList());
+
+        // Filter notes by selected categories
+        ObservableList<Note> filteredNotes = notes.filtered(note -> selectedCategories.contains(note.getCategory()));
+
+        // Filter events by selected categories
+        ObservableList<Event> filteredEvents = events.filtered(event -> selectedCategories.contains(event.getCategory()));
+
+        // Display the filtered notes and events
+        notesListView.setItems(filteredNotes);
+        notesListView.refresh();
+
+        // Update the calendar view with filtered events
+        calendarController.setEvents(filteredEvents);
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
+    }
+
 
     @FXML
     private void handleManualSave() {

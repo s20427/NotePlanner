@@ -9,7 +9,7 @@
 <?import javafx.scene.control.SplitPane?>
 
 <?import javafx.scene.control.Button?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainController" fx:id="mainLayout">
     <top>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <ComboBox fx:id="filterOptions"/>
@@ -32,4 +32,7 @@
             </VBox>
         </SplitPane>
     </center>
+    <bottom>
+
+    </bottom>
 </BorderPane>

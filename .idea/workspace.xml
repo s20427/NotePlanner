@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2eb65e4d-2c5f-4d4d-8a74-b724cb455c84" name="Changes" comment="Save/load implementation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/model/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/model/Note.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" afterDir="false" />
-    </list>
+    <list default="true" id="2eb65e4d-2c5f-4d4d-8a74-b724cb455c84" name="Changes" comment="Update note view and fixed editing notes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -131,7 +125,7 @@
       <workItem from="1723473244890" duration="19309000" />
       <workItem from="1723506490655" duration="4232000" />
       <workItem from="1723543243615" duration="37784000" />
-      <workItem from="1723650009021" duration="4193000" />
+      <workItem from="1723650009021" duration="4559000" />
     </task>
     <task id="LOCAL-00001" summary="WIP app window and calendar view">
       <created>1723506074976</created>
@@ -169,7 +163,23 @@
       <option name="project" value="LOCAL" />
       <updated>1723653605739</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Updated note view and fixed editing notes">
+      <option name="closed" value="true" />
+      <created>1723655382071</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723655382071</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Update note view and fixed editing notes">
+      <option name="closed" value="true" />
+      <created>1723655408248</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723655408248</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +200,8 @@
     <MESSAGE value="WIP app window and calendar view" />
     <MESSAGE value="Add tags and categories to notes and events" />
     <MESSAGE value="Save/load implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Save/load implementation" />
+    <MESSAGE value="Updated note view and fixed editing notes" />
+    <MESSAGE value="Update note view and fixed editing notes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update note view and fixed editing notes" />
   </component>
 </project>

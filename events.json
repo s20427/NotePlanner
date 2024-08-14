@@ -32,11 +32,11 @@
   "category" : "PRIVATE"
 }, {
   "id" : 5,
-  "title" : "Spotkanie zespołu projektowego",
+  "title" : "Rozmowa o wynikach",
   "dateTime" : "2024-08-27T11:00:00",
   "endDateTime" : "2024-08-27T12:30:00",
   "description" : "Omówienie postępów w projekcie Z.",
-  "tags" : [ "praca", "projekt" ],
+  "tags" : [ "projekt", "praca" ],
   "category" : "WORK"
 }, {
   "id" : 6,
@@ -44,7 +44,7 @@
   "dateTime" : "2024-08-25T07:00:00",
   "endDateTime" : "2024-08-25T08:00:00",
   "description" : "Poranny bieg w parku.",
-  "tags" : [ "sport", "zdrowie" ],
+  "tags" : [ "zdrowie", "sport" ],
   "category" : "PRIVATE"
 }, {
   "id" : 7,
@@ -52,7 +52,7 @@
   "dateTime" : "2024-08-27T19:00:00",
   "endDateTime" : "2024-08-27T21:00:00",
   "description" : "Koncert w filharmonii.",
-  "tags" : [ "kultura", "muzyka" ],
+  "tags" : [ "muzyka", "kultura" ],
   "category" : "PRIVATE"
 }, {
   "id" : 8,
@@ -60,7 +60,7 @@
   "dateTime" : "2024-08-27T10:00:00",
   "endDateTime" : "2024-08-27T11:30:00",
   "description" : "Prezentacja wyników projektu.",
-  "tags" : [ "praca", "prezentacja" ],
+  "tags" : [ "prezentacja", "praca" ],
   "category" : "WORK"
 }, {
   "id" : 9,
@@ -68,7 +68,7 @@
   "dateTime" : "2024-08-27T16:00:00",
   "endDateTime" : "2024-08-27T16:45:00",
   "description" : "Strzyżenie i stylizacja.",
-  "tags" : [ "osobiste", "uroda" ],
+  "tags" : [ "uroda", "osobiste" ],
   "category" : "VISIT"
 }, {
   "id" : 10,
@@ -76,6 +76,6 @@
   "dateTime" : "2024-08-29T08:00:00",
   "endDateTime" : "2024-09-02T18:00:00",
   "description" : "Wyjazd na wakacje w Tatry.",
-  "tags" : [ "wakacje", "góry" ],
+  "tags" : [ "góry", "wakacje" ],
   "category" : "PRIVATE"
 } ]

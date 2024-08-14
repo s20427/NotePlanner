@@ -3,7 +3,9 @@ package com.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Note {
     private int id;
@@ -64,7 +66,9 @@ public class Note {
     }
 
     public void setTags(List<String> tags) {
-        this.tags = tags;
+        // Use a set to avoid duplicates
+        Set<String> uniqueTags = new HashSet<>(tags);
+        this.tags = new ArrayList<>(uniqueTags);
     }
 
     @JsonIgnore
