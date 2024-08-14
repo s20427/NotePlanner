@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2eb65e4d-2c5f-4d4d-8a74-b724cb455c84" name="Changes" comment="Add tags and categories to notes and events">
+    <list default="true" id="2eb65e4d-2c5f-4d4d-8a74-b724cb455c84" name="Changes" comment="Add creating events and various improvements">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/service/DataStorage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/EventController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/NoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/NoteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/model/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/model/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/model/Note.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/fxml/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/fxml/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/i18n/messages_pl.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +29,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
         <option value="XML Properties File" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -98,10 +100,10 @@
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.Main" />
       <module name="NotePlanner.main" />
-      <option name="VM_PARAMETERS" value="--module-path C:\Users\Kicpo\Downloads\javafx-sdk-17.0.11/lib --add-modules javafx.controls,javafx.fxml" />
+      <option name="VM_PARAMETERS" value="--module-path $USER_HOME$/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.*" />
+          <option name="PATTERN" value="com.example.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -134,6 +136,7 @@
       <workItem from="1723473244890" duration="19309000" />
       <workItem from="1723506490655" duration="4232000" />
       <workItem from="1723543243615" duration="37784000" />
+      <workItem from="1723650009021" duration="2678000" />
     </task>
     <task id="LOCAL-00001" summary="WIP app window and calendar view">
       <created>1723506074976</created>

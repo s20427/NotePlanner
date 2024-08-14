@@ -14,6 +14,7 @@
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <ComboBox fx:id="filterOptions"/>
             <TextField fx:id="searchField" onKeyReleased="#handleSearch" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="saveButton" text="Zapisz" onAction="#handleManualSave"/>
             <ComboBox fx:id="languageSelector"/>
         </HBox>
     </top>

@@ -3,6 +3,10 @@ package com.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Note {
     private int id;
     private String title;
@@ -64,6 +68,7 @@ public class Note {
         this.tags.add(tag.trim());
     }
 
+    @JsonIgnore
     public String getTagsAsString() {
         return String.join(", ", tags);
     }

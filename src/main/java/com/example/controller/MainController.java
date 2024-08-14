@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.model.Category;
+import com.example.service.DataStorage;
 import com.example.model.Event;
 import com.example.model.Note;
 import javafx.collections.FXCollections;
@@ -21,9 +21,11 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainController {
@@ -53,15 +55,26 @@ public class MainController {
     private AtomicInteger eventIdCounter = new AtomicInteger(1);
     private ResourceBundle bundle;
 
+    private ScheduledExecutorService autosaveScheduler;
+
+
     private ResourceBundle loadBundle(Locale locale) {
         return ResourceBundle.getBundle("com.example.i18n.messages", locale);
     }
 
     @FXML
     private void initialize() {
-        bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
+        notes = FXCollections.observableArrayList(DataStorage.loadNotes());
+        events = FXCollections.observableArrayList(DataStorage.loadEvents());
 
-        events = FXCollections.observableArrayList();
+        // Debug: Print out loaded data
+        System.out.println("Loaded notes: " + notes.size());
+        System.out.println("Loaded events: " + events.size());
+
+        // Inicjalizacja funkcji Autosave
+        startAutosave();
+
+        bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
 
         calendarController = new CalendarController();
         calendarController.setMainController(this);
@@ -86,16 +99,6 @@ public class MainController {
         filterOptions.valueProperty().addListener((observable, oldValue, newValue) -> handleSearch());
 
         updateTexts();
-
-        notes = FXCollections.observableArrayList(
-                new Note(1, "Note 1", "This is the first note", "work, urgent", Category.WORK),
-                new Note(2, "Shopping List", "Buy milk and bread", "home, shopping", Category.HOME)
-        );
-
-        events = FXCollections.observableArrayList(
-                new Event(1, "Meeting with Bob", LocalDateTime.of(2024, 8, 14, 0, 30), LocalDateTime.of(2024, 8, 14, 2, 30), "Discuss project details", "work, important", Category.WORK),
-                new Event(2, "Dentist Appointment", LocalDateTime.of(2024, 8, 15, 1, 0), LocalDateTime.of(2024, 8, 15, 1, 30), "Regular check-up", "health", Category.PRIVATE)
-        );
 
         notesListView.setItems(notes);
         calendarController.setEvents(events);
@@ -155,6 +158,66 @@ public class MainController {
                 }
             }
         });
+    }
+
+    @FXML
+    private void handleManualSave() {
+        try {
+            DataStorage.saveNotes(notes);
+            DataStorage.saveEvents(events);
+            showSaveConfirmation();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showSaveError();
+        }
+    }
+
+    private void startAutosave() {
+        autosaveScheduler = Executors.newScheduledThreadPool(1);
+        autosaveScheduler.scheduleAtFixedRate(() -> {
+            try {
+                DataStorage.saveNotes(notes);
+                DataStorage.saveEvents(events);
+                System.out.println("Autosave executed");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 5, 5, TimeUnit.MINUTES); // pierwsze uruchomienie po 5 minutach, a potem co 5 minut
+    }
+
+    // Usunięto @Override
+    public void stop() throws Exception {
+        if (autosaveScheduler != null && !autosaveScheduler.isShutdown()) {
+            autosaveScheduler.shutdown();
+            try {
+                autosaveScheduler.awaitTermination(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        // Zapisanie danych przy zamykaniu aplikacji
+        try {
+            DataStorage.saveNotes(notes);
+            DataStorage.saveEvents(events);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showSaveConfirmation() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Zapisano");
+        alert.setHeaderText(null);
+        alert.setContentText("Dane zostały pomyślnie zapisane.");
+        alert.showAndWait();
+    }
+
+    private void showSaveError() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd zapisu");
+        alert.setHeaderText(null);
+        alert.setContentText("Wystąpił błąd podczas zapisywania danych.");
+        alert.showAndWait();
     }
 
     private void changeLanguage() {

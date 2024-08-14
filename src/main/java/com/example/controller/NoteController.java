@@ -60,7 +60,6 @@ public class NoteController {
             noteContentArea.setPromptText(resources.getString("note.contentPlaceholder"));
             categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
 
-            // Ustawienie niestandardowego renderera, aby wyświetlać przetłumaczone nazwy kategorii
             categoryComboBox.setCellFactory(comboBox -> new ListCell<Category>() {
                 @Override
                 protected void updateItem(Category item, boolean empty) {
@@ -89,17 +88,17 @@ public class NoteController {
 
     @FXML
     private void handleSave() {
-        String content = noteContentArea.getText();
-        String tagsText = tagsField.getText();
-        List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
-        Category selectedCategory = categoryComboBox.getValue();
+        if (validateInput()) {
+            String content = noteContentArea.getText();
+            String tagsText = tagsField.getText();
+            List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
+            Category selectedCategory = categoryComboBox.getValue();
 
-        String translatedCategory = selectedCategory.getTranslatedName(resources);
-        if (selectedCategory != null && !tags.contains(translatedCategory)) {
-            tags.add(0, translatedCategory.toLowerCase());
-        }
+            String translatedCategory = selectedCategory.getTranslatedName(resources);
+            if (selectedCategory != null && !tags.contains(translatedCategory)) {
+                tags.add(0, translatedCategory.toLowerCase());
+            }
 
-        if (content != null && !content.trim().isEmpty()) {
             String title = content.split("\n", 2)[0];
             if (isEditMode) {
                 note.setTitle(title);
@@ -115,6 +114,31 @@ public class NoteController {
             mainController.refreshViews();
             closeWindow();
         }
+    }
+
+    private boolean validateInput() {
+        String content = noteContentArea.getText();
+        Category selectedCategory = categoryComboBox.getValue();
+
+        if (content == null || content.trim().isEmpty()) {
+            showValidationError("Content is required.");
+            return false;
+        }
+
+        if (selectedCategory == null) {
+            showValidationError("Category must be selected.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showValidationError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Validation Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void closeWindow() {

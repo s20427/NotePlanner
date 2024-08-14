@@ -9,12 +9,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 public class EventController {
 
@@ -56,7 +55,6 @@ public class EventController {
 
         categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
 
-        // Ustawienie niestandardowego renderera, aby wyświetlać przetłumaczone nazwy kategorii
         categoryComboBox.setCellFactory(comboBox -> new ListCell<Category>() {
             @Override
             protected void updateItem(Category item, boolean empty) {
@@ -85,49 +83,78 @@ public class EventController {
         endTimeComboBox.setPromptText(resources.getString("event.endTime"));
     }
 
-
     @FXML
     private void handleSave() {
+        if (validateInput()) {
+            String title = titleField.getText();
+            LocalDate date = datePicker.getValue();
+            String startTime = startTimeComboBox.getValue();
+            String endTime = endTimeComboBox.getValue();
+            String tagsText = tagsField.getText();
+            List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
+            Category selectedCategory = categoryComboBox.getValue();
+
+            String translatedCategory = selectedCategory.getTranslatedName(resources);
+            if (!tags.contains(translatedCategory)) {
+                tags.add(0, translatedCategory.toLowerCase());
+            }
+
+            LocalTime startLocalTime = LocalTime.parse(startTime);
+            LocalTime endLocalTime = LocalTime.parse(endTime);
+
+            if (title != null && date != null && startTime != null && endTime != null) {
+                Event event = new Event(mainController.generateNewEventId(), title, date.atTime(startLocalTime), date.atTime(endLocalTime), descriptionArea.getText(), String.join(", ", tags), selectedCategory);
+                event.setTags(tags);
+                mainController.addEvent(event);
+                closeWindow();
+                mainController.refreshViews();
+            }
+        }
+    }
+
+    private boolean validateInput() {
         String title = titleField.getText();
         LocalDate date = datePicker.getValue();
         String startTime = startTimeComboBox.getValue();
         String endTime = endTimeComboBox.getValue();
-        String tagsText = tagsField.getText();
-        List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
         Category selectedCategory = categoryComboBox.getValue();
 
-        // Dodaj przetłumaczoną nazwę kategorii jako pierwszy tag, jeśli jeszcze nie jest dodana
-        if (selectedCategory != null) {
-            String translatedCategory = selectedCategory.getTranslatedName(resources);
-            if (!tags.contains(translatedCategory)) {
-                tags.add(0, translatedCategory.toLowerCase()); // Dodaj przetłumaczoną kategorię jako pierwszy tag
-            }
+        if (title == null || title.trim().isEmpty()) {
+            showValidationError("Title is required.");
+            return false;
         }
 
-        if (title != null && date != null && startTime != null && endTime != null) {
-            LocalTime startLocalTime = LocalTime.parse(startTime);
-            LocalTime endLocalTime = LocalTime.parse(endTime);
-
-            LocalDateTime startDateTime = LocalDateTime.of(date, startLocalTime);
-            LocalDateTime endDateTime = LocalDateTime.of(date, endLocalTime);
-
-            String description = descriptionArea.getText();
-
-            Event event = new Event(mainController.generateNewEventId(), title, startDateTime, endDateTime, description, String.join(", ", tags), selectedCategory);
-            event.setTags(tags);
-            mainController.addEvent(event);
-            closeWindow();
-            mainController.refreshViews();
-        } else {
-            showAlert(resources.getString("event.errorTitle"), resources.getString("event.errorMessage"));
+        if (date == null) {
+            showValidationError("Date must be selected.");
+            return false;
         }
+
+        if (startTime == null || endTime == null) {
+            showValidationError("Both start and end time must be selected.");
+            return false;
+        }
+
+        LocalTime startLocalTime = LocalTime.parse(startTime);
+        LocalTime endLocalTime = LocalTime.parse(endTime);
+
+        if (endLocalTime.isBefore(startLocalTime) || endLocalTime.equals(startLocalTime)) {
+            showValidationError("End time must be after start time.");
+            return false;
+        }
+
+        if (selectedCategory == null) {
+            showValidationError("Category must be selected.");
+            return false;
+        }
+
+        return true;
     }
 
-    private void showAlert(String title, String content) {
+    private void showValidationError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
+        alert.setTitle("Validation Error");
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 

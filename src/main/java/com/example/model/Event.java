@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
     private int id;
     private String title;
@@ -85,6 +89,7 @@ public class Event {
         this.tags.add(tag.trim());
     }
 
+    @JsonIgnore
     public String getTagsAsString() {
         return String.join(", ", tags);
     }
