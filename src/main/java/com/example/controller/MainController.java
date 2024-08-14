@@ -114,14 +114,21 @@ public class MainController {
                             setText(null);
                             setGraphic(null);
                         } else {
+                            // The first line of the content is treated as the title
                             String[] lines = note.getContent().split("\n", 4);
-                            StringBuilder displayText = new StringBuilder(note.getTitle());
+
+                            // Create a Label for the title and apply bold styling
+                            Label titleLabel = new Label(note.getTitle());
+                            titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+                            // Build the remaining content after the title
+                            StringBuilder remainingContent = new StringBuilder();
                             for (int i = 1; i < lines.length && i <= 2; i++) {
-                                displayText.append("\n").append(lines[i]);
+                                remainingContent.append(lines[i]).append("\n");
                             }
 
-                            Label textLabel = new Label(displayText.toString());
-                            textLabel.setStyle("-fx-padding: 5px;");
+                            Label contentLabel = new Label(remainingContent.toString());
+                            contentLabel.setStyle("-fx-font-size: 12px;");
 
                             Label tagsLabel = new Label(note.getTagsAsString());
                             tagsLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 10px;");
@@ -129,7 +136,7 @@ public class MainController {
                             VBox coloredBox = new VBox();
                             coloredBox.setStyle("-fx-background-color: " + note.getCategory().getColor() + "; -fx-min-width: 5px;");
 
-                            VBox contentBox = new VBox(textLabel, tagsLabel);
+                            VBox contentBox = new VBox(titleLabel, contentLabel, tagsLabel);
                             contentBox.setSpacing(5);
 
                             HBox hBox = new HBox(coloredBox, contentBox);

@@ -1,12 +1,10 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Note {
     private int id;
     private String title;
@@ -20,8 +18,8 @@ public class Note {
 
     public Note(int id, String title, String content, String tags, Category category) {
         this.id = id;
-        this.title = title;
         this.content = content;
+        this.title = (title != null && !title.isEmpty()) ? title : extractTitleFromContent(content);
         this.tags = new ArrayList<>();
         if (tags != null && !tags.isEmpty()) {
             for (String tag : tags.split(",")) {
@@ -31,7 +29,8 @@ public class Note {
         this.category = category;
     }
 
-    // Gettery i Settery
+    // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -54,6 +53,10 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+        // Automatically set the title based on the first line of content if title is not explicitly set
+        if (this.title == null || this.title.isEmpty()) {
+            this.title = extractTitleFromContent(content);
+        }
     }
 
     public List<String> getTags() {
@@ -62,10 +65,6 @@ public class Note {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
-    }
-
-    public void addTag(String tag) {
-        this.tags.add(tag.trim());
     }
 
     @JsonIgnore
@@ -81,8 +80,15 @@ public class Note {
         this.category = category;
     }
 
+    private String extractTitleFromContent(String content) {
+        if (content != null && !content.isEmpty()) {
+            return content.split("\n", 2)[0];  // Get the first line of the content
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
-        return title + content;
+        return title + "\n" + content;
     }
 }
