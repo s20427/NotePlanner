@@ -4,6 +4,7 @@ import com.example.model.Category;
 import com.example.service.DataStorage;
 import com.example.model.Event;
 import com.example.model.Note;
+import com.sun.javafx.menu.MenuItemBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,6 +56,10 @@ public class MainController {
     private VBox notesPanel;
     @FXML
     private Button addNoteButton;
+    @FXML
+    private Button moveUpButton;
+    @FXML
+    private Button moveDownButton;
 
     private CalendarController calendarController;
     private LocalDate currentDate;
@@ -65,7 +70,6 @@ public class MainController {
     private ResourceBundle bundle;
     private List<CheckBox> categoryCheckboxes;
     private ScheduledExecutorService autosaveScheduler;
-
 
     private ResourceBundle loadBundle(Locale locale) {
         return ResourceBundle.getBundle("com.example.i18n.messages", locale);
@@ -175,7 +179,50 @@ public class MainController {
                 }
             }
         });
+
+        moveUpButton.setOnAction(event -> moveSelectedNoteUp());
+        moveDownButton.setOnAction(event -> moveSelectedNoteDown());
+
+        moveUpButton.setDisable(true);
+        moveDownButton.setDisable(true);
+
+        // Add a listener to the selection model of the ListView
+        notesListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            boolean noSelection = newSelection == null;
+            moveUpButton.setDisable(noSelection);
+            moveDownButton.setDisable(noSelection);
+            updateMoveButtonsState();
+        });
     }
+
+    @FXML
+    private void moveSelectedNoteUp() {
+        int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex > 0) {
+            Note selectedNote = notesListView.getItems().remove(selectedIndex);
+            notesListView.getItems().add(selectedIndex - 1, selectedNote);
+            notesListView.getSelectionModel().select(selectedIndex - 1);  // Re-select the moved item
+        }
+        updateMoveButtonsState();  // Update buttons' state after moving
+    }
+
+    @FXML
+    private void moveSelectedNoteDown() {
+        int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < notesListView.getItems().size() - 1) {
+            Note selectedNote = notesListView.getItems().remove(selectedIndex);
+            notesListView.getItems().add(selectedIndex + 1, selectedNote);
+            notesListView.getSelectionModel().select(selectedIndex + 1);  // Re-select the moved item
+        }
+        updateMoveButtonsState();  // Update buttons' state after moving
+    }
+
+    private void updateMoveButtonsState() {
+        int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
+        moveUpButton.setDisable(selectedIndex <= 0);  // Disable if at the top
+        moveDownButton.setDisable(selectedIndex >= notesListView.getItems().size() - 1);  // Disable if at the bottom
+    }
+
 
     private void addCategoryDisplay() {
         HBox categoryBox = new HBox(20); // Create an HBox to hold all categories
@@ -326,11 +373,9 @@ public class MainController {
         System.out.println("Notatki po zmianie języka: " + notes.size());
         System.out.println("Wydarzenia po zmianie języka: " + events.size());
 
-        notesListView.setItems(notes);
-        notesListView.refresh();
         updateTexts();
         updateFilterOptions();
-        refreshViews();
+        notesListView.refresh();
 
         calendarController.updateButtonLabels(bundle);
 

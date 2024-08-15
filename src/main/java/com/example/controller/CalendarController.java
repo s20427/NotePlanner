@@ -46,8 +46,8 @@ public class CalendarController {
     private Region spacer;
 
     private void initializeButtons() {
-        previousButton = new Button(resources.getString("calendar.previous"));
-        nextButton = new Button(resources.getString("calendar.next"));
+        previousButton = new Button("←");  // Change text to left arrow
+        nextButton = new Button("→");      // Change text to right arrow
         dateInfoLabel = new Label(); // Upewnij się, że etykieta jest zainicjalizowana
         spacer = new Region(); // Upewnij się, że region jest zainicjalizowany
         addEventButton = new Button(resources.getString("event.addButton"));
@@ -79,15 +79,13 @@ public class CalendarController {
         });
 
         HBox topControls = new HBox(10);
-        topControls.getChildren().addAll(previousButton, nextButton, dateInfoLabel, spacer, viewSelector, addEventButton);
+        topControls.getChildren().addAll(addEventButton, previousButton, nextButton, dateInfoLabel, spacer, viewSelector);
         topControls.setPadding(new Insets(0, 0, 10, 0));
 
         calendarView.setTop(topControls);
     }
 
     public void updateButtonLabels(ResourceBundle resources) {
-        previousButton.setText(resources.getString("calendar.previous"));
-        nextButton.setText(resources.getString("calendar.next"));
         addEventButton.setText(resources.getString("event.addButton"));
     }
 
