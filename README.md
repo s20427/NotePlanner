@@ -55,3 +55,6 @@ Pisanie 35-stronicowej pracy inżynierskiej to bardzo rozbudowane zadanie, któr
 5. **Korzystaj z diagramów**: Diagramy klas, sekwencji, przepływu danych pomogą lepiej zobrazować złożone koncepty.
 
 Jeśli potrzebujesz bardziej szczegółowej pomocy przy którymś z rozdziałów lub potrzebujesz napisać określoną sekcję, mogę pomóc w rozwinięciu tych tematów.
+
+Źródła:
+https://www.edps.europa.eu/data-protection/our-work/publications/techdispatch/techdispatch-32020-personal-information_en
