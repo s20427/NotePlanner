@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
-    private int id;
     private String title;
     private LocalDateTime dateTime;
     private LocalDateTime endDateTime;
@@ -23,8 +22,7 @@ public class Event {
         this.tags = new ArrayList<>();
     }
 
-    public Event(int id, String title, LocalDateTime dateTime, LocalDateTime endDateTime, String description, String tags, Category category) {
-        this.id = id;
+    public Event(String title, LocalDateTime dateTime, LocalDateTime endDateTime, String description, String tags, Category category) {
         this.title = title;
         this.dateTime = dateTime;
         this.endDateTime = endDateTime;
@@ -39,13 +37,6 @@ public class Event {
     }
 
     // Gettery i Settery
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;

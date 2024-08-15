@@ -10,10 +10,10 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 public class EventController {
 
@@ -30,21 +30,84 @@ public class EventController {
     @FXML
     private TextField tagsField;
     @FXML
+    private Label categoryLabel;
+    @FXML
     private ComboBox<Category> categoryComboBox;
     @FXML
     private Button saveButton;
-
-    private MainController mainController;
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private ResourceBundle resources;
 
+    private MainController mainController;
+    private Event event;
+    private boolean isEditMode = false;
+
+    // Set the main controller to link to the rest of the application
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    // Initialize the controller, setup combo boxes, category dropdown, and text prompts
     @FXML
     private void initialize() {
+        setupTimeComboBoxes();
+        setupCategoryComboBox();
+        configureFieldPrompts();
+    }
+
+    // Set the event content when editing an existing event
+    public void setEventContent(Event event) {
+        this.event = event;
+        titleField.setText(event.getTitle());
+        datePicker.setValue(event.getDateTime().toLocalDate());
+        startTimeComboBox.setValue(event.getDateTime().toLocalTime().toString());
+        endTimeComboBox.setValue(event.getEndDateTime().toLocalTime().toString());
+        descriptionArea.setText(event.getDescription());
+        tagsField.setText(event.getTagsAsString());
+        categoryComboBox.setValue(event.getCategory());
+        isEditMode = true;
+        deleteButton.setVisible(true); // Show the delete button when editing an existing event
+    }
+
+    // Set the edit mode (edit existing or create new)
+    public void setEditMode(boolean isEditMode) {
+        this.isEditMode = isEditMode;
+        if (isEditMode) {
+            saveButton.setText(resources.getString("event.saveButton"));
+            deleteButton.setText(resources.getString("button.delete"));
+        } else {
+            saveButton.setText(resources.getString("event.addButton"));
+            deleteButton.setVisible(false); // Hide the delete button when adding a new event
+        }
+    }
+
+    // Handle saving the event (either creating new or editing existing)
+    @FXML
+    private void handleSave() {
+        if (validateInput()) {
+            saveOrUpdateEvent();
+            closeWindow();
+            mainController.refreshViews();
+        }
+    }
+
+    // Handle deleting the event
+    @FXML
+    private void handleDelete() {
+        confirmAndDeleteEvent();
+    }
+
+    // Close the event editing window
+    private void closeWindow() {
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
+    }
+
+    // Setup time options for start and end time combo boxes
+    private void setupTimeComboBoxes() {
         ObservableList<String> timeOptions = FXCollections.observableArrayList();
         for (int hour = 0; hour < 24; hour++) {
             timeOptions.add(String.format("%02d:00", hour));
@@ -52,66 +115,79 @@ public class EventController {
         }
         startTimeComboBox.setItems(timeOptions);
         endTimeComboBox.setItems(timeOptions);
-
-        categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
-
-        categoryComboBox.setCellFactory(comboBox -> new ListCell<Category>() {
-            @Override
-            protected void updateItem(Category item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getTranslatedName(resources));
-                }
-            }
-        });
-
-        categoryComboBox.setButtonCell(new ListCell<Category>() {
-            @Override
-            protected void updateItem(Category item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getTranslatedName(resources));
-                }
-            }
-        });
-
-        startTimeComboBox.setPromptText(resources.getString("event.startTime"));
-        endTimeComboBox.setPromptText(resources.getString("event.endTime"));
     }
 
-    @FXML
-    private void handleSave() {
-        if (validateInput()) {
-            String title = titleField.getText();
-            LocalDate date = datePicker.getValue();
-            String startTime = startTimeComboBox.getValue();
-            String endTime = endTimeComboBox.getValue();
-            String tagsText = tagsField.getText();
-            List<String> tags = Arrays.asList(tagsText.split(",")).stream().map(String::trim).collect(Collectors.toList());
-            Category selectedCategory = categoryComboBox.getValue();
-
-            String translatedCategory = selectedCategory.getTranslatedName(resources);
-            if (!tags.contains(translatedCategory)) {
-                tags.add(0, translatedCategory.toLowerCase());
+    // Setup category combo box with translated category names
+    private void setupCategoryComboBox() {
+        categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
+        categoryComboBox.setCellFactory(comboBox -> new ListCell<>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTranslatedName(resources));
+                }
             }
+        });
 
-            LocalTime startLocalTime = LocalTime.parse(startTime);
-            LocalTime endLocalTime = LocalTime.parse(endTime);
-
-            if (title != null && date != null && startTime != null && endTime != null) {
-                Event event = new Event(mainController.generateNewEventId(), title, date.atTime(startLocalTime), date.atTime(endLocalTime), descriptionArea.getText(), String.join(", ", tags), selectedCategory);
-                event.setTags(tags);
-                mainController.addEvent(event);
-                closeWindow();
-                mainController.refreshViews();
+        categoryComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTranslatedName(resources));
+                }
             }
+        });
+    }
+
+    // Configure field prompts for user input fields
+    private void configureFieldPrompts() {
+        titleField.setPromptText(resources.getString("event.titlePlaceholder"));
+        descriptionArea.setPromptText(resources.getString("event.descriptionPlaceholder"));
+        tagsField.setPromptText(resources.getString("event.tagsPlaceholder"));
+        startTimeComboBox.setPromptText(resources.getString("event.startTime"));
+        endTimeComboBox.setPromptText(resources.getString("event.endTime"));
+        categoryLabel.setText(resources.getString("event.categoryLabel"));
+        saveButton.setText(resources.getString("event.saveButton"));
+    }
+
+    // Save or update the event based on the mode (edit or new)
+    private void saveOrUpdateEvent() {
+        String title = titleField.getText();
+        LocalDate date = datePicker.getValue();
+        LocalTime startLocalTime = LocalTime.parse(startTimeComboBox.getValue());
+        LocalTime endLocalTime = LocalTime.parse(endTimeComboBox.getValue());
+        String description = descriptionArea.getText();
+        List<String> tags = Arrays.stream(tagsField.getText().split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
+        Category selectedCategory = categoryComboBox.getValue();
+        String translatedCategory = selectedCategory.getTranslatedName(resources);
+
+        if (!tags.contains(translatedCategory)) {
+            tags.add(0, translatedCategory.toLowerCase());
+        }
+
+        if (isEditMode && event != null) {
+            event.setTitle(title);
+            event.setDateTime(date.atTime(startLocalTime));
+            event.setEndDateTime(date.atTime(endLocalTime));
+            event.setDescription(description);
+            event.setTags(tags);
+            event.setCategory(selectedCategory);
+            mainController.updateEvent();
+        } else {
+            Event newEvent = new Event(title, date.atTime(startLocalTime), date.atTime(endLocalTime), description, String.join(", ", tags), selectedCategory);
+            mainController.addEvent(newEvent);
         }
     }
 
+    // Validate input fields before saving
     private boolean validateInput() {
         String title = titleField.getText();
         LocalDate date = datePicker.getValue();
@@ -119,18 +195,7 @@ public class EventController {
         String endTime = endTimeComboBox.getValue();
         Category selectedCategory = categoryComboBox.getValue();
 
-        if (title == null || title.trim().isEmpty()) {
-            showValidationError("Title is required.");
-            return false;
-        }
-
-        if (date == null) {
-            showValidationError("Date must be selected.");
-            return false;
-        }
-
-        if (startTime == null || endTime == null) {
-            showValidationError("Both start and end time must be selected.");
+        if (isInputInvalid(title, date, startTime, endTime, selectedCategory)) {
             return false;
         }
 
@@ -138,28 +203,65 @@ public class EventController {
         LocalTime endLocalTime = LocalTime.parse(endTime);
 
         if (endLocalTime.isBefore(startLocalTime) || endLocalTime.equals(startLocalTime)) {
-            showValidationError("End time must be after start time.");
-            return false;
-        }
-
-        if (selectedCategory == null) {
-            showValidationError("Category must be selected.");
+            showValidationError(resources.getString("validation.endTimeBeforeStartTime"));
             return false;
         }
 
         return true;
     }
 
+    // Check if any input field is invalid
+    private boolean isInputInvalid(String title, LocalDate date, String startTime, String endTime, Category selectedCategory) {
+        if (title == null || title.trim().isEmpty()) {
+            showValidationError(resources.getString("validation.titleRequired"));
+            return true;
+        }
+
+        if (date == null) {
+            showValidationError(resources.getString("validation.dateRequired"));
+            return true;
+        }
+
+        if (startTime == null || endTime == null) {
+            showValidationError(resources.getString("validation.timeRequired"));
+            return true;
+        }
+
+        if (selectedCategory == null) {
+            showValidationError(resources.getString("validation.categoryRequired"));
+            return true;
+        }
+
+        return false;
+    }
+
+    // Show validation error alert
     private void showValidationError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Validation Error");
+        alert.setTitle(resources.getString("validation.errorTitle"));
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void closeWindow() {
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        stage.close();
+    // Confirm and delete the event if confirmed
+    private void confirmAndDeleteEvent() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("event.deleteConfirmationTitle"));
+        alert.setHeaderText(null);
+        alert.setContentText(resources.getString("event.deleteConfirmationText"));
+
+        ButtonType deleteButtonType = new ButtonType(resources.getString("button.delete"), ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType(resources.getString("button.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(deleteButtonType, cancelButtonType);
+
+        alert.showAndWait().ifPresent(type -> {
+            if (type == deleteButtonType) {
+                mainController.deleteEvent(event);
+                closeWindow();
+                mainController.refreshViews(); // Explicitly refresh the views after deletion
+            }
+        });
     }
 }

@@ -2,8 +2,10 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.layout.Priority?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.EventController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.EventController" spacing="10" style="-fx-padding: 10;">
     <TextField fx:id="titleField" promptText="Title" />
     <DatePicker fx:id="datePicker" />
     <HBox spacing="10">
@@ -11,11 +13,18 @@
         <Label text="-" />
         <ComboBox fx:id="endTimeComboBox" promptText="End Time" />
     </HBox>
-    <TextArea fx:id="descriptionArea" promptText="Description" />
+    <TextArea fx:id="descriptionArea" promptText="Description" VBox.vgrow="ALWAYS" />
     <HBox spacing="10">
-        <Label text="Category:"/>
+        <Label fx:id="categoryLabel" text="Category:"/>
         <ComboBox fx:id="categoryComboBox" />
     </HBox>
     <TextField fx:id="tagsField" promptText="Enter tags (comma separated)" />
-    <Button fx:id="saveButton" text="Save" onAction="#handleSave" />
+    <HBox spacing="10">
+        <HBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+            <Button fx:id="saveButton" text="Save" onAction="#handleSave" />
+        </HBox>
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" visible="false"/>
+        </HBox>
+    </HBox>
 </VBox>

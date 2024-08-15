@@ -1,14 +1,12 @@
 package com.example.controller;
 
 import com.example.model.Event;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,19 +14,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CalendarController {
 
@@ -43,13 +36,11 @@ public class CalendarController {
     private Button nextButton;
     private Button addEventButton;
     private MainController mainController;
-    private Region spacer;
 
     private void initializeButtons() {
-        previousButton = new Button("←");  // Change text to left arrow
-        nextButton = new Button("→");      // Change text to right arrow
+        previousButton = new Button("\u2190");  // Change text to left arrow
+        nextButton = new Button("\u2192");      // Change text to right arrow
         dateInfoLabel = new Label(); // Upewnij się, że etykieta jest zainicjalizowana
-        spacer = new Region(); // Upewnij się, że region jest zainicjalizowany
         addEventButton = new Button(resources.getString("event.addButton"));
 
         previousButton.setOnAction(event -> handlePrevious());
@@ -61,7 +52,7 @@ public class CalendarController {
         this.viewSelector = viewSelector;
         this.resources = resources;
 
-        initializeButtons(); // Upewnij się, że przyciski są poprawnie inicjalizowane
+        initializeButtons();
 
         this.viewSelector.setItems(FXCollections.observableArrayList(
                 resources.getString(CalendarView.MONTH.getResourceKey()),
@@ -78,15 +69,40 @@ public class CalendarController {
             }
         });
 
-        HBox topControls = new HBox(10);
-        topControls.getChildren().addAll(addEventButton, previousButton, nextButton, dateInfoLabel, spacer, viewSelector);
-        topControls.setPadding(new Insets(0, 0, 10, 0));
+        // Set up the layout with buttons on the left, date in the center, and ComboBox on the right
+        HBox leftControls = new HBox(10);
+        leftControls.setAlignment(Pos.CENTER_LEFT);
+        leftControls.getChildren().addAll(addEventButton, previousButton, nextButton);
 
-        calendarView.setTop(topControls);
+        HBox rightControls = new HBox();
+        rightControls.setAlignment(Pos.CENTER_RIGHT);
+        rightControls.getChildren().add(viewSelector);
+
+        // Main layout for the controls
+        HBox mainControls = new HBox();
+        mainControls.getChildren().addAll(leftControls, new Region(), rightControls);
+        HBox.setHgrow(mainControls.getChildren().get(1), Priority.ALWAYS); // The Region acts as a spacer
+        mainControls.setPadding(new Insets(0, 10, 20, 10)); // Add padding around the HBox
+
+        // StackPane to center the dateInfoLabel over the main controls
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(mainControls, dateInfoLabel);
+        StackPane.setAlignment(dateInfoLabel, Pos.CENTER);
+
+        // Add the stackPane to the top of the BorderPane
+        calendarView.setTop(stackPane);
+        StackPane.setMargin(dateInfoLabel, new Insets(0, 0, 10, 0)); // Add bottom padding to the dateInfoLabel
     }
 
     public void updateButtonLabels(ResourceBundle resources) {
         addEventButton.setText(resources.getString("event.addButton"));
+        updateDateInfoLabel(resources);
+    }
+
+    public void updateDateInfoLabel(ResourceBundle resources) {
+        if (currentDate != null) {
+            dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, resources.getLocale()) + " " + currentDate.getYear());
+        }
     }
 
     public void setCalendarView(BorderPane calendarView) {
@@ -111,30 +127,18 @@ public class CalendarController {
 
     public void handlePrevious() {
         switch (lastActiveView) {
-            case MONTH:
-                currentDate = currentDate.minusMonths(1);
-                break;
-            case WEEK:
-                currentDate = currentDate.minusWeeks(1);
-                break;
-            case DAY:
-                currentDate = currentDate.minusDays(1);
-                break;
+            case MONTH -> currentDate = currentDate.minusMonths(1);
+            case WEEK -> currentDate = currentDate.minusWeeks(1);
+            case DAY -> currentDate = currentDate.minusDays(1);
         }
         updateCalendarView(lastActiveView);
     }
 
     public void handleNext() {
         switch (lastActiveView) {
-            case MONTH:
-                currentDate = currentDate.plusMonths(1);
-                break;
-            case WEEK:
-                currentDate = currentDate.plusWeeks(1);
-                break;
-            case DAY:
-                currentDate = currentDate.plusDays(1);
-                break;
+            case MONTH -> currentDate = currentDate.plusMonths(1);
+            case WEEK -> currentDate = currentDate.plusWeeks(1);
+            case DAY -> currentDate = currentDate.plusDays(1);
         }
         updateCalendarView(lastActiveView);
     }
@@ -164,16 +168,14 @@ public class CalendarController {
         }
         this.lastActiveView = selectedView;
         switch (selectedView) {
-            case MONTH:
-                displayMonthView();
-                break;
-            case WEEK:
-                displayWeekView();
-                break;
-            case DAY:
-                displayDayView();
-                break;
+            case MONTH -> displayMonthView();
+            case WEEK -> displayWeekView();
+            case DAY -> displayDayView();
         }
+    }
+
+    public void setResources(ResourceBundle resources) {
+        this.resources = resources;
     }
 
     private void displayMonthView() {
@@ -185,14 +187,14 @@ public class CalendarController {
             scrollPane.setPadding(new Insets(5, 5, 5, 5));
 
             // Ustawienie nagłówków dni tygodnia (od poniedziałku)
-            String[] daysOfWeek = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
             for (int i = 0; i < 7; i++) {
-                Label dayOfWeekLabel = new Label(daysOfWeek[i]);
+                DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1); // Start with Monday
+                Label dayOfWeekLabel = new Label(dayOfWeek.getDisplayName(TextStyle.SHORT, resources.getLocale()));
                 dayOfWeekLabel.setStyle("-fx-font-size: 12px; -fx-fill: #333333;");
                 dayOfWeekLabel.setMaxWidth(Double.MAX_VALUE);
                 dayOfWeekLabel.setAlignment(Pos.CENTER);
                 GridPane.setHalignment(dayOfWeekLabel, HPos.CENTER);
-                dayOfWeekLabel.setPrefHeight(30); // Ustawienie wysokości wiersza z nazwami dni
+                dayOfWeekLabel.setPrefHeight(30); // Set the height of the day name row
                 gridPane.add(dayOfWeekLabel, i, 0);
             }
 
@@ -272,7 +274,7 @@ public class CalendarController {
             calendarView.setCenter(scrollPane);
 
             // Przywracanie dateInfoLabel
-            dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " " + currentDate.getYear());
+            dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, resources.getLocale()) + " " + currentDate.getYear());
         }
     }
 
@@ -289,11 +291,11 @@ public class CalendarController {
 
         dayBox.getChildren().add(dayLabel);
 
-        // Dodajemy eventy do odpowiednich dni
+        // Add events to the corresponding days
         List<Event> eventsForDay = events.stream()
                 .filter(event -> event.getDateTime().toLocalDate().equals(date))
                 .sorted(Comparator.comparing(Event::getDateTime))
-                .collect(Collectors.toList());
+                .toList();
 
         for (Event event : eventsForDay) {
             Label eventLabel = new Label(formatEventLabel(event));
@@ -309,16 +311,45 @@ public class CalendarController {
             eventLabel.setMaxWidth(Double.MAX_VALUE);
             eventLabel.setWrapText(false);
             eventLabel.setEllipsisString("...");
+
+            // Add double-click event listener to open the event for editing
+            eventLabel.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                    openEventWindow(event);
+                }
+            });
+
             dayBox.getChildren().add(eventLabel);
         }
 
         return dayBox;
     }
 
+    // Helper method to open the event editing window
+    private void openEventWindow(Event event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
+            Parent root = loader.load();
+
+            EventController eventController = loader.getController();
+            eventController.setMainController(mainController);
+            eventController.setEventContent(event);
+            eventController.setEditMode(true);
+
+            Stage stage = new Stage();
+            stage.setTitle(resources.getString("event.editTitle"));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(calendarView.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String formatEventLabel(Event event) {
         LocalTime startTime = event.getDateTime().toLocalTime();
         String title = event.getTitle();
-        String color = event.getCategory().getColor();
         return startTime + " " + title;
     }
 
@@ -331,12 +362,13 @@ public class CalendarController {
 
             int columnCount = isDayView ? 1 : 7;
 
-            // Dodajemy kolumny do GridPane z równomiernym rozkładem szerokości
+            // Add time column with fixed width
             ColumnConstraints timeColumnConstraints = new ColumnConstraints();
-            timeColumnConstraints.setPrefWidth(50); // Szerokość kolumny z godzinami
+            timeColumnConstraints.setPrefWidth(50); // Width of the time column
             timeColumnConstraints.setMinWidth(50);
             gridPane.getColumnConstraints().add(timeColumnConstraints);
 
+            // Add day columns with evenly distributed width
             for (int i = 0; i < columnCount; i++) {
                 ColumnConstraints dayColumnConstraints = new ColumnConstraints();
                 dayColumnConstraints.setHgrow(Priority.ALWAYS);
@@ -345,54 +377,55 @@ public class CalendarController {
                 gridPane.getColumnConstraints().add(dayColumnConstraints);
             }
 
-            // Tworzenie nagłówka z nazwami dni tygodnia lub tylko dnia (dla widoku dnia)
+            // Create header with day names or just the day (for day view)
             for (int i = 0; i < columnCount; i++) {
                 LocalDate dayDate = isDayView ? currentDate : currentDate.with(DayOfWeek.MONDAY).plusDays(i);
-                Label dayLabel = new Label(dayDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH) + " " + dayDate.getDayOfMonth());
+                Label dayLabel = new Label(dayDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, resources.getLocale()) + " " + dayDate.getDayOfMonth());
                 dayLabel.setStyle("-fx-font-size: 14px; -fx-fill: #333333;");
                 dayLabel.setMaxWidth(Double.MAX_VALUE);
                 dayLabel.setAlignment(Pos.CENTER);
                 GridPane.setHalignment(dayLabel, HPos.CENTER);
-                gridPane.add(dayLabel, i + 1, 0); // +1, ponieważ kolumna 0 to kolumna godzin
+                gridPane.add(dayLabel, i + 1, 0); // +1 because column 0 is the time column
             }
 
-            // Tworzenie kolumny z godzinami i reszty siatki z godzinami dla dni tygodnia
+            // Create the time column and the grid for the week or day
             for (int hour = 0; hour < 24; hour++) {
                 Label hourLabel = new Label(hour + ":00");
                 hourLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333;");
-                hourLabel.setPrefHeight(60);  // Każda godzina to 60 minut
+                hourLabel.setPrefHeight(60);  // Each hour equals 60 minutes
                 hourLabel.setMinHeight(60);
                 hourLabel.setMaxWidth(Double.MAX_VALUE);
                 hourLabel.setAlignment(Pos.TOP_CENTER);
                 GridPane.setHalignment(hourLabel, HPos.CENTER);
-                gridPane.add(hourLabel, 0, hour + 1); // Kolumna 0, wiersze 1-24
+                gridPane.add(hourLabel, 0, hour + 1); // Column 0, rows 1-24
 
+                // Create day cells for the grid
                 for (int i = 0; i < columnCount; i++) {
-                    Pane dayPane = new Pane(); // Używamy Pane do ręcznego pozycjonowania wydarzeń
-                    dayPane.setPrefHeight(60); // Każda komórka to 60 minut
-                    dayPane.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 1 0;"); // Linia dolna i prawa
-                    gridPane.add(dayPane, i + 1, hour + 1); // Kolumny 1-7 (lub 1 dla widoku dnia), wiersze 1-24
+                    Pane dayPane = new Pane(); // Pane for manually positioning events
+                    dayPane.setPrefHeight(60); // Each cell is 60 minutes
+                    dayPane.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 1 0;"); // Bottom and right borders
+                    gridPane.add(dayPane, i + 1, hour + 1); // Columns 1-7 (or 1 for day view), rows 1-24
                 }
             }
 
             Map<String, List<Label>> eventMap = new HashMap<>();
 
-            // Dodawanie wydarzeń
+            // Add events to the grid
             for (Event event : events) {
                 LocalDateTime eventStartDateTime = event.getDateTime();
                 LocalDateTime eventEndDateTime = event.getEndDateTime();
                 LocalDate eventDate = eventStartDateTime.toLocalDate();
 
+                // Filter out events not within the current week or day
                 if (!isDayView && (eventDate.isBefore(currentDate.with(DayOfWeek.MONDAY)) || eventDate.isAfter(currentDate.with(DayOfWeek.SUNDAY)))) {
-                    continue; // Filtrujemy wydarzenia spoza tygodnia w widoku tygodnia
+                    continue; // Skip events outside the current week
                 } else if (isDayView && !eventDate.equals(currentDate)) {
-                    continue; // Filtrujemy wydarzenia spoza dnia w widoku dnia
+                    continue; // Skip events outside the current day
                 }
 
                 int dayOfWeekIndex = isDayView ? 0 : eventDate.getDayOfWeek().getValue() - 1;
                 int startHour = eventStartDateTime.getHour();
                 int startMinutes = eventStartDateTime.getMinute();
-                int startRow = startHour + 1; // +1 ponieważ pierwszy wiersz to nagłówki dni
 
                 int endHour = eventEndDateTime.getHour();
                 int endMinutes = eventEndDateTime.getMinute();
@@ -400,7 +433,7 @@ public class CalendarController {
 
                 String key = dayOfWeekIndex + "_" + startHour;
 
-                List<Label> eventList = eventMap.getOrDefault(key, new ArrayList<>());
+                // Create a label for the event and style it
                 Label eventLabel = new Label(event.getTitle());
                 eventLabel.setStyle(
                         "-fx-background-color: " + event.getCategory().getColor() + "; " +
@@ -411,17 +444,27 @@ public class CalendarController {
                                 "-fx-border-color: #000000; " +
                                 "-fx-border-width: 1px;"
                 );
-                eventLabel.setPrefHeight(eventDuration - 4);  // Odejmujemy 4px na padding od góry i dołu
+                eventLabel.setPrefHeight(eventDuration - 4);  // Subtract 4px for padding
                 eventLabel.setAlignment(Pos.TOP_LEFT);
-                eventLabel.setPadding(new Insets(2)); // Ustawienie paddingu na 2px dookoła
-                eventLabel.setLayoutY(startMinutes + 2); // Przesunięcie eventu o 2px w dół
+                eventLabel.setPadding(new Insets(2)); // Add 2px padding
+                eventLabel.setLayoutY(startMinutes + 2); // Offset event label by 2px
+
+                // Add event editing functionality on double-click
+                eventLabel.setOnMouseClicked(eventMouseEvent -> {
+                    if (eventMouseEvent.getClickCount() == 2 && eventMouseEvent.getButton() == MouseButton.PRIMARY) {
+                        openEventWindow(event); // Open event editing window
+                    }
+                });
+
+                // Add event label to the map for this time slot
+                List<Label> eventList = eventMap.getOrDefault(key, new ArrayList<>());
                 eventList.add(eventLabel);
                 eventMap.put(key, eventList);
 
                 System.out.println("Added event: " + event.getTitle() + " to key: " + key + " with duration: " + eventDuration);
             }
 
-            // Dodawanie eventów do gridPane i dynamiczne rozciąganie na całą szerokość
+            // Add events to the grid and dynamically adjust their width
             for (Map.Entry<String, List<Label>> entry : eventMap.entrySet()) {
                 String[] parts = entry.getKey().split("_");
                 int dayOfWeekIndex = Integer.parseInt(parts[0]);
@@ -434,34 +477,37 @@ public class CalendarController {
                         double totalWidth = newWidth.doubleValue();
 
                         if (totalWidth <= 0) {
-                            totalWidth = 100; // Ustawienie szerokości domyślnej
+                            totalWidth = 100; // Set default width if necessary
                         }
 
-                        double eventWidth = totalWidth / eventList.size() - 4; // Odejmujemy 4px na padding po bokach
-                        System.out.println("Total column width: " + totalWidth + ", Event Width: " + eventWidth); // Debugowanie
+                        double eventWidth = totalWidth / eventList.size() - 4; // Subtract 4px for padding
+                        System.out.println("Total column width: " + totalWidth + ", Event Width: " + eventWidth); // Debugging
 
                         for (int i = 0; i < eventList.size(); i++) {
                             Label eventLabel = eventList.get(i);
                             eventLabel.setPrefWidth(eventWidth);
                             eventLabel.setMaxWidth(eventWidth);
                             eventLabel.setMinWidth(eventWidth);
-                            eventLabel.setLayoutX(i * (eventWidth + 4) + 2); // Przesunięcie eventu o 2px z lewej strony
+                            eventLabel.setLayoutX(i * (eventWidth + 4) + 2); // Offset event by 2px
 
                             System.out.println("Event " + eventLabel.getText() + " positioned at X: " + i * (eventWidth + 4) + 2);
                         }
                     });
 
-                    // Dodawanie eventów po zaktualizowaniu szerokości
+                    // Add event labels to the day pane
                     for (Label eventLabel : eventList) {
                         dayPane.getChildren().add(eventLabel);
                     }
                 }
             }
 
+            // Set the grid inside the calendar view
             calendarView.setCenter(scrollPane);
+            dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, resources.getLocale()) + " " + currentDate.getYear());
         }
     }
 
+    // Helper method to get a specific node from the GridPane
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {

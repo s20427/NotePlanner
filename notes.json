@@ -1,59 +1,44 @@
 [ {
-  "id" : 2,
-  "title" : "Notatki ze spotkania",
-  "content" : "Notatki ze spotkania\nSpotkanie z klientem dotyczącym projektu X.\nZadania:\n- Zaktualizować specyfikację\n- Przygotować prototyp",
-  "tags" : [ "projekt", "praca", "spotkanie" ],
-  "category" : "WORK"
-}, {
-  "id" : 5,
-  "title" : "Plan na wakacje",
-  "content" : "Plan na wakacje\nMiejsca do odwiedzenia:\n1. Gdańsk\n2. Wrocław\n3. Zakopane\nSpakować:\n- Ubrania\n- Aparat fotograficzny\n- Książki",
-  "tags" : [ "wakacje", "urlop", "przygotowania" ],
-  "category" : "PRIVATE"
-}, {
-  "id" : 3,
-  "title" : "Pomysły na artykuł",
-  "content" : "Pomysły na artykuł\n1. Nowe technologie w branży IT\n2. Sztuczna inteligencja i przyszłość\n3. Przyszłość pracy zdalnej",
-  "tags" : [ "praca", "pisanie" ],
-  "category" : "WORK"
-}, {
-  "id" : 4,
   "title" : "Plan weekendu",
   "content" : "Plan weekendu\nSobota:\n- Spacer w parku\n- Wizyta w muzeum\nNiedziela:\n- Kino\n- Obiad z rodziną",
   "tags" : [ "weekend", "osobiste" ],
   "category" : "PRIVATE"
 }, {
-  "id" : 6,
+  "title" : "Notatki ze spotkania",
+  "content" : "Notatki ze spotkania\nSpotkanie z klientem dotyczącym projektu X.\nZadania:\n- Zaktualizować specyfikację\n- Przygotować prototyp",
+  "tags" : [ "projekt", "praca", "spotkanie" ],
+  "category" : "WORK"
+}, {
+  "title" : "Pomysły na artykuł",
+  "content" : "Pomysły na artykuł\n1. Nowe technologie w branży IT\n2. Sztuczna inteligencja i przyszłość\n3. Przyszłość pracy zdalnej",
+  "tags" : [ "praca", "pisanie" ],
+  "category" : "WORK"
+}, {
   "title" : "Spotkanie zespołu",
   "content" : "Spotkanie zespołu\nOmawiane tematy:\n- Postępy w projekcie Y\n- Nowe zadania na kolejny tydzień\n- Problemy do rozwiązania",
   "tags" : [ "praca", "zespół", "spotkanie" ],
   "category" : "WORK"
 }, {
-  "id" : 8,
   "title" : "Pomysły na prezent",
   "content" : "Pomysły na prezent\n1. Książka\n2. Zegarek\n3. Voucher na masaż\n4. Kwiaty",
   "tags" : [ "osobiste", "prezenty" ],
   "category" : "PRIVATE"
 }, {
-  "id" : 9,
   "title" : "Lista rzeczy do zrobienia",
   "content" : "Lista rzeczy do zrobienia\n1. Zapłacić rachunki\n2. Zadzwonić do mechanika\n3. Zarezerwować wizytę u lekarza",
   "tags" : [ "osobiste", "zadania" ],
   "category" : "PRIVATE"
 }, {
-  "id" : 10,
   "title" : "Plany na weekend",
   "content" : "Plany na weekend\nSobota:\n- Wizyta u rodziców\n- Zakupy w centrum handlowym\nNiedziela:\n- Odpoczynek\n- Spacer w lesie",
   "tags" : [ "weekend", "plany" ],
   "category" : "PRIVATE"
 }, {
-  "id" : 1,
   "title" : "Lista zakupów",
   "content" : "Lista zakupów\n1. Chleb\n2. Mleko\n3. Masło\n4. Jajka",
   "tags" : [ "zakupy", "dom", "testowanie" ],
   "category" : "HOME"
 }, {
-  "id" : 7,
   "title" : "Przepis na ciasto",
   "content" : "Przepis na ciasto\nSkładniki:\n- 200g mąki\n- 100g cukru\n- 2 jajka\n- 100g masła\nInstrukcje:\n1. Wymieszać składniki\n2. Piec w temperaturze 180°C przez 40 minut",
   "tags" : [ "kuchnia", "przepis" ],

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 public class Note {
-    private int id;
     private String title;
     private String content;
     private List<String> tags;
@@ -18,8 +17,7 @@ public class Note {
         this.tags = new ArrayList<>();
     }
 
-    public Note(int id, String title, String content, String tags, Category category) {
-        this.id = id;
+    public Note(String title, String content, String tags, Category category) {
         this.content = content;
         this.title = (title != null && !title.isEmpty()) ? title : extractTitleFromContent(content);
         this.tags = new ArrayList<>();
@@ -32,15 +30,6 @@ public class Note {
     }
 
     // Getters and Setters
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }

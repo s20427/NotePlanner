@@ -4,7 +4,6 @@ import com.example.model.Category;
 import com.example.service.DataStorage;
 import com.example.model.Event;
 import com.example.model.Note;
-import com.sun.javafx.menu.MenuItemBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,8 +31,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -42,6 +38,8 @@ public class MainController {
     private TextField searchField;
     @FXML
     private ComboBox<String> filterOptions;
+    @FXML
+    private Button saveButton;
     @FXML
     private ListView<Note> notesListView;
     @FXML
@@ -62,45 +60,82 @@ public class MainController {
     private Button moveDownButton;
 
     private CalendarController calendarController;
-    private LocalDate currentDate;
     private ObservableList<Note> notes;
     private ObservableList<Event> events;
-    private AtomicInteger noteIdCounter = new AtomicInteger(4);
-    private AtomicInteger eventIdCounter = new AtomicInteger(1);
     private ResourceBundle bundle;
     private List<CheckBox> categoryCheckboxes;
     private ScheduledExecutorService autosaveScheduler;
 
+    /**
+     * Loads the appropriate resource bundle based on the locale.
+     */
     private ResourceBundle loadBundle(Locale locale) {
         return ResourceBundle.getBundle("com.example.i18n.messages", locale);
     }
 
+    /**
+     * Initializes the controller after the root element has been completely processed.
+     */
     @FXML
     private void initialize() {
         bundle = ResourceBundle.getBundle("com.example.i18n.messages", new Locale("pl"));
 
+        // Load notes and events from storage
         notes = FXCollections.observableArrayList(DataStorage.loadNotes());
         events = FXCollections.observableArrayList(DataStorage.loadEvents());
 
-        // Debug: Print out loaded data
-        System.out.println("Loaded notes: " + notes.size());
-        System.out.println("Loaded events: " + events.size());
-
-        // Inicjalizacja funkcji Autosave
+        // Start the autosave functionality
         startAutosave();
+
+        // Add category display for filtering
         addCategoryDisplay();
 
+        // Initialize the calendar controller and configure its settings
+        initializeCalendarController();
+
+        // Set up language selector and its event handler
+        setupLanguageSelector();
+
+        // Set up filter options for the search functionality
+        setupFilterOptions();
+
+        // Set up notes list view
+        setupNotesListView();
+
+        // Set up move buttons and their initial state
+        setupMoveButtons();
+
+        // Update texts in the UI
+        updateTexts();
+        updateCategoryDisplay();
+    }
+
+    /**
+     * Initializes the calendar controller and configures its settings.
+     */
+    private void initializeCalendarController() {
         calendarController = new CalendarController();
         calendarController.setMainController(this);
         calendarController.setCalendarView(calendarView);
         calendarController.setCurrentDate(LocalDate.now());
         calendarController.setEvents(events);
         calendarController.setViewSelector(viewSelector, bundle);
+        calendarController.updateCalendarView(CalendarView.MONTH);
+    }
 
+    /**
+     * Sets up the language selector and its event handler.
+     */
+    private void setupLanguageSelector() {
         languageSelector.setItems(FXCollections.observableArrayList("Polski", "English"));
         languageSelector.setValue("Polski");
         languageSelector.setOnAction(event -> changeLanguage());
+    }
 
+    /**
+     * Sets up filter options for the search functionality.
+     */
+    private void setupFilterOptions() {
         filterOptions.setItems(FXCollections.observableArrayList(
                 bundle.getString("filter.all"),
                 bundle.getString("filter.title"),
@@ -109,68 +144,49 @@ public class MainController {
                 bundle.getString("filter.tags")
         ));
         filterOptions.setValue(bundle.getString("filter.all"));
-
         filterOptions.valueProperty().addListener((observable, oldValue, newValue) -> handleSearch());
+    }
 
-        updateTexts();
-
+    /**
+     * Sets up the notes list view, including its cell factory and event handlers.
+     */
+    private void setupNotesListView() {
         notesListView.setItems(notes);
-        calendarController.setEvents(events);
-        calendarController.updateCalendarView(CalendarView.MONTH);
-        notesListView.setCellFactory(new Callback<ListView<Note>, ListCell<Note>>() {
+        notesListView.setCellFactory(listView -> new ListCell<>() {
             @Override
-            public ListCell<Note> call(ListView<Note> listView) {
-                return new ListCell<Note>() {
-                    @Override
-                    protected void updateItem(Note note, boolean empty) {
-                        super.updateItem(note, empty);
-                        if (empty || note == null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            // The first line of the content is treated as the title
-                            String[] lines = note.getContent().split("\n", 4);
+            protected void updateItem(Note note, boolean empty) {
+                super.updateItem(note, empty);
+                if (empty || note == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    String[] lines = note.getContent().split("\n", 4);
+                    Label titleLabel = new Label(note.getTitle());
+                    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-                            // Create a Label for the title and apply bold styling
-                            Label titleLabel = new Label(note.getTitle());
-                            titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-
-                            // Build the remaining content after the title
-                            StringBuilder remainingContent = new StringBuilder();
-                            for (int i = 1; i < lines.length && i <= 2; i++) {
-                                remainingContent.append(lines[i]).append("\n");
-                            }
-
-                            Label contentLabel = new Label(remainingContent.toString());
-                            contentLabel.setStyle("-fx-font-size: 12px;");
-
-                            Label tagsLabel = new Label(note.getTagsAsString());
-                            tagsLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 10px;");
-
-                            VBox coloredBox = new VBox();
-                            coloredBox.setStyle("-fx-background-color: " + note.getCategory().getColor() + "; -fx-min-width: 5px;");
-
-                            VBox contentBox = new VBox(titleLabel, contentLabel, tagsLabel);
-                            contentBox.setSpacing(5);
-
-                            HBox hBox = new HBox(coloredBox, contentBox);
-                            hBox.setSpacing(10);
-
-                            setGraphic(hBox);
-                        }
+                    StringBuilder remainingContent = new StringBuilder();
+                    for (int i = 1; i < lines.length && i <= 2; i++) {
+                        remainingContent.append(lines[i]).append("\n");
                     }
-                };
+
+                    Label contentLabel = new Label(remainingContent.toString());
+                    contentLabel.setStyle("-fx-font-size: 12px;");
+                    Label tagsLabel = new Label(note.getTagsAsString());
+                    tagsLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 10px;");
+
+                    VBox coloredBox = new VBox();
+                    coloredBox.setStyle("-fx-background-color: " + note.getCategory().getColor() + "; -fx-min-width: 5px;");
+                    VBox contentBox = new VBox(titleLabel, contentLabel, tagsLabel);
+                    contentBox.setSpacing(5);
+
+                    HBox hBox = new HBox(coloredBox, contentBox);
+                    hBox.setSpacing(10);
+                    setGraphic(hBox);
+                }
             }
         });
 
-        currentDate = LocalDate.now();
-
-        calendarController.setViewSelector(viewSelector, bundle);
-        updateCalendarView(calendarController.getLastActiveView());
-
-        VBox.setVgrow(notesListView, Priority.ALWAYS);
-        VBox.setVgrow(calendarView, Priority.ALWAYS);
-
+        // Handle double-click to open a note for editing
         notesListView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 Note selectedNote = notesListView.getSelectionModel().getSelectedItem();
@@ -180,113 +196,95 @@ public class MainController {
             }
         });
 
+        VBox.setVgrow(notesListView, Priority.ALWAYS);
+        VBox.setVgrow(calendarView, Priority.ALWAYS);
+    }
+
+    /**
+     * Sets up the move up and move down buttons, including their initial states and event handlers.
+     */
+    private void setupMoveButtons() {
         moveUpButton.setOnAction(event -> moveSelectedNoteUp());
         moveDownButton.setOnAction(event -> moveSelectedNoteDown());
 
         moveUpButton.setDisable(true);
         moveDownButton.setDisable(true);
 
-        // Add a listener to the selection model of the ListView
+        // Update move buttons state based on note selection
         notesListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean noSelection = newSelection == null;
-            moveUpButton.setDisable(noSelection);
-            moveDownButton.setDisable(noSelection);
-            updateMoveButtonsState();
+            updateMoveButtonsState(noSelection);
         });
     }
 
-    @FXML
-    private void moveSelectedNoteUp() {
+    /**
+     * Moves the selected note down in the list.
+     */
+    public void moveSelectedNoteDown() {
         int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
-        if (selectedIndex > 0) {
-            Note selectedNote = notesListView.getItems().remove(selectedIndex);
-            notesListView.getItems().add(selectedIndex - 1, selectedNote);
-            notesListView.getSelectionModel().select(selectedIndex - 1);  // Re-select the moved item
+        if (selectedIndex == -1 || selectedIndex == notes.size() - 1) {
+            return; // No valid selection or already at the bottom
         }
-        updateMoveButtonsState();  // Update buttons' state after moving
+
+        Note note = notes.remove(selectedIndex);
+        notes.add(selectedIndex + 1, note);
+        notesListView.getSelectionModel().select(selectedIndex + 1);
     }
 
-    @FXML
-    private void moveSelectedNoteDown() {
+    /**
+     * Moves the selected note up in the list.
+     */
+    public void moveSelectedNoteUp() {
         int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
-        if (selectedIndex < notesListView.getItems().size() - 1) {
-            Note selectedNote = notesListView.getItems().remove(selectedIndex);
-            notesListView.getItems().add(selectedIndex + 1, selectedNote);
-            notesListView.getSelectionModel().select(selectedIndex + 1);  // Re-select the moved item
+        if (selectedIndex == -1 || selectedIndex == 0) {
+            return; // No valid selection or already at the top
         }
-        updateMoveButtonsState();  // Update buttons' state after moving
+
+        Note note = notes.remove(selectedIndex);
+        notes.add(selectedIndex - 1, note);
+        notesListView.getSelectionModel().select(selectedIndex - 1);
     }
 
-    private void updateMoveButtonsState() {
-        int selectedIndex = notesListView.getSelectionModel().getSelectedIndex();
-        moveUpButton.setDisable(selectedIndex <= 0);  // Disable if at the top
-        moveDownButton.setDisable(selectedIndex >= notesListView.getItems().size() - 1);  // Disable if at the bottom
+    /**
+     * Updates the state of the move buttons based on selection and search status.
+     */
+    private void updateMoveButtonsState(boolean noSelection) {
+        boolean isSearching = !searchField.getText().trim().isEmpty();
+
+        moveUpButton.setDisable(noSelection || isSearching || notesListView.getSelectionModel().getSelectedIndex() <= 0);
+        moveDownButton.setDisable(noSelection || isSearching || notesListView.getSelectionModel().getSelectedIndex() >= notesListView.getItems().size() - 1);
     }
 
-
+    /**
+     * Adds category display at the bottom of the main layout for filtering.
+     */
     private void addCategoryDisplay() {
         HBox categoryBox = new HBox(20); // Create an HBox to hold all categories
         categoryBox.setStyle("-fx-padding: 10px; -fx-background-color: #f4f4f4;");
         categoryCheckboxes = new ArrayList<>();
 
         for (Category category : Category.values()) {
-            // Create a custom circle for the category
-            Circle colorCircle = new Circle(8);
-            colorCircle.setFill(Color.web(category.getColor()));
-            colorCircle.setStroke(Color.web(category.getColor())); // Initially, no outline
-
-            // Create a checkbox for the category but without the default box
-            CheckBox categoryCheckBox = new CheckBox();
-            categoryCheckBox.setStyle("-fx-opacity: 0;"); // Hide the default checkbox
-            categoryCheckBox.setSelected(true); // Default to selected
-
-            // Bind the circle's fill and stroke based on the checkbox's selected state
-            categoryCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                if (isNowSelected) {
-                    colorCircle.setFill(Color.web(category.getColor())); // Filled when selected
-                    colorCircle.setStroke(Color.web(category.getColor())); // No outline when selected
-                } else {
-                    colorCircle.setFill(Color.TRANSPARENT); // Transparent when not selected
-                    colorCircle.setStroke(Color.web(category.getColor())); // Outline when not selected
-                }
-                filterNotesAndEvents(); // Apply the filter whenever a checkbox is toggled
-            });
-
-            // Create a label with the translated category name
-            Label categoryLabel = new Label(category.getTranslatedName(bundle));
-            categoryLabel.setStyle("-fx-font-size: 12px;");
-
-            // Combine the circle and label into an HBox
-            HBox itemBox = new HBox(5, colorCircle, categoryLabel);
-            itemBox.setAlignment(Pos.CENTER_LEFT); // Align elements to the left
-
-            // Ensure the itemBox grows to fill available space
-            HBox.setHgrow(itemBox, Priority.ALWAYS);
-            itemBox.setMaxWidth(Double.MAX_VALUE); // Ensure it takes up all available space
-
-            // Center content within the itemBox
-            itemBox.setStyle("-fx-alignment: center;");
-
-            // Add the itemBox to the main category box
-            categoryBox.getChildren().add(itemBox);
-
-            // Add the invisible checkbox to the list for later reference
-            categoryCheckboxes.add(categoryCheckBox);
-
-            // Ensure clicking on the circle or label toggles the checkbox
-            itemBox.setOnMouseClicked(event -> categoryCheckBox.setSelected(!categoryCheckBox.isSelected()));
+            addCategoryToDisplay(category, categoryBox);
         }
 
-        // Add the HBox to the bottom of the BorderPane
         mainLayout.setBottom(categoryBox);
     }
 
+    /**
+     * Adds a single category to the display at the bottom of the main layout.
+     */
+    private void addCategoryToDisplay(Category category, HBox categoryBox) {
+        setCategoryDisplay(categoryBox, category);
+    }
+
+    /**
+     * Filters notes and events based on the selected categories.
+     */
     private void filterNotesAndEvents() {
-        // Collect selected categories
         List<Category> selectedCategories = categoryCheckboxes.stream()
                 .filter(CheckBox::isSelected)
                 .map(cb -> Category.values()[categoryCheckboxes.indexOf(cb)])
-                .collect(Collectors.toList());
+                .toList();
 
         // Filter notes by selected categories
         ObservableList<Note> filteredNotes = notes.filtered(note -> selectedCategories.contains(note.getCategory()));
@@ -303,7 +301,9 @@ public class MainController {
         calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
-
+    /**
+     * Handles manual save action.
+     */
     @FXML
     private void handleManualSave() {
         try {
@@ -316,6 +316,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Starts the autosave functionality.
+     */
     private void startAutosave() {
         autosaveScheduler = Executors.newScheduledThreadPool(1);
         autosaveScheduler.scheduleAtFixedRate(() -> {
@@ -326,11 +329,13 @@ public class MainController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }, 5, 5, TimeUnit.MINUTES); // pierwsze uruchomienie po 5 minutach, a potem co 5 minut
+        }, 5, 5, TimeUnit.MINUTES); // Start after 5 minutes, repeat every 5 minutes
     }
 
-    // Usunięto @Override
-    public void stop() throws Exception {
+    /**
+     * Stops the autosave functionality and saves data before application shutdown.
+     */
+    public void stop() {
         if (autosaveScheduler != null && !autosaveScheduler.isShutdown()) {
             autosaveScheduler.shutdown();
             try {
@@ -339,7 +344,6 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-        // Zapisanie danych przy zamykaniu aplikacji
         try {
             DataStorage.saveNotes(notes);
             DataStorage.saveEvents(events);
@@ -348,36 +352,45 @@ public class MainController {
         }
     }
 
+    /**
+     * Displays a confirmation alert after a successful save.
+     */
     private void showSaveConfirmation() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Zapisano");
+        alert.setTitle(bundle.getString("save.successTitle"));
         alert.setHeaderText(null);
-        alert.setContentText("Dane zostały pomyślnie zapisane.");
+        alert.setContentText(bundle.getString("save.successText"));
         alert.showAndWait();
     }
 
+    /**
+     * Displays an error alert if saving data fails.
+     */
     private void showSaveError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Błąd zapisu");
+        alert.setTitle(bundle.getString("save.failedTitle"));
         alert.setHeaderText(null);
-        alert.setContentText("Wystąpił błąd podczas zapisywania danych.");
+        alert.setContentText(bundle.getString("save.failedText"));
         alert.showAndWait();
     }
 
+    /**
+     * Handles language change.
+     */
     private void changeLanguage() {
+        CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
         String selectedLanguage = languageSelector.getValue();
         Locale locale = selectedLanguage.equals("Polski") ? new Locale("pl") : new Locale("en");
         bundle = loadBundle(locale);
 
-        // Debugowanie
-        System.out.println("Notatki po zmianie języka: " + notes.size());
-        System.out.println("Wydarzenia po zmianie języka: " + events.size());
-
-        updateTexts();
-        updateFilterOptions();
         notesListView.refresh();
 
+
+        calendarController.setResources(bundle);
         calendarController.updateButtonLabels(bundle);
+        calendarController.setEvents(events); // Rebind events to ensure translation is applied
+        calendarController.updateDateInfoLabel(bundle);
+        refreshViews();
 
         viewSelector.setItems(FXCollections.observableArrayList(
                 bundle.getString("calendar.month"),
@@ -385,26 +398,81 @@ public class MainController {
                 bundle.getString("calendar.day")
         ));
 
-        viewSelector.setValue(bundle.getString(calendarController.getLastActiveView().getResourceKey()));
-
-        CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
+        calendarController.updateCalendarView(selectedView);
         if (selectedView != null) {
-            calendarController.updateCalendarView(selectedView);
+            calendarController.updateCalendarView(calendarController.getLastActiveView());
         }
+
+        updateTexts();
+        updateFilterOptions();
+        updateCategoryDisplay();
     }
 
+    /**
+     * Updates the category display with the new language
+     */
+    private void updateCategoryDisplay() {
+        HBox categoryBox = new HBox(20); // Create an HBox to hold all categories
+        categoryBox.setStyle("-fx-padding: 10px; -fx-background-color: #f4f4f4;");
+        categoryCheckboxes = new ArrayList<>(); // Reset the checkboxes list
+
+        for (Category category : Category.values()) {
+            setCategoryDisplay(categoryBox, category);
+        }
+
+        // Replace the current category display with the updated one
+        mainLayout.setBottom(categoryBox);
+    }
+
+    private void setCategoryDisplay(HBox categoryBox, Category category) {
+        Circle colorCircle = new Circle(8);
+        colorCircle.setFill(Color.web(category.getColor()));
+        colorCircle.setStroke(Color.web(category.getColor())); // Initially, no outline
+
+        CheckBox categoryCheckBox = new CheckBox();
+        categoryCheckBox.setStyle("-fx-opacity: 0;"); // Hide the default checkbox
+        categoryCheckBox.setSelected(true); // Default to selected
+
+        categoryCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                colorCircle.setFill(Color.web(category.getColor())); // Filled when selected
+                colorCircle.setStroke(Color.web(category.getColor())); // No outline when selected
+            } else {
+                colorCircle.setFill(Color.TRANSPARENT); // Transparent when not selected
+                colorCircle.setStroke(Color.web(category.getColor())); // Outline when not selected
+            }
+            filterNotesAndEvents(); // Apply the filter whenever a checkbox is toggled
+        });
+
+        Label categoryLabel = new Label(category.getTranslatedName(bundle));
+        categoryLabel.setStyle("-fx-font-size: 12px;");
+
+        HBox itemBox = new HBox(5, colorCircle, categoryLabel);
+        itemBox.setAlignment(Pos.CENTER_LEFT); // Align elements to the left
+        HBox.setHgrow(itemBox, Priority.ALWAYS);
+        itemBox.setMaxWidth(Double.MAX_VALUE); // Ensure it takes up all available space
+        itemBox.setStyle("-fx-alignment: center;");
+
+        categoryBox.getChildren().add(itemBox);
+        categoryCheckboxes.add(categoryCheckBox);
+        itemBox.setOnMouseClicked(event -> categoryCheckBox.setSelected(!categoryCheckBox.isSelected()));
+    }
+
+    /**
+     * Refreshes the views after any update.
+     */
     public void refreshViews() {
-        // Odśwież ListView z notatkami
         notesListView.refresh();
-
-        // Odśwież widok kalendarza
-        updateCalendarView(calendarController.getLastActiveView());
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
+    /**
+     * Updates the text fields and labels based on the selected language.
+     */
     private void updateTexts() {
         searchField.setPromptText(bundle.getString("note.searchPlaceholder"));
-
         addNoteButton.setText(bundle.getString("note.addButton"));
+        saveButton.setText(bundle.getString("save.buttonText"));
 
         viewSelector.setItems(FXCollections.observableArrayList(
                 bundle.getString("calendar.month"),
@@ -421,38 +489,37 @@ public class MainController {
         });
     }
 
+    /**
+     * Updates the filter options based on the selected language.
+     */
     private void updateFilterOptions() {
         filterOptions.getItems().clear();
-        // Pobierz aktualne wartości z bundle
-        String allOption = bundle.getString("filter.all");
-        String titleOption = bundle.getString("filter.title");
-        String descriptionOption = bundle.getString("filter.description");
-        String categoryOption = bundle.getString("filter.category");
-        String tagsOption = bundle.getString("filter.tags");
-
-        // Aktualizuj ComboBox z nowymi wartościami
         filterOptions.setItems(FXCollections.observableArrayList(
-                allOption,
-                titleOption,
-                descriptionOption,
-                categoryOption,
-                tagsOption
+                bundle.getString("filter.all"),
+                bundle.getString("filter.title"),
+                bundle.getString("filter.description"),
+                bundle.getString("filter.category"),
+                bundle.getString("filter.tags")
         ));
-
-        // Jeśli poprzednia opcja istnieje w nowym języku, ustaw ją; jeśli nie, ustaw domyślną
         if (filterOptions.getValue() != null && filterOptions.getItems().contains(filterOptions.getValue())) {
             filterOptions.setValue(filterOptions.getValue());
         } else {
-            filterOptions.setValue(allOption); // Domyślna wartość
+            filterOptions.setValue(bundle.getString("filter.all")); // Default value
         }
     }
 
+    /**
+     * Opens a window for adding a new note.
+     */
     @FXML
     private void openAddNoteWindow() {
         Note newNote = new Note();
         openNoteWindow(newNote, false);
     }
 
+    /**
+     * Opens a window for editing an existing note or creating a new one.
+     */
     private void openNoteWindow(Note note, boolean isEditMode) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/note.fxml"), bundle);
@@ -476,46 +543,76 @@ public class MainController {
         }
     }
 
+    /**
+     * Adds a new event to the list and applies the search filter if active.
+     */
     public void addEvent(Event event) {
         events.add(event);
         handleSearch();
     }
 
-    public int generateNewEventId() {
-        return eventIdCounter.getAndIncrement();
-    }
-
+    /**
+     * Adds a new note to the list and refreshes the list view.
+     */
     public void addNote(Note note) {
         notes.add(note);
         notesListView.setItems(notes);
         notesListView.refresh();
     }
 
+    /**
+     * Updates the note in the list and refreshes the list view.
+     */
     public void updateNote() {
         notesListView.refresh();
     }
 
-    public int generateNewNoteId() {
-        return noteIdCounter.getAndIncrement();
+    /**
+     * Updates the calendar view.
+     */
+    public void updateEvent() {
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
+    /**
+     * Handles search functionality, filtering notes and events based on user input.
+     */
     @FXML
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
+        boolean isSearching = !searchText.trim().isEmpty();
         String filterOption = filterOptions.getValue();
         ObservableList<Note> filteredNotes = FXCollections.observableArrayList();
         ObservableList<Event> filteredEvents = FXCollections.observableArrayList();
 
+        if (filterOption == null) {
+            return; // Exit if filter option or search text is null
+        }
+
+        applySearchFilterToNotes(searchText, filterOption, filteredNotes);
+        applySearchFilterToEvents(searchText, filterOption, filteredEvents);
+
+        // Update the ListView with filtered or original notes based on the search status
+        notesListView.setItems(isSearching ? filteredNotes : notes);
+        notesListView.refresh();
+
+        // Update the CalendarView with filtered or original events based on the search status
+        calendarController.setEvents(filteredEvents);
+        calendarController.updateCalendarView(calendarController.getLastActiveView());
+
+        // Update move buttons state based on search status and selected index
+        updateMoveButtonsState(isSearching);
+    }
+
+    /**
+     * Applies search filtering to notes.
+     */
+    private void applySearchFilterToNotes(String searchText, String filterOption, ObservableList<Note> filteredNotes) {
         String allOption = bundle.getString("filter.all");
         String titleOption = bundle.getString("filter.title");
         String descriptionOption = bundle.getString("filter.description");
         String categoryOption = bundle.getString("filter.category");
         String tagsOption = bundle.getString("filter.tags");
-
-        if (filterOption == null || searchText == null) {
-            // Jeśli opcja filtrowania lub tekst wyszukiwania jest null, zakończ metodę.
-            return;
-        }
 
         for (Note note : notes) {
             boolean matches = false;
@@ -539,6 +636,17 @@ public class MainController {
                 filteredNotes.add(note);
             }
         }
+    }
+
+    /**
+     * Applies search filtering to events.
+     */
+    private void applySearchFilterToEvents(String searchText, String filterOption, ObservableList<Event> filteredEvents) {
+        String allOption = bundle.getString("filter.all");
+        String titleOption = bundle.getString("filter.title");
+        String descriptionOption = bundle.getString("filter.description");
+        String categoryOption = bundle.getString("filter.category");
+        String tagsOption = bundle.getString("filter.tags");
 
         for (Event event : events) {
             boolean matches = false;
@@ -562,16 +670,35 @@ public class MainController {
                 filteredEvents.add(event);
             }
         }
-
-        // Aktualizacja listy notatek
-        notesListView.setItems(filteredNotes);
-
-        // Aktualizacja widoku kalendarza na podstawie filtrowanych wydarzeń
-        calendarController.setEvents(filteredEvents);
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
     }
 
+    /**
+     * Updates the calendar view with the selected view.
+     */
     private void updateCalendarView(CalendarView selectedView) {
         calendarController.updateCalendarView(selectedView);
+    }
+
+    /**
+     * Deletes a note from the list and refreshes the ListView.
+     */
+    public void deleteNote(Note note) {
+        if (notes.contains(note)) {
+            notes.remove(note);
+            notesListView.setItems(notes);
+            notesListView.refresh();  // Ensure the ListView is updated after deletion
+        }
+    }
+
+    /**
+     * Deletes an event and refreshes the views.
+     */
+    public void deleteEvent(Event event) {
+        if (events.contains(event)) {
+            events.remove(event);
+            calendarController.setEvents(events);  // Update the events list in the CalendarController
+            calendarController.updateCalendarView(calendarController.getLastActiveView()); // Refresh the calendar view
+            refreshViews();  // Ensure other views are updated after deletion
+        }
     }
 }
