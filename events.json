@@ -3,755 +3,647 @@
   "dateTime" : "2024-08-01T09:00:00",
   "endDateTime" : "2024-08-01T10:00:00",
   "description" : "Omówienie projektu.",
-  "tags" : [ "projekt", "spotkanie", "klient" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad raportem",
   "dateTime" : "2024-08-01T11:00:00",
   "endDateTime" : "2024-08-01T13:00:00",
   "description" : "Przygotowanie raportu kwartalnego.",
-  "tags" : [ "praca", "raport", "kwartalny" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u lekarza",
   "dateTime" : "2024-08-02T08:30:00",
   "endDateTime" : "2024-08-02T09:30:00",
   "description" : "Kontrola u lekarza.",
-  "tags" : [ "kontrola", "lekarz", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Spotkanie zespołu",
   "dateTime" : "2024-08-02T10:00:00",
   "endDateTime" : "2024-08-02T11:00:00",
   "description" : "Omówienie bieżących zadań.",
-  "tags" : [ "zespół", "spotkanie", "zadania" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad prezentacją",
   "dateTime" : "2024-08-03T09:00:00",
   "endDateTime" : "2024-08-03T12:00:00",
   "description" : "Przygotowanie prezentacji na konferencję.",
-  "tags" : [ "prezentacja", "praca", "konferencja" ],
   "category" : "WORK"
 }, {
   "title" : "Zakupy domowe",
   "dateTime" : "2024-08-03T14:00:00",
   "endDateTime" : "2024-08-03T15:00:00",
   "description" : "Zakupy spożywcze.",
-  "tags" : [ "spożywcze", "zakupy", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z inwestorem",
   "dateTime" : "2024-08-04T11:00:00",
   "endDateTime" : "2024-08-04T12:00:00",
   "description" : "Prezentacja biznesplanu.",
-  "tags" : [ "inwestor", "spotkanie", "biznesplan" ],
   "category" : "MEETING"
 }, {
   "title" : "Prace ogrodowe",
   "dateTime" : "2024-08-05T09:00:00",
   "endDateTime" : "2024-08-05T11:00:00",
   "description" : "Przycinanie krzewów.",
-  "tags" : [ "dom", "ogrodowe", "przycinanie" ],
   "category" : "HOME"
 }, {
   "title" : "Przygotowanie raportu",
   "dateTime" : "2024-08-05T12:00:00",
   "endDateTime" : "2024-08-05T14:00:00",
   "description" : "Raport do zarządu.",
-  "tags" : [ "praca", "raport", "zarząd" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatny czas na hobby",
   "dateTime" : "2024-08-06T10:00:00",
   "endDateTime" : "2024-08-06T12:00:00",
   "description" : "Gra na gitarze.",
-  "tags" : [ "prywatne", "hobby", "gitara" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta u dentysty",
   "dateTime" : "2024-08-07T08:00:00",
   "endDateTime" : "2024-08-07T09:00:00",
   "description" : "Kontrola zębów.",
-  "tags" : [ "kontrola", "dentysta", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Konferencja branżowa",
   "dateTime" : "2024-08-07T10:00:00",
   "endDateTime" : "2024-08-07T14:00:00",
   "description" : "Udział w konferencji.",
-  "tags" : [ "praca", "konferencja", "branżowa" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatny spacer",
   "dateTime" : "2024-08-29T18:00:00",
   "endDateTime" : "2024-08-29T19:00:00",
   "description" : "Relaksacyjny spacer po parku.",
-  "tags" : [ "prywatne", "spacer", "relaks" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Spotkanie rodzinne",
   "dateTime" : "2024-08-09T12:00:00",
   "endDateTime" : "2024-08-09T15:00:00",
   "description" : "Obiad u rodziny.",
-  "tags" : [ "rodzina", "obiad", "prywatne" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta u fryzjera",
   "dateTime" : "2024-08-10T09:00:00",
   "endDateTime" : "2024-08-10T10:00:00",
   "description" : "Strzyżenie włosów.",
-  "tags" : [ "strzyżenie", "fryzjer", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Sprzątanie domu",
   "dateTime" : "2024-08-11T10:00:00",
   "endDateTime" : "2024-08-11T12:00:00",
   "description" : "Generalne porządki.",
-  "tags" : [ "sprzątanie", "dom", "porządki" ],
   "category" : "HOME"
 }, {
   "title" : "Praca nad ofertą",
   "dateTime" : "2024-08-12T09:00:00",
   "endDateTime" : "2024-08-12T11:00:00",
   "description" : "Przygotowanie oferty dla klienta.",
-  "tags" : [ "praca", "oferta", "klient" ],
   "category" : "WORK"
 }, {
   "title" : "Przegląd techniczny samochodu",
   "dateTime" : "2024-08-13T08:00:00",
   "endDateTime" : "2024-08-13T09:00:00",
   "description" : "Roczny przegląd auta.",
-  "tags" : [ "samochód", "przegląd", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście do kina",
   "dateTime" : "2024-08-14T20:00:00",
   "endDateTime" : "2024-08-14T22:00:00",
   "description" : "Seans filmowy.",
-  "tags" : [ "prywatne", "film", "kino" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Zakupy spożywcze",
   "dateTime" : "2024-08-15T10:00:00",
   "endDateTime" : "2024-08-15T11:00:00",
   "description" : "Cotygodniowe zakupy.",
-  "tags" : [ "spożywcze", "zakupy", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z zespołem",
   "dateTime" : "2024-08-16T09:00:00",
   "endDateTime" : "2024-08-16T11:00:00",
   "description" : "Planowanie sprintu.",
-  "tags" : [ "zespół", "sprint", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Przygotowanie budżetu",
   "dateTime" : "2024-08-17T10:00:00",
   "endDateTime" : "2024-08-17T12:00:00",
   "description" : "Planowanie budżetu na Q4.",
-  "tags" : [ "praca", "budżet", "planowanie" ],
   "category" : "WORK"
 }, {
   "title" : "Czas na relaks",
   "dateTime" : "2024-08-25T15:00:00",
   "endDateTime" : "2024-08-25T17:00:00",
   "description" : "Czytanie książki.",
-  "tags" : [ "prywatne", "książka", "relaks" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta w urzędzie",
   "dateTime" : "2024-08-19T09:00:00",
   "endDateTime" : "2024-08-19T10:00:00",
   "description" : "Załatwienie formalności.",
-  "tags" : [ "urząd", "wizyta", "formalności" ],
   "category" : "VISIT"
 }, {
   "title" : "Wizyta u mechanika",
   "dateTime" : "2024-08-19T10:00:00",
   "endDateTime" : "2024-08-19T11:00:00",
   "description" : "Naprawa hamulców.",
-  "tags" : [ "mechanik", "samochód", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prezentacja projektu",
   "dateTime" : "2024-08-20T14:00:00",
   "endDateTime" : "2024-08-20T16:00:00",
   "description" : "Prezentacja wyników projektu.",
-  "tags" : [ "projekt", "prezentacja", "praca" ],
   "category" : "WORK"
 }, {
   "title" : "Spotkanie z zarządem",
   "dateTime" : "2024-08-14T09:00:00",
   "endDateTime" : "2024-08-14T10:00:00",
   "description" : "Omówienie wyników finansowych.",
-  "tags" : [ "zarząd", "spotkanie", "finanse" ],
   "category" : "MEETING"
 }, {
   "title" : "Sprzątanie piwnicy",
   "dateTime" : "2024-08-15T10:00:00",
   "endDateTime" : "2024-08-15T12:00:00",
   "description" : "Porządki w piwnicy.",
-  "tags" : [ "sprzątanie", "piwnica", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Przygotowanie strategii",
   "dateTime" : "2024-08-23T13:00:00",
   "endDateTime" : "2024-08-23T15:00:00",
   "description" : "Strategia marketingowa.",
-  "tags" : [ "marketing", "praca", "strategia" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u kosmetyczki",
   "dateTime" : "2024-08-24T11:00:00",
   "endDateTime" : "2024-08-24T12:00:00",
   "description" : "Pielęgnacja twarzy.",
-  "tags" : [ "kosmetyczka", "pielęgnacja", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście na rower",
   "dateTime" : "2024-08-25T16:00:00",
   "endDateTime" : "2024-08-25T18:00:00",
   "description" : "Wycieczka rowerowa.",
-  "tags" : [ "prywatne", "wycieczka", "rower" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Zakupy domowe",
   "dateTime" : "2024-09-02T09:00:00",
   "endDateTime" : "2024-09-02T10:00:00",
   "description" : "Zakupy spożywcze.",
-  "tags" : [ "spożywcze", "zakupy", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie biznesowe",
   "dateTime" : "2024-08-27T10:00:00",
   "endDateTime" : "2024-08-27T11:00:00",
   "description" : "Negocjacje warunków umowy.",
-  "tags" : [ "biznes", "spotkanie", "negocjacje" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad budżetem",
   "dateTime" : "2024-08-28T09:00:00",
   "endDateTime" : "2024-08-28T11:00:00",
   "description" : "Kalkulacja budżetu na Q1 2025.",
-  "tags" : [ "praca", "budżet", "kalkulacja" ],
   "category" : "WORK"
 }, {
   "title" : "Czas na książkę",
   "dateTime" : "2024-08-29T18:00:00",
   "endDateTime" : "2024-08-29T20:00:00",
   "description" : "Czytanie nowego kryminału.",
-  "tags" : [ "prywatne", "książka", "kryminał" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta u ortodonty",
   "dateTime" : "2024-09-06T08:30:00",
   "endDateTime" : "2024-09-06T09:30:00",
   "description" : "Kontrola aparatu ortodontycznego.",
-  "tags" : [ "kontrola", "ortodonta", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Spotkanie z prawnikiem",
   "dateTime" : "2024-08-31T10:00:00",
   "endDateTime" : "2024-08-31T11:00:00",
   "description" : "Konsultacja prawna.",
-  "tags" : [ "prawnik", "spotkanie", "konsultacja" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad ofertą",
   "dateTime" : "2024-09-01T09:00:00",
   "endDateTime" : "2024-09-01T11:00:00",
   "description" : "Opracowanie nowej oferty handlowej.",
-  "tags" : [ "praca", "handlowa", "oferta" ],
   "category" : "WORK"
 }, {
   "title" : "Sprzątanie garażu",
   "dateTime" : "2024-09-02T10:00:00",
   "endDateTime" : "2024-09-02T12:00:00",
   "description" : "Generalne porządki w garażu.",
-  "tags" : [ "sprzątanie", "dom", "garaż" ],
   "category" : "HOME"
 }, {
   "title" : "Wizyta u lekarza",
   "dateTime" : "2024-09-03T08:00:00",
   "endDateTime" : "2024-09-03T09:00:00",
   "description" : "Kontrola zdrowia.",
-  "tags" : [ "lekarz", "zdrowie", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście do teatru",
   "dateTime" : "2024-09-03T18:00:00",
   "endDateTime" : "2024-09-03T20:00:00",
   "description" : "Spektakl teatralny.",
-  "tags" : [ "prywatne", "spektakl", "teatr" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Spotkanie z zespołem",
   "dateTime" : "2024-08-28T09:00:00",
   "endDateTime" : "2024-08-28T11:00:00",
   "description" : "Omówienie planu pracy.",
-  "tags" : [ "zespół", "spotkanie", "plan" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad strategią",
   "dateTime" : "2024-09-05T10:00:00",
   "endDateTime" : "2024-09-05T12:00:00",
   "description" : "Strategia długoterminowa.",
-  "tags" : [ "długoterminowa", "praca", "strategia" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u fryzjera",
   "dateTime" : "2024-09-06T08:30:00",
   "endDateTime" : "2024-09-06T09:30:00",
   "description" : "Strzyżenie włosów.",
-  "tags" : [ "strzyżenie", "fryzjer", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście na kawę",
   "dateTime" : "2024-09-06T16:00:00",
   "endDateTime" : "2024-09-06T17:00:00",
   "description" : "Spotkanie ze znajomymi.",
-  "tags" : [ "kawa", "prywatne", "spotkanie" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie kuchni",
   "dateTime" : "2024-09-07T11:00:00",
   "endDateTime" : "2024-09-07T13:00:00",
   "description" : "Czyszczenie i porządkowanie.",
-  "tags" : [ "sprzątanie", "kuchnia", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z klientem",
   "dateTime" : "2024-09-08T10:00:00",
   "endDateTime" : "2024-09-08T11:00:00",
   "description" : "Omówienie szczegółów umowy.",
-  "tags" : [ "umowa", "spotkanie", "klient" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad raportem",
   "dateTime" : "2024-09-09T09:00:00",
   "endDateTime" : "2024-09-09T11:00:00",
   "description" : "Raport miesięczny.",
-  "tags" : [ "miesięczny", "praca", "raport" ],
   "category" : "WORK"
 }, {
   "title" : "Zakupy domowe",
   "dateTime" : "2024-09-17T14:00:00",
   "endDateTime" : "2024-09-17T15:00:00",
   "description" : "Zakupy spożywcze.",
-  "tags" : [ "spożywcze", "zakupy", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Wizyta u kosmetyczki",
   "dateTime" : "2024-09-11T10:00:00",
   "endDateTime" : "2024-09-11T11:00:00",
   "description" : "Pielęgnacja ciała.",
-  "tags" : [ "kosmetyczka", "pielęgnacja", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Spotkanie z partnerem biznesowym",
   "dateTime" : "2024-09-12T13:00:00",
   "endDateTime" : "2024-09-12T14:00:00",
   "description" : "Omówienie wspólnego projektu.",
-  "tags" : [ "projekt", "partner", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad prezentacją",
   "dateTime" : "2024-09-13T10:00:00",
   "endDateTime" : "2024-09-13T12:00:00",
   "description" : "Przygotowanie prezentacji na spotkanie.",
-  "tags" : [ "prezentacja", "praca", "spotkanie" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatne wyjście na koncert",
   "dateTime" : "2024-09-13T19:00:00",
   "endDateTime" : "2024-09-13T21:00:00",
   "description" : "Koncert ulubionego zespołu.",
-  "tags" : [ "zespół", "prywatne", "koncert" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Praca nad raportem kwartalnym",
   "dateTime" : "2024-09-14T09:00:00",
   "endDateTime" : "2024-09-14T12:00:00",
   "description" : "Podsumowanie wyników.",
-  "tags" : [ "praca", "raport", "kwartalny" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u dentysty",
   "dateTime" : "2024-09-15T08:00:00",
   "endDateTime" : "2024-09-15T09:00:00",
   "description" : "Leczenie zębów.",
-  "tags" : [ "dentysta", "wizyta", "leczenie" ],
   "category" : "VISIT"
 }, {
   "title" : "Spotkanie zespołu",
   "dateTime" : "2024-09-15T10:00:00",
   "endDateTime" : "2024-09-15T11:00:00",
   "description" : "Omówienie bieżących zadań.",
-  "tags" : [ "zespół", "spotkanie", "zadania" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad ofertą",
   "dateTime" : "2024-09-16T09:00:00",
   "endDateTime" : "2024-09-16T11:00:00",
   "description" : "Opracowanie nowej oferty.",
-  "tags" : [ "praca", "oferta", "nowa" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatny spacer",
   "dateTime" : "2024-09-17T18:00:00",
   "endDateTime" : "2024-09-17T19:00:00",
   "description" : "Relaksacyjny spacer po parku.",
-  "tags" : [ "prywatne", "spacer", "relaks" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie łazienki",
   "dateTime" : "2024-09-11T10:00:00",
   "endDateTime" : "2024-09-11T11:00:00",
   "description" : "Czyszczenie i porządkowanie.",
-  "tags" : [ "sprzątanie", "łazienka", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Praca nad strategią",
   "dateTime" : "2024-09-26T09:00:00",
   "endDateTime" : "2024-09-26T11:00:00",
   "description" : "Strategia na przyszły rok.",
-  "tags" : [ "praca", "strategia", "rok" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u lekarza",
   "dateTime" : "2024-09-20T08:30:00",
   "endDateTime" : "2024-09-20T09:30:00",
   "description" : "Kontrola zdrowia.",
-  "tags" : [ "lekarz", "zdrowie", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Spotkanie z klientem",
   "dateTime" : "2024-09-21T11:00:00",
   "endDateTime" : "2024-09-21T12:00:00",
   "description" : "Omówienie projektu.",
-  "tags" : [ "projekt", "spotkanie", "klient" ],
   "category" : "MEETING"
 }, {
   "title" : "Prywatne wyjście na kawę",
   "dateTime" : "2024-09-22T16:00:00",
   "endDateTime" : "2024-09-22T17:00:00",
   "description" : "Spotkanie ze znajomymi.",
-  "tags" : [ "kawa", "prywatne", "spotkanie" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie kuchni",
   "dateTime" : "2024-09-23T11:00:00",
   "endDateTime" : "2024-09-23T13:00:00",
   "description" : "Czyszczenie i porządkowanie.",
-  "tags" : [ "sprzątanie", "kuchnia", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Praca nad strategią",
   "dateTime" : "2024-09-24T09:00:00",
   "endDateTime" : "2024-09-24T11:00:00",
   "description" : "Strategia na przyszły rok.",
-  "tags" : [ "praca", "strategia", "rok" ],
   "category" : "WORK"
 }, {
   "title" : "Spotkanie z inwestorem",
   "dateTime" : "2024-10-02T14:00:00",
   "endDateTime" : "2024-10-02T15:00:00",
   "description" : "Omówienie możliwości inwestycyjnych.",
-  "tags" : [ "inwestor", "inwestycje", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Wizyta u kosmetyczki",
   "dateTime" : "2024-09-26T10:00:00",
   "endDateTime" : "2024-09-26T11:00:00",
   "description" : "Pielęgnacja twarzy.",
-  "tags" : [ "kosmetyczka", "pielęgnacja", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatny spacer",
   "dateTime" : "2024-09-27T18:00:00",
   "endDateTime" : "2024-09-27T19:00:00",
   "description" : "Relaksacyjny spacer po parku.",
-  "tags" : [ "prywatne", "spacer", "relaks" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Przygotowanie oferty",
   "dateTime" : "2024-09-14T09:00:00",
   "endDateTime" : "2024-09-14T11:00:00",
   "description" : "Opracowanie oferty dla nowego klienta.",
-  "tags" : [ "praca", "oferta", "klient" ],
   "category" : "WORK"
 }, {
   "title" : "Spotkanie zespołu",
   "dateTime" : "2024-09-29T10:00:00",
   "endDateTime" : "2024-09-29T11:00:00",
   "description" : "Planowanie zadań na kolejny tydzień.",
-  "tags" : [ "zespół", "spotkanie", "planowanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad projektem",
   "dateTime" : "2024-09-30T09:00:00",
   "endDateTime" : "2024-09-30T11:00:00",
   "description" : "Realizacja kolejnego etapu projektu.",
-  "tags" : [ "projekt", "etap", "praca" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u mechanika",
   "dateTime" : "2024-10-01T08:00:00",
   "endDateTime" : "2024-10-01T09:00:00",
   "description" : "Naprawa zawieszenia.",
-  "tags" : [ "mechanik", "samochód", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatny wieczór filmowy",
   "dateTime" : "2024-10-01T19:00:00",
   "endDateTime" : "2024-10-01T21:00:00",
   "description" : "Oglądanie ulubionego filmu.",
-  "tags" : [ "prywatne", "wieczór", "film" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie mieszkania",
   "dateTime" : "2024-10-02T10:00:00",
   "endDateTime" : "2024-10-02T12:00:00",
   "description" : "Generalne porządki w mieszkaniu.",
-  "tags" : [ "sprzątanie", "dom", "mieszkanie" ],
   "category" : "HOME"
 }, {
   "title" : "Praca nad strategią sprzedaży",
   "dateTime" : "2024-10-03T09:00:00",
   "endDateTime" : "2024-10-03T11:00:00",
   "description" : "Opracowanie nowej strategii sprzedaży.",
-  "tags" : [ "praca", "strategia", "sprzedaż" ],
   "category" : "WORK"
 }, {
   "title" : "Spotkanie z klientem",
   "dateTime" : "2024-10-11T10:00:00",
   "endDateTime" : "2024-10-11T11:00:00",
   "description" : "Omówienie szczegółów zamówienia.",
-  "tags" : [ "zamówienie", "spotkanie", "klient" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad ofertą",
   "dateTime" : "2024-10-05T09:00:00",
   "endDateTime" : "2024-10-05T11:00:00",
   "description" : "Opracowanie oferty dla nowego klienta.",
-  "tags" : [ "praca", "oferta", "klient" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u dentysty",
   "dateTime" : "2024-10-06T08:00:00",
   "endDateTime" : "2024-10-06T09:00:00",
   "description" : "Kontrola zębów.",
-  "tags" : [ "kontrola", "dentysta", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście do parku",
   "dateTime" : "2024-10-06T17:00:00",
   "endDateTime" : "2024-10-06T18:00:00",
   "description" : "Spacer w parku.",
-  "tags" : [ "prywatne", "spacer", "park" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie domu",
   "dateTime" : "2024-10-07T10:00:00",
   "endDateTime" : "2024-10-07T12:00:00",
   "description" : "Porządki w całym domu.",
-  "tags" : [ "sprzątanie", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z zespołem",
   "dateTime" : "2024-10-08T09:00:00",
   "endDateTime" : "2024-10-08T10:00:00",
   "description" : "Planowanie sprintu.",
-  "tags" : [ "zespół", "sprint", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad raportem",
   "dateTime" : "2024-10-09T09:00:00",
   "endDateTime" : "2024-10-09T11:00:00",
   "description" : "Przygotowanie raportu miesięcznego.",
-  "tags" : [ "miesięczny", "praca", "raport" ],
   "category" : "WORK"
 }, {
   "title" : "Zakupy spożywcze",
   "dateTime" : "2024-10-10T14:00:00",
   "endDateTime" : "2024-10-10T15:00:00",
   "description" : "Cotygodniowe zakupy.",
-  "tags" : [ "spożywcze", "zakupy", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Prywatne wyjście do kina",
   "dateTime" : "2024-10-10T19:00:00",
   "endDateTime" : "2024-10-10T21:00:00",
   "description" : "Seans filmowy.",
-  "tags" : [ "prywatne", "film", "kino" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta u lekarza",
   "dateTime" : "2024-10-11T08:00:00",
   "endDateTime" : "2024-10-11T09:00:00",
   "description" : "Kontrola zdrowia.",
-  "tags" : [ "lekarz", "zdrowie", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Praca nad projektem",
   "dateTime" : "2024-10-11T09:00:00",
   "endDateTime" : "2024-10-11T11:00:00",
   "description" : "Realizacja kolejnego etapu projektu.",
-  "tags" : [ "projekt", "etap", "praca" ],
   "category" : "WORK"
 }, {
   "title" : "Spotkanie z partnerem biznesowym",
   "dateTime" : "2024-10-12T13:00:00",
   "endDateTime" : "2024-10-12T14:00:00",
   "description" : "Omówienie wspólnego projektu.",
-  "tags" : [ "projekt", "partner", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad budżetem",
   "dateTime" : "2024-10-13T10:00:00",
   "endDateTime" : "2024-10-13T12:00:00",
   "description" : "Kalkulacja budżetu na Q1 2025.",
-  "tags" : [ "praca", "budżet", "kalkulacja" ],
   "category" : "WORK"
 }, {
   "title" : "Sprzątanie domu",
   "dateTime" : "2024-10-14T10:00:00",
   "endDateTime" : "2024-10-14T12:00:00",
   "description" : "Porządki w całym domu.",
-  "tags" : [ "sprzątanie", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Prywatne wyjście na kawę",
   "dateTime" : "2024-10-14T15:00:00",
   "endDateTime" : "2024-10-14T16:00:00",
   "description" : "Spotkanie ze znajomymi.",
-  "tags" : [ "kawa", "prywatne", "spotkanie" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Spotkanie z prawnikiem",
   "dateTime" : "2024-10-15T10:00:00",
   "endDateTime" : "2024-10-15T11:00:00",
   "description" : "Konsultacja prawna.",
-  "tags" : [ "prawnik", "spotkanie", "konsultacja" ],
   "category" : "MEETING"
 }, {
   "title" : "Wizyta u ortodonty",
   "dateTime" : "2024-10-09T08:30:00",
   "endDateTime" : "2024-10-09T09:30:00",
   "description" : "Kontrola aparatu ortodontycznego.",
-  "tags" : [ "kontrola", "ortodonta", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Praca nad ofertą",
   "dateTime" : "2024-10-17T09:00:00",
   "endDateTime" : "2024-10-17T11:00:00",
   "description" : "Opracowanie oferty dla nowego klienta.",
-  "tags" : [ "praca", "oferta", "klient" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatne wyjście na spacer",
   "dateTime" : "2024-10-17T18:00:00",
   "endDateTime" : "2024-10-17T19:00:00",
   "description" : "Relaksacyjny spacer po parku.",
-  "tags" : [ "prywatne", "spacer", "relaks" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie kuchni",
   "dateTime" : "2024-10-18T10:00:00",
   "endDateTime" : "2024-10-18T12:00:00",
   "description" : "Czyszczenie i porządkowanie.",
-  "tags" : [ "sprzątanie", "kuchnia", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z zespołem",
   "dateTime" : "2024-10-19T09:00:00",
   "endDateTime" : "2024-10-19T10:00:00",
   "description" : "Planowanie sprintu.",
-  "tags" : [ "zespół", "sprint", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad strategią",
   "dateTime" : "2024-10-20T09:00:00",
   "endDateTime" : "2024-10-20T11:00:00",
   "description" : "Strategia na przyszły rok.",
-  "tags" : [ "praca", "strategia", "rok" ],
   "category" : "WORK"
 }, {
   "title" : "Wizyta u lekarza",
   "dateTime" : "2024-10-21T08:30:00",
   "endDateTime" : "2024-10-21T09:30:00",
   "description" : "Kontrola zdrowia.",
-  "tags" : [ "lekarz", "zdrowie", "wizyta" ],
   "category" : "VISIT"
 }, {
   "title" : "Prywatne wyjście na koncert",
   "dateTime" : "2024-10-22T19:00:00",
   "endDateTime" : "2024-10-22T21:00:00",
   "description" : "Koncert ulubionego zespołu.",
-  "tags" : [ "zespół", "prywatne", "koncert" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie łazienki",
   "dateTime" : "2024-10-23T10:00:00",
   "endDateTime" : "2024-10-23T12:00:00",
   "description" : "Czyszczenie i porządkowanie.",
-  "tags" : [ "sprzątanie", "łazienka", "dom" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z klientem",
   "dateTime" : "2024-10-24T10:00:00",
   "endDateTime" : "2024-10-24T11:00:00",
   "description" : "Omówienie szczegółów zamówienia.",
-  "tags" : [ "zamówienie", "spotkanie", "klient" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad budżetem",
   "dateTime" : "2024-10-25T09:00:00",
   "endDateTime" : "2024-10-25T11:00:00",
   "description" : "Kalkulacja budżetu na Q1 2025.",
-  "tags" : [ "praca", "budżet", "kalkulacja" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatne wyjście na kawę",
   "dateTime" : "2024-10-19T15:00:00",
   "endDateTime" : "2024-10-19T16:00:00",
   "description" : "Spotkanie ze znajomymi.",
-  "tags" : [ "kawa", "prywatne", "spotkanie" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Sprzątanie garażu",
   "dateTime" : "2024-10-27T10:00:00",
   "endDateTime" : "2024-10-27T12:00:00",
   "description" : "Generalne porządki w garażu.",
-  "tags" : [ "sprzątanie", "dom", "garaż" ],
   "category" : "HOME"
 }, {
   "title" : "Spotkanie z partnerem biznesowym",
   "dateTime" : "2024-10-14T13:00:00",
   "endDateTime" : "2024-10-14T14:00:00",
   "description" : "Omówienie wspólnego projektu.",
-  "tags" : [ "projekt", "partner", "spotkanie" ],
   "category" : "MEETING"
 }, {
   "title" : "Praca nad prezentacją",
   "dateTime" : "2024-10-29T10:00:00",
   "endDateTime" : "2024-10-29T12:00:00",
   "description" : "Przygotowanie prezentacji na spotkanie.",
-  "tags" : [ "prezentacja", "praca", "spotkanie" ],
   "category" : "WORK"
 }, {
   "title" : "Prywatne wyjście do teatru",
   "dateTime" : "2024-10-30T18:00:00",
   "endDateTime" : "2024-10-30T20:00:00",
   "description" : "Spektakl teatralny.",
-  "tags" : [ "prywatne", "spektakl", "teatr" ],
   "category" : "PRIVATE"
 }, {
   "title" : "Wizyta u fryzjera",
   "dateTime" : "2024-10-31T08:30:00",
   "endDateTime" : "2024-10-31T09:30:00",
   "description" : "Strzyżenie włosów.",
-  "tags" : [ "strzyżenie", "fryzjer", "wizyta" ],
   "category" : "VISIT"
 } ]

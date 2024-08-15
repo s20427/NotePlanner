@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Priority?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.MainController" fx:id="mainLayout">
     <top>
@@ -22,20 +21,12 @@
     <center>
         <SplitPane dividerPositions="0.3">
             <VBox fx:id="notesPanel" spacing="10" style="-fx-padding: 10;">
-                <!-- HBox for the buttons -->
                 <HBox spacing="10" style="-fx-padding: 10;">
-                    <!-- Align the Add Note button to the left -->
                     <Button fx:id="addNoteButton" text="Add Note" onAction="#openAddNoteWindow"/>
-
-                    <!-- Spacer to push the up/down buttons to the right -->
                     <HBox HBox.hgrow="ALWAYS"/>
-
-                    <!-- Align the up/down buttons to the right -->
                     <Button fx:id="moveUpButton" text="↑" />
                     <Button fx:id="moveDownButton" text="↓" />
                 </HBox>
-
-                <!-- ListView for notes -->
                 <ListView fx:id="notesListView" VBox.vgrow="ALWAYS"/>
             </VBox>
             <VBox fx:id="calendarPanel" spacing="10" style="-fx-padding: 10;">

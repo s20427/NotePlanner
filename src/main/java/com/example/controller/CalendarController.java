@@ -10,14 +10,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.time.*;
 import java.time.format.TextStyle;
@@ -27,20 +25,23 @@ public class CalendarController {
 
     private ComboBox<String> viewSelector;
     private BorderPane calendarView;
-    private LocalDate currentDate;
-    private ResourceBundle resources;
-    private ObservableList<Event> events;
-    private CalendarView lastActiveView = CalendarView.MONTH;
     private Label dateInfoLabel;
     private Button previousButton;
     private Button nextButton;
     private Button addEventButton;
+    private LocalDate currentDate;
+    private ResourceBundle resources;
+    private ObservableList<Event> events;
+    private CalendarView lastActiveView = CalendarView.MONTH;
     private MainController mainController;
 
+    /**
+     * Initialize the navigation buttons and their actions
+     */
     private void initializeButtons() {
-        previousButton = new Button("\u2190");  // Change text to left arrow
-        nextButton = new Button("\u2192");      // Change text to right arrow
-        dateInfoLabel = new Label(); // Upewnij się, że etykieta jest zainicjalizowana
+        previousButton = new Button("\u2190");  // Left arrow button
+        nextButton = new Button("\u2192");      // Right arrow button
+        dateInfoLabel = new Label();            // Label for displaying the current date
         addEventButton = new Button(resources.getString("event.addButton"));
 
         previousButton.setOnAction(event -> handlePrevious());
@@ -48,6 +49,9 @@ public class CalendarController {
         addEventButton.setOnAction(event -> handleAddEvent());
     }
 
+    /**
+     * Set up the view selector and bind actions to it
+     */
     public void setViewSelector(ComboBox<String> viewSelector, ResourceBundle resources) {
         this.viewSelector = viewSelector;
         this.resources = resources;
@@ -69,7 +73,7 @@ public class CalendarController {
             }
         });
 
-        // Set up the layout with buttons on the left, date in the center, and ComboBox on the right
+        // Layout setup: buttons on the left, date in the center, and ComboBox on the right
         HBox leftControls = new HBox(10);
         leftControls.setAlignment(Pos.CENTER_LEFT);
         leftControls.getChildren().addAll(addEventButton, previousButton, nextButton);
@@ -78,13 +82,11 @@ public class CalendarController {
         rightControls.setAlignment(Pos.CENTER_RIGHT);
         rightControls.getChildren().add(viewSelector);
 
-        // Main layout for the controls
         HBox mainControls = new HBox();
         mainControls.getChildren().addAll(leftControls, new Region(), rightControls);
         HBox.setHgrow(mainControls.getChildren().get(1), Priority.ALWAYS); // The Region acts as a spacer
         mainControls.setPadding(new Insets(0, 10, 20, 10)); // Add padding around the HBox
 
-        // StackPane to center the dateInfoLabel over the main controls
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(mainControls, dateInfoLabel);
         StackPane.setAlignment(dateInfoLabel, Pos.CENTER);
@@ -94,37 +96,61 @@ public class CalendarController {
         StackPane.setMargin(dateInfoLabel, new Insets(0, 0, 10, 0)); // Add bottom padding to the dateInfoLabel
     }
 
+    /**
+     * Update the button labels with the correct translations
+     */
     public void updateButtonLabels(ResourceBundle resources) {
         addEventButton.setText(resources.getString("event.addButton"));
         updateDateInfoLabel(resources);
     }
 
+    /**
+     * Update the date information label based on the current date
+     */
     public void updateDateInfoLabel(ResourceBundle resources) {
         if (currentDate != null) {
             dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, resources.getLocale()) + " " + currentDate.getYear());
         }
     }
 
+    /**
+     * Set the calendar view container
+     */
     public void setCalendarView(BorderPane calendarView) {
         this.calendarView = calendarView;
     }
 
+    /**
+     * Set the current date displayed in the calendar
+     */
     public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
 
+    /**
+     * Set the list of events to be displayed in the calendar
+     */
     public void setEvents(ObservableList<Event> events) {
         this.events = events;
     }
 
+    /**
+     * Set the main controller for the application
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Get the last active view (month, week, day)
+     */
     public CalendarView getLastActiveView() {
         return lastActiveView;
     }
 
+    /**
+     * Handle switching to the previous month/week/day based on the active view
+     */
     public void handlePrevious() {
         switch (lastActiveView) {
             case MONTH -> currentDate = currentDate.minusMonths(1);
@@ -134,6 +160,9 @@ public class CalendarController {
         updateCalendarView(lastActiveView);
     }
 
+    /**
+     * Handle switching to the next month/week/day based on the active view
+     */
     public void handleNext() {
         switch (lastActiveView) {
             case MONTH -> currentDate = currentDate.plusMonths(1);
@@ -143,6 +172,9 @@ public class CalendarController {
         updateCalendarView(lastActiveView);
     }
 
+    /**
+     * Handle adding a new event by opening the event creation window
+     */
     private void handleAddEvent() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
@@ -162,6 +194,9 @@ public class CalendarController {
         }
     }
 
+    /**
+     * Update the calendar view (month/week/day)
+     */
     public void updateCalendarView(CalendarView selectedView) {
         if (selectedView == null) {
             throw new IllegalArgumentException("Selected view cannot be null");
@@ -174,10 +209,16 @@ public class CalendarController {
         }
     }
 
+    /**
+     * Set the resource bundle for localization
+     */
     public void setResources(ResourceBundle resources) {
         this.resources = resources;
     }
 
+    /**
+     * Display the month view with days and events
+     */
     private void displayMonthView() {
         if (currentDate != null) {
             GridPane gridPane = new GridPane();
@@ -186,7 +227,7 @@ public class CalendarController {
             scrollPane.setFitToHeight(true);
             scrollPane.setPadding(new Insets(5, 5, 5, 5));
 
-            // Ustawienie nagłówków dni tygodnia (od poniedziałku)
+            // Set day of the week headers (starting with Monday)
             for (int i = 0; i < 7; i++) {
                 DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1); // Start with Monday
                 Label dayOfWeekLabel = new Label(dayOfWeek.getDisplayName(TextStyle.SHORT, resources.getLocale()));
@@ -198,8 +239,8 @@ public class CalendarController {
                 gridPane.add(dayOfWeekLabel, i, 0);
             }
 
-            // Ustawienie minimalnych rozmiarów kolumn
-            double minCellWidth = 100;  // Minimalna szerokość komórki
+            // Set minimum column widths for the days
+            double minCellWidth = 100;  // Minimum width of a day cell
 
             for (int i = 0; i < 7; i++) {
                 ColumnConstraints dayColumnConstraints = new ColumnConstraints();
@@ -208,54 +249,54 @@ public class CalendarController {
                 gridPane.getColumnConstraints().add(dayColumnConstraints);
             }
 
-            // Ograniczenie wysokości wiersza z nagłówkami dni tygodnia
+            // Set the row height for the day of the week headers
             RowConstraints headerRowConstraints = new RowConstraints();
-            headerRowConstraints.setPrefHeight(30); // Ustawienie wysokości wiersza z nazwami dni
+            headerRowConstraints.setPrefHeight(30); // Set the height of the day name row
             headerRowConstraints.setMinHeight(30);
             gridPane.getRowConstraints().add(headerRowConstraints);
 
-            // Ustawienie rozmiarów dla reszty wierszy (dni miesiąca)
-            for (int i = 0; i < 6; i++) { // Zarezerwowanie miejsca na maksymalnie 6 wierszy na miesiąc
+            // Reserve space for up to 6 rows of days in the month
+            for (int i = 0; i < 6; i++) {
                 RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS); // Ustawienie dynamicznego rozciągania w pionie
+                rowConstraints.setVgrow(Priority.ALWAYS); // Allow vertical growth
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
-            // Tworzenie dni miesiąca
+            // Calculate the starting point and total days in the current month
             LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
-            int startDayIndex = (firstDayOfMonth.getDayOfWeek().getValue() % 7) - 1; // Poniedziałek to 0, Niedziela to 6
-            if (startDayIndex < 0) startDayIndex = 6; // Jeśli wynik jest ujemny, ustawiamy na 6 (niedziela)
+            int startDayIndex = (firstDayOfMonth.getDayOfWeek().getValue() % 7) - 1; // Adjust index for Monday start
+            if (startDayIndex < 0) startDayIndex = 6; // Adjust for Sunday
             int daysInMonth = currentDate.lengthOfMonth();
 
             int rowIndex = 1;
             int colIndex = startDayIndex;
 
-            // Poprzedni miesiąc
+            // Handle previous month days to fill in the first week
             LocalDate previousMonth = firstDayOfMonth.minusMonths(1);
             int daysInPreviousMonth = previousMonth.lengthOfMonth();
 
-            // Następny miesiąc
+            // Handle next month days to fill in the last week
             LocalDate nextMonth = firstDayOfMonth.plusMonths(1);
 
-            // Dodaj dni poprzedniego miesiąca, aby wypełnić pierwszy tydzień
+            // Fill in the previous month's days
             for (int i = startDayIndex - 1; i >= 0; i--) {
                 VBox dayBox = createDayBox(previousMonth.withDayOfMonth(daysInPreviousMonth - (startDayIndex - 1 - i)), true);
                 gridPane.add(dayBox, i, rowIndex);
             }
 
-            // Dodaj dni bieżącego miesiąca
+            // Fill in the current month's days
             for (int day = 1; day <= daysInMonth; day++) {
                 VBox dayBox = createDayBox(firstDayOfMonth.withDayOfMonth(day), false);
                 gridPane.add(dayBox, colIndex, rowIndex);
 
                 colIndex++;
-                if (colIndex > 6) { // Jeśli dojdziemy do końca tygodnia, przechodzimy do następnego wiersza
+                if (colIndex > 6) { // Move to the next row after filling a week
                     colIndex = 0;
                     rowIndex++;
                 }
             }
 
-            // Dodaj dni następnego miesiąca, aby wypełnić ostatni tydzień
+            // Fill in the next month's days
             int dayOfNextMonth = 1;
             while (colIndex <= 6) {
                 VBox dayBox = createDayBox(nextMonth.withDayOfMonth(dayOfNextMonth), true);
@@ -264,20 +305,23 @@ public class CalendarController {
                 dayOfNextMonth++;
             }
 
-            // Upewnij się, że wszystkie wiersze wypełniają pionową przestrzeń
+            // Ensure all rows fill the vertical space
             for (int i = gridPane.getRowConstraints().size(); i < 7; i++) {
                 RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.ALWAYS); // Dynamiczne rozciąganie w pionie
+                rowConstraints.setVgrow(Priority.ALWAYS);
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
             calendarView.setCenter(scrollPane);
 
-            // Przywracanie dateInfoLabel
+            // Update the date info label
             dateInfoLabel.setText(currentDate.getMonth().getDisplayName(TextStyle.FULL, resources.getLocale()) + " " + currentDate.getYear());
         }
     }
 
+    /**
+     * Create a VBox for a day, including events
+     */
     private VBox createDayBox(LocalDate date, boolean isAdjacentMonth) {
         VBox dayBox = new VBox();
         dayBox.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 1 0;");
@@ -325,7 +369,9 @@ public class CalendarController {
         return dayBox;
     }
 
-    // Helper method to open the event editing window
+    /**
+     * Helper method to open the event editing window
+     */
     private void openEventWindow(Event event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
@@ -347,12 +393,18 @@ public class CalendarController {
         }
     }
 
+    /**
+     * Format event labels with start time and title
+     */
     private String formatEventLabel(Event event) {
         LocalTime startTime = event.getDateTime().toLocalTime();
         String title = event.getTitle();
         return startTime + " " + title;
     }
 
+    /**
+     * Display the week or day view
+     */
     private void displayView(boolean isDayView) {
         if (currentDate != null) {
             GridPane gridPane = new GridPane();
@@ -460,8 +512,6 @@ public class CalendarController {
                 List<Label> eventList = eventMap.getOrDefault(key, new ArrayList<>());
                 eventList.add(eventLabel);
                 eventMap.put(key, eventList);
-
-                System.out.println("Added event: " + event.getTitle() + " to key: " + key + " with duration: " + eventDuration);
             }
 
             // Add events to the grid and dynamically adjust their width
@@ -481,7 +531,6 @@ public class CalendarController {
                         }
 
                         double eventWidth = totalWidth / eventList.size() - 4; // Subtract 4px for padding
-                        System.out.println("Total column width: " + totalWidth + ", Event Width: " + eventWidth); // Debugging
 
                         for (int i = 0; i < eventList.size(); i++) {
                             Label eventLabel = eventList.get(i);
@@ -489,8 +538,6 @@ public class CalendarController {
                             eventLabel.setMaxWidth(eventWidth);
                             eventLabel.setMinWidth(eventWidth);
                             eventLabel.setLayoutX(i * (eventWidth + 4) + 2); // Offset event by 2px
-
-                            System.out.println("Event " + eventLabel.getText() + " positioned at X: " + i * (eventWidth + 4) + 2);
                         }
                     });
 
@@ -507,7 +554,9 @@ public class CalendarController {
         }
     }
 
-    // Helper method to get a specific node from the GridPane
+    /**
+     * Helper method to get a specific node from the GridPane
+     */
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
@@ -517,10 +566,16 @@ public class CalendarController {
         return null;
     }
 
+    /**
+     * Display the week view
+     */
     private void displayWeekView() {
         displayView(false);
     }
 
+    /**
+     * Display the day view
+     */
     private void displayDayView() {
         displayView(true);
     }

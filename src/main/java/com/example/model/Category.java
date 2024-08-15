@@ -19,10 +19,6 @@ public enum Category {
         this.color = color;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getColor() {
         return color;
     }
@@ -31,7 +27,7 @@ public enum Category {
         try {
             return bundle.getString("category." + name.toLowerCase());
         } catch (MissingResourceException e) {
-            return name; // Fallback na nazwę domyślną
+            return name;
         }
     }
 }

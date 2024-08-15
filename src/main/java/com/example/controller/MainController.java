@@ -673,13 +673,6 @@ public class MainController {
     }
 
     /**
-     * Updates the calendar view with the selected view.
-     */
-    private void updateCalendarView(CalendarView selectedView) {
-        calendarController.updateCalendarView(selectedView);
-    }
-
-    /**
      * Deletes a note from the list and refreshes the ListView.
      */
     public void deleteNote(Note note) {

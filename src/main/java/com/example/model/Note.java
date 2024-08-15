@@ -29,13 +29,8 @@ public class Note {
         this.category = category;
     }
 
-    // Getters and Setters
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -50,12 +45,7 @@ public class Note {
         }
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
     public void setTags(List<String> tags) {
-        // Use a set to avoid duplicates
         Set<String> uniqueTags = new HashSet<>(tags);
         this.tags = new ArrayList<>(uniqueTags);
     }

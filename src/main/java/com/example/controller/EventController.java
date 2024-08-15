@@ -45,12 +45,16 @@ public class EventController {
     private Event event;
     private boolean isEditMode = false;
 
-    // Set the main controller to link to the rest of the application
+    /**
+     * Sets the main controller to link to the rest of the application.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-    // Initialize the controller, setup combo boxes, category dropdown, and text prompts
+    /**
+     * Initializes the controller, setting up combo boxes, category dropdown, and text prompts.
+     */
     @FXML
     private void initialize() {
         setupTimeComboBoxes();
@@ -58,7 +62,9 @@ public class EventController {
         configureFieldPrompts();
     }
 
-    // Set the event content when editing an existing event
+    /**
+     * Sets the event content when editing an existing event.
+     */
     public void setEventContent(Event event) {
         this.event = event;
         titleField.setText(event.getTitle());
@@ -72,7 +78,9 @@ public class EventController {
         deleteButton.setVisible(true); // Show the delete button when editing an existing event
     }
 
-    // Set the edit mode (edit existing or create new)
+    /**
+     * Sets the edit mode, determining if the form is for creating a new event or editing an existing one.
+     */
     public void setEditMode(boolean isEditMode) {
         this.isEditMode = isEditMode;
         if (isEditMode) {
@@ -84,7 +92,9 @@ public class EventController {
         }
     }
 
-    // Handle saving the event (either creating new or editing existing)
+    /**
+     * Handles saving the event (either creating a new one or editing an existing one).
+     */
     @FXML
     private void handleSave() {
         if (validateInput()) {
@@ -94,19 +104,25 @@ public class EventController {
         }
     }
 
-    // Handle deleting the event
+    /**
+     * Handles deleting the event.
+     */
     @FXML
     private void handleDelete() {
         confirmAndDeleteEvent();
     }
 
-    // Close the event editing window
+    /**
+     * Closes the event editing window.
+     */
     private void closeWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
 
-    // Setup time options for start and end time combo boxes
+    /**
+     * Sets up time options for start and end time combo boxes.
+     */
     private void setupTimeComboBoxes() {
         ObservableList<String> timeOptions = FXCollections.observableArrayList();
         for (int hour = 0; hour < 24; hour++) {
@@ -117,7 +133,9 @@ public class EventController {
         endTimeComboBox.setItems(timeOptions);
     }
 
-    // Setup category combo box with translated category names
+    /**
+     * Sets up the category combo box with translated category names.
+     */
     private void setupCategoryComboBox() {
         categoryComboBox.setItems(FXCollections.observableArrayList(Category.values()));
         categoryComboBox.setCellFactory(comboBox -> new ListCell<>() {
@@ -145,7 +163,9 @@ public class EventController {
         });
     }
 
-    // Configure field prompts for user input fields
+    /**
+     * Configures field prompts for user input fields.
+     */
     private void configureFieldPrompts() {
         titleField.setPromptText(resources.getString("event.titlePlaceholder"));
         descriptionArea.setPromptText(resources.getString("event.descriptionPlaceholder"));
@@ -153,10 +173,12 @@ public class EventController {
         startTimeComboBox.setPromptText(resources.getString("event.startTime"));
         endTimeComboBox.setPromptText(resources.getString("event.endTime"));
         categoryLabel.setText(resources.getString("event.categoryLabel"));
-        saveButton.setText(resources.getString("event.saveButton"));
+        saveButton.setText(resources.getString("event.addButton"));
     }
 
-    // Save or update the event based on the mode (edit or new)
+    /**
+     * Saves or updates the event based on the mode (edit or new).
+     */
     private void saveOrUpdateEvent() {
         String title = titleField.getText();
         LocalDate date = datePicker.getValue();
@@ -169,10 +191,12 @@ public class EventController {
         Category selectedCategory = categoryComboBox.getValue();
         String translatedCategory = selectedCategory.getTranslatedName(resources);
 
+        // Ensure the translated category is included in the tags
         if (!tags.contains(translatedCategory)) {
             tags.add(0, translatedCategory.toLowerCase());
         }
 
+        // Update the event if in edit mode, otherwise create a new event
         if (isEditMode && event != null) {
             event.setTitle(title);
             event.setDateTime(date.atTime(startLocalTime));
@@ -187,7 +211,9 @@ public class EventController {
         }
     }
 
-    // Validate input fields before saving
+    /**
+     * Validates input fields before saving.
+     */
     private boolean validateInput() {
         String title = titleField.getText();
         LocalDate date = datePicker.getValue();
@@ -210,7 +236,9 @@ public class EventController {
         return true;
     }
 
-    // Check if any input field is invalid
+    /**
+     * Checks if any input field is invalid.
+     */
     private boolean isInputInvalid(String title, LocalDate date, String startTime, String endTime, Category selectedCategory) {
         if (title == null || title.trim().isEmpty()) {
             showValidationError(resources.getString("validation.titleRequired"));
@@ -235,7 +263,9 @@ public class EventController {
         return false;
     }
 
-    // Show validation error alert
+    /**
+     * Shows a validation error alert with a specified message.
+     */
     private void showValidationError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resources.getString("validation.errorTitle"));
@@ -244,7 +274,9 @@ public class EventController {
         alert.showAndWait();
     }
 
-    // Confirm and delete the event if confirmed
+    /**
+     * Confirms and deletes the event if confirmed.
+     */
     private void confirmAndDeleteEvent() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(resources.getString("event.deleteConfirmationTitle"));

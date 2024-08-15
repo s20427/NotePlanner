@@ -127,7 +127,7 @@ public class NoteController {
             Category selectedCategory = categoryComboBox.getValue();
 
             String translatedCategory = selectedCategory.getTranslatedName(resources);
-            if (selectedCategory != null && !tags.contains(translatedCategory)) {
+            if (!tags.contains(translatedCategory)) {
                 tags.add(0, translatedCategory.toLowerCase());
             }
 

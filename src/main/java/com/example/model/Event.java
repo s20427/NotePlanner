@@ -36,8 +36,6 @@ public class Event {
         this.category = category;
     }
 
-    // Gettery i Settery
-
     public String getTitle() {
         return title;
     }
@@ -68,10 +66,6 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<String> getTags() {
-        return tags;
     }
 
     public void setTags(List<String> tags) {
