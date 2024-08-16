@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.CalendarView;
 import com.example.model.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
