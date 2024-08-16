@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.controller.NoteController" spacing="10" style="-fx-padding: 10;">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.presenter.NotePresenter" spacing="10" style="-fx-padding: 10;">
     <TextArea fx:id="noteContentArea" VBox.vgrow="ALWAYS" />
     <HBox spacing="10">
         <Label fx:id="categoryLabel" text="Category:"/>

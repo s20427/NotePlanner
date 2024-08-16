@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.presenter;
 
 import com.example.model.CalendarView;
 import com.example.model.Category;
@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainController {
+public class MainPresenter {
 
     @FXML
     private TextField searchField;
@@ -60,7 +60,7 @@ public class MainController {
     @FXML
     private Button moveDownButton;
 
-    private CalendarController calendarController;
+    private CalendarPresenter calendarPresenter;
     private ObservableList<Note> notes;
     private ObservableList<Event> events;
     private ResourceBundle bundle;
@@ -75,7 +75,7 @@ public class MainController {
     }
 
     /**
-     * Initializes the controller after the root element has been completely processed.
+     * Initializes the presenter after the root element has been completely processed.
      */
     @FXML
     private void initialize() {
@@ -91,8 +91,8 @@ public class MainController {
         // Add category display for filtering
         addCategoryDisplay();
 
-        // Initialize the calendar controller and configure its settings
-        initializeCalendarController();
+        // Initialize the calendar presenter and configure its settings
+        initializeCalendarPresenter();
 
         // Set up language selector and its event handler
         setupLanguageSelector();
@@ -112,16 +112,16 @@ public class MainController {
     }
 
     /**
-     * Initializes the calendar controller and configures its settings.
+     * Initializes the calendar presenter and configures its settings.
      */
-    private void initializeCalendarController() {
-        calendarController = new CalendarController();
-        calendarController.setMainController(this);
-        calendarController.setCalendarView(calendarView);
-        calendarController.setCurrentDate(LocalDate.now());
-        calendarController.setEvents(events);
-        calendarController.setViewSelector(viewSelector, bundle);
-        calendarController.updateCalendarView(CalendarView.MONTH);
+    private void initializeCalendarPresenter() {
+        calendarPresenter = new CalendarPresenter();
+        calendarPresenter.setMainPresenter(this);
+        calendarPresenter.setCalendarView(calendarView);
+        calendarPresenter.setCurrentDate(LocalDate.now());
+        calendarPresenter.setEvents(events);
+        calendarPresenter.setViewSelector(viewSelector, bundle);
+        calendarPresenter.updateCalendarView(CalendarView.MONTH);
     }
 
     /**
@@ -298,8 +298,8 @@ public class MainController {
         notesListView.refresh();
 
         // Update the calendar view with filtered events
-        calendarController.setEvents(filteredEvents);
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
+        calendarPresenter.setEvents(filteredEvents);
+        calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView());
     }
 
     /**
@@ -387,10 +387,10 @@ public class MainController {
         notesListView.refresh();
 
 
-        calendarController.setResources(bundle);
-        calendarController.updateButtonLabels(bundle);
-        calendarController.setEvents(events); // Rebind events to ensure translation is applied
-        calendarController.updateDateInfoLabel(bundle);
+        calendarPresenter.setResources(bundle);
+        calendarPresenter.updateButtonLabels(bundle);
+        calendarPresenter.setEvents(events); // Rebind events to ensure translation is applied
+        calendarPresenter.updateDateInfoLabel(bundle);
         refreshViews();
 
         viewSelector.setItems(FXCollections.observableArrayList(
@@ -399,9 +399,9 @@ public class MainController {
                 bundle.getString("calendar.day")
         ));
 
-        calendarController.updateCalendarView(selectedView);
+        calendarPresenter.updateCalendarView(selectedView);
         if (selectedView != null) {
-            calendarController.updateCalendarView(calendarController.getLastActiveView());
+            calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView());
         }
 
         updateTexts();
@@ -464,7 +464,7 @@ public class MainController {
      */
     public void refreshViews() {
         notesListView.refresh();
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
+        calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView());
     }
 
     /**
@@ -480,12 +480,12 @@ public class MainController {
                 bundle.getString("calendar.week"),
                 bundle.getString("calendar.day")
         ));
-        viewSelector.setValue(bundle.getString(calendarController.getLastActiveView().getResourceKey()));
+        viewSelector.setValue(bundle.getString(calendarPresenter.getLastActiveView().getResourceKey()));
 
         viewSelector.setOnAction(event -> {
             CalendarView selectedView = CalendarView.fromLocalizedName(viewSelector.getValue(), bundle);
             if (selectedView != null) {
-                calendarController.updateCalendarView(selectedView);
+                calendarPresenter.updateCalendarView(selectedView);
             }
         });
     }
@@ -526,11 +526,11 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/note.fxml"), bundle);
             Parent root = loader.load();
 
-            NoteController noteController = loader.getController();
-            noteController.setMainController(this);
-            noteController.setEditMode(isEditMode);
+            NotePresenter notePresenter = loader.getController();
+            notePresenter.setMainPresenter(this);
+            notePresenter.setEditMode(isEditMode);
             if (isEditMode) {
-                noteController.setNoteContent(note);
+                notePresenter.setNoteContent(note);
             }
 
             Stage stage = new Stage();
@@ -572,7 +572,7 @@ public class MainController {
      * Updates the calendar view.
      */
     public void updateEvent() {
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
+        calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView());
     }
 
     /**
@@ -598,8 +598,8 @@ public class MainController {
         notesListView.refresh();
 
         // Update the CalendarView with filtered or original events based on the search status
-        calendarController.setEvents(filteredEvents);
-        calendarController.updateCalendarView(calendarController.getLastActiveView());
+        calendarPresenter.setEvents(filteredEvents);
+        calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView());
 
         // Update move buttons state based on search status and selected index
         updateMoveButtonsState(isSearching);
@@ -690,8 +690,8 @@ public class MainController {
     public void deleteEvent(Event event) {
         if (events.contains(event)) {
             events.remove(event);
-            calendarController.setEvents(events);  // Update the events list in the CalendarController
-            calendarController.updateCalendarView(calendarController.getLastActiveView()); // Refresh the calendar view
+            calendarPresenter.setEvents(events);  // Update the events list in the CalendarPresenter
+            calendarPresenter.updateCalendarView(calendarPresenter.getLastActiveView()); // Refresh the calendar view
             refreshViews();  // Ensure other views are updated after deletion
         }
     }

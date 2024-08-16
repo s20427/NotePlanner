@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.presenter;
 
 import com.example.model.Category;
 import com.example.model.Event;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class EventController {
+public class EventPresenter {
 
     @FXML
     private TextField titleField;
@@ -41,19 +41,19 @@ public class EventController {
     @FXML
     private ResourceBundle resources;
 
-    private MainController mainController;
+    private MainPresenter mainPresenter;
     private Event event;
     private boolean isEditMode = false;
 
     /**
-     * Sets the main controller to link to the rest of the application.
+     * Sets the main presenter to link to the rest of the application.
      */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 
     /**
-     * Initializes the controller, setting up combo boxes, category dropdown, and text prompts.
+     * Initializes the presenter, setting up combo boxes, category dropdown, and text prompts.
      */
     @FXML
     private void initialize() {
@@ -100,7 +100,7 @@ public class EventController {
         if (validateInput()) {
             saveOrUpdateEvent();
             closeWindow();
-            mainController.refreshViews();
+            mainPresenter.refreshViews();
         }
     }
 
@@ -204,10 +204,10 @@ public class EventController {
             event.setDescription(description);
             event.setTags(tags);
             event.setCategory(selectedCategory);
-            mainController.updateEvent();
+            mainPresenter.updateEvent();
         } else {
             Event newEvent = new Event(title, date.atTime(startLocalTime), date.atTime(endLocalTime), description, String.join(", ", tags), selectedCategory);
-            mainController.addEvent(newEvent);
+            mainPresenter.addEvent(newEvent);
         }
     }
 
@@ -290,9 +290,9 @@ public class EventController {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == deleteButtonType) {
-                mainController.deleteEvent(event);
+                mainPresenter.deleteEvent(event);
                 closeWindow();
-                mainController.refreshViews(); // Explicitly refresh the views after deletion
+                mainPresenter.refreshViews(); // Explicitly refresh the views after deletion
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.presenter;
 
 import com.example.model.CalendarView;
 import com.example.model.Event;
@@ -22,7 +22,7 @@ import java.time.*;
 import java.time.format.TextStyle;
 import java.util.*;
 
-public class CalendarController {
+public class CalendarPresenter {
 
     private ComboBox<String> viewSelector;
     private BorderPane calendarView;
@@ -34,7 +34,7 @@ public class CalendarController {
     private ResourceBundle resources;
     private ObservableList<Event> events;
     private CalendarView lastActiveView = CalendarView.MONTH;
-    private MainController mainController;
+    private MainPresenter mainPresenter;
 
     /**
      * Initialize the navigation buttons and their actions
@@ -136,10 +136,10 @@ public class CalendarController {
     }
 
     /**
-     * Set the main controller for the application
+     * Set the main presenter for the application
      */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 
     /**
@@ -181,8 +181,8 @@ public class CalendarController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
             Parent root = loader.load();
 
-            EventController eventController = loader.getController();
-            eventController.setMainController(mainController);
+            EventPresenter eventPresenter = loader.getController();
+            eventPresenter.setMainPresenter(mainPresenter);
 
             Stage stage = new Stage();
             stage.setTitle(resources.getString("event.title"));
@@ -378,10 +378,10 @@ public class CalendarController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
             Parent root = loader.load();
 
-            EventController eventController = loader.getController();
-            eventController.setMainController(mainController);
-            eventController.setEventContent(event);
-            eventController.setEditMode(true);
+            EventPresenter eventPresenter = loader.getController();
+            eventPresenter.setMainPresenter(mainPresenter);
+            eventPresenter.setEventContent(event);
+            eventPresenter.setEditMode(true);
 
             Stage stage = new Stage();
             stage.setTitle(resources.getString("event.editTitle"));

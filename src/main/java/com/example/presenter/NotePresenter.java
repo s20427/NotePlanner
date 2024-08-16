@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.presenter;
 
 import com.example.model.Category;
 import com.example.model.Note;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class NoteController {
+public class NotePresenter {
 
     @FXML
     private TextArea noteContentArea; // Text area for note content
@@ -35,16 +35,16 @@ public class NoteController {
     @FXML
     private ResourceBundle resources; // ResourceBundle for localized strings
 
-    private MainController mainController; // Reference to the MainController
+    private MainPresenter mainPresenter; // Reference to the MainPresenter
     private Note note; // The note being edited or created
     private boolean isEditMode = false; // Flag to indicate if we are in edit mode
 
     /**
-     * Sets the MainController instance.
-     * @param mainController The main controller.
+     * Sets the MainPresenter instance.
+     * @param mainPresenter The main presenter.
      */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 
     /**
@@ -135,12 +135,12 @@ public class NoteController {
                 note.setContent(content);
                 note.setTags(tags);
                 note.setCategory(selectedCategory);
-                mainController.updateNote();
+                mainPresenter.updateNote();
             } else {
                 Note newNote = new Note(content, content, String.join(", ", tags), selectedCategory);
-                mainController.addNote(newNote);
+                mainPresenter.addNote(newNote);
             }
-            mainController.refreshViews();
+            mainPresenter.refreshViews();
             closeWindow();
         }
     }
@@ -183,9 +183,9 @@ public class NoteController {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == deleteButtonType) {
-                mainController.deleteNote(note);
+                mainPresenter.deleteNote(note);
                 closeWindow();
-                mainController.refreshViews();
+                mainPresenter.refreshViews();
             }
         });
     }
