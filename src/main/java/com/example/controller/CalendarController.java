@@ -1,4 +1,4 @@
-package com.example.presenter;
+package com.example.controller;
 
 import com.example.model.CalendarView;
 import com.example.model.Event;
@@ -22,7 +22,7 @@ import java.time.*;
 import java.time.format.TextStyle;
 import java.util.*;
 
-public class CalendarPresenter {
+public class CalendarController {
 
     private ComboBox<String> viewSelector;
     private BorderPane calendarView;
@@ -34,7 +34,7 @@ public class CalendarPresenter {
     private ResourceBundle resources;
     private ObservableList<Event> events;
     private CalendarView lastActiveView = CalendarView.MONTH;
-    private MainPresenter mainPresenter;
+    private MainController mainController;
 
     /**
      * Initialize the navigation buttons and their actions
@@ -42,7 +42,7 @@ public class CalendarPresenter {
     private void initializeButtons() {
         previousButton = new Button("\u2190");  // Left arrow button
         nextButton = new Button("\u2192");      // Right arrow button
-        dateInfoLabel = new Label();            // Label for displaying the current date
+        dateInfoLabel = new Label();
         addEventButton = new Button(resources.getString("event.addButton"));
 
         previousButton.setOnAction(event -> handlePrevious());
@@ -83,18 +83,22 @@ public class CalendarPresenter {
         rightControls.setAlignment(Pos.CENTER_RIGHT);
         rightControls.getChildren().add(viewSelector);
 
+        HBox dateLabelContainer = new HBox();
+        dateLabelContainer.setAlignment(Pos.CENTER);
+        dateLabelContainer.getChildren().add(dateInfoLabel);
+        dateLabelContainer.setPadding(new Insets(0, 10, 0, 10));
+
         HBox mainControls = new HBox();
-        mainControls.getChildren().addAll(leftControls, new Region(), rightControls);
-        HBox.setHgrow(mainControls.getChildren().get(1), Priority.ALWAYS); // The Region acts as a spacer
-        mainControls.setPadding(new Insets(0, 10, 20, 10)); // Add padding around the HBox
+        mainControls.getChildren().addAll(leftControls, dateLabelContainer, rightControls);
+        HBox.setHgrow(dateLabelContainer, Priority.ALWAYS);
+        mainControls.setPadding(new Insets(0, 10, 20, 10));
 
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(mainControls, dateInfoLabel);
-        StackPane.setAlignment(dateInfoLabel, Pos.CENTER);
+        stackPane.getChildren().addAll(mainControls);
 
         // Add the stackPane to the top of the BorderPane
         calendarView.setTop(stackPane);
-        StackPane.setMargin(dateInfoLabel, new Insets(0, 0, 10, 0)); // Add bottom padding to the dateInfoLabel
+        StackPane.setMargin(dateInfoLabel, new Insets(0, 0, 10, 0));
     }
 
     /**
@@ -136,10 +140,10 @@ public class CalendarPresenter {
     }
 
     /**
-     * Set the main presenter for the application
+     * Set the main controller for the application
      */
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**
@@ -181,8 +185,8 @@ public class CalendarPresenter {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
             Parent root = loader.load();
 
-            EventPresenter eventPresenter = loader.getController();
-            eventPresenter.setMainPresenter(mainPresenter);
+            EventController eventController = loader.getController();
+            eventController.setMainController(mainController);
 
             Stage stage = new Stage();
             stage.setTitle(resources.getString("event.title"));
@@ -236,12 +240,12 @@ public class CalendarPresenter {
                 dayOfWeekLabel.setMaxWidth(Double.MAX_VALUE);
                 dayOfWeekLabel.setAlignment(Pos.CENTER);
                 GridPane.setHalignment(dayOfWeekLabel, HPos.CENTER);
-                dayOfWeekLabel.setPrefHeight(30); // Set the height of the day name row
+                dayOfWeekLabel.setPrefHeight(30);
                 gridPane.add(dayOfWeekLabel, i, 0);
             }
 
             // Set minimum column widths for the days
-            double minCellWidth = 100;  // Minimum width of a day cell
+            double minCellWidth = 100;
 
             for (int i = 0; i < 7; i++) {
                 ColumnConstraints dayColumnConstraints = new ColumnConstraints();
@@ -252,7 +256,7 @@ public class CalendarPresenter {
 
             // Set the row height for the day of the week headers
             RowConstraints headerRowConstraints = new RowConstraints();
-            headerRowConstraints.setPrefHeight(30); // Set the height of the day name row
+            headerRowConstraints.setPrefHeight(30);
             headerRowConstraints.setMinHeight(30);
             gridPane.getRowConstraints().add(headerRowConstraints);
 
@@ -378,10 +382,10 @@ public class CalendarPresenter {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/fxml/event.fxml"), resources);
             Parent root = loader.load();
 
-            EventPresenter eventPresenter = loader.getController();
-            eventPresenter.setMainPresenter(mainPresenter);
-            eventPresenter.setEventContent(event);
-            eventPresenter.setEditMode(true);
+            EventController eventController = loader.getController();
+            eventController.setMainController(mainController);
+            eventController.setEventContent(event);
+            eventController.setEditMode(true);
 
             Stage stage = new Stage();
             stage.setTitle(resources.getString("event.editTitle"));
@@ -417,7 +421,7 @@ public class CalendarPresenter {
 
             // Add time column with fixed width
             ColumnConstraints timeColumnConstraints = new ColumnConstraints();
-            timeColumnConstraints.setPrefWidth(50); // Width of the time column
+            timeColumnConstraints.setPrefWidth(50);
             timeColumnConstraints.setMinWidth(50);
             gridPane.getColumnConstraints().add(timeColumnConstraints);
 
@@ -456,7 +460,7 @@ public class CalendarPresenter {
                 for (int i = 0; i < columnCount; i++) {
                     Pane dayPane = new Pane(); // Pane for manually positioning events
                     dayPane.setPrefHeight(60); // Each cell is 60 minutes
-                    dayPane.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 1 0;"); // Bottom and right borders
+                    dayPane.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0 1 1 0;");
                     gridPane.add(dayPane, i + 1, hour + 1); // Columns 1-7 (or 1 for day view), rows 1-24
                 }
             }
@@ -497,15 +501,15 @@ public class CalendarPresenter {
                                 "-fx-border-color: #000000; " +
                                 "-fx-border-width: 1px;"
                 );
-                eventLabel.setPrefHeight(eventDuration - 4);  // Subtract 4px for padding
+                eventLabel.setPrefHeight(eventDuration - 4);
                 eventLabel.setAlignment(Pos.TOP_LEFT);
-                eventLabel.setPadding(new Insets(2)); // Add 2px padding
-                eventLabel.setLayoutY(startMinutes + 2); // Offset event label by 2px
+                eventLabel.setPadding(new Insets(2));
+                eventLabel.setLayoutY(startMinutes + 2);
 
                 // Add event editing functionality on double-click
                 eventLabel.setOnMouseClicked(eventMouseEvent -> {
                     if (eventMouseEvent.getClickCount() == 2 && eventMouseEvent.getButton() == MouseButton.PRIMARY) {
-                        openEventWindow(event); // Open event editing window
+                        openEventWindow(event);
                     }
                 });
 

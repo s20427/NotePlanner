@@ -1,4 +1,4 @@
-package com.example.presenter;
+package com.example.controller;
 
 import com.example.model.Category;
 import com.example.model.Event;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class EventPresenter {
+public class EventController {
 
     @FXML
     private TextField titleField;
@@ -41,19 +41,19 @@ public class EventPresenter {
     @FXML
     private ResourceBundle resources;
 
-    private MainPresenter mainPresenter;
+    private MainController mainController;
     private Event event;
     private boolean isEditMode = false;
 
     /**
-     * Sets the main presenter to link to the rest of the application.
+     * Sets the main controller to link to the rest of the application.
      */
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**
-     * Initializes the presenter, setting up combo boxes, category dropdown, and text prompts.
+     * Initializes the controller, setting up combo boxes, category dropdown, and text prompts.
      */
     @FXML
     private void initialize() {
@@ -75,7 +75,7 @@ public class EventPresenter {
         tagsField.setText(event.getTagsAsString());
         categoryComboBox.setValue(event.getCategory());
         isEditMode = true;
-        deleteButton.setVisible(true); // Show the delete button when editing an existing event
+        deleteButton.setVisible(true);
     }
 
     /**
@@ -88,7 +88,7 @@ public class EventPresenter {
             deleteButton.setText(resources.getString("button.delete"));
         } else {
             saveButton.setText(resources.getString("event.addButton"));
-            deleteButton.setVisible(false); // Hide the delete button when adding a new event
+            deleteButton.setVisible(false);
         }
     }
 
@@ -100,7 +100,7 @@ public class EventPresenter {
         if (validateInput()) {
             saveOrUpdateEvent();
             closeWindow();
-            mainPresenter.refreshViews();
+            mainController.refreshViews();
         }
     }
 
@@ -204,10 +204,10 @@ public class EventPresenter {
             event.setDescription(description);
             event.setTags(tags);
             event.setCategory(selectedCategory);
-            mainPresenter.updateEvent();
+            mainController.updateEvent();
         } else {
             Event newEvent = new Event(title, date.atTime(startLocalTime), date.atTime(endLocalTime), description, String.join(", ", tags), selectedCategory);
-            mainPresenter.addEvent(newEvent);
+            mainController.addEvent(newEvent);
         }
     }
 
@@ -290,9 +290,9 @@ public class EventPresenter {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == deleteButtonType) {
-                mainPresenter.deleteEvent(event);
+                mainController.deleteEvent(event);
                 closeWindow();
-                mainPresenter.refreshViews(); // Explicitly refresh the views after deletion
+                mainController.refreshViews();
             }
         });
     }

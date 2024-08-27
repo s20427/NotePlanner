@@ -1,4 +1,4 @@
-package com.example.presenter;
+package com.example.controller;
 
 import com.example.model.Category;
 import com.example.model.Note;
@@ -12,39 +12,39 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class NotePresenter {
+public class NoteController {
 
     @FXML
-    private TextArea noteContentArea; // Text area for note content
+    private TextArea noteContentArea;
 
     @FXML
-    private ComboBox<Category> categoryComboBox; // ComboBox for selecting note category
+    private ComboBox<Category> categoryComboBox;
 
     @FXML
-    private TextField tagsField; // TextField for entering tags
+    private TextField tagsField;
 
     @FXML
-    private Button saveButton; // Button to save the note
+    private Button saveButton;
 
     @FXML
-    private Button deleteButton; // Button to delete the note
+    private Button deleteButton;
 
     @FXML
-    private Label categoryLabel; // Label for category ComboBox
+    private Label categoryLabel;
 
     @FXML
-    private ResourceBundle resources; // ResourceBundle for localized strings
+    private ResourceBundle resources;
 
-    private MainPresenter mainPresenter; // Reference to the MainPresenter
-    private Note note; // The note being edited or created
-    private boolean isEditMode = false; // Flag to indicate if we are in edit mode
+    private MainController mainController;
+    private Note note;
+    private boolean isEditMode = false;
 
     /**
-     * Sets the MainPresenter instance.
-     * @param mainPresenter The main presenter.
+     * Sets the MainController instance.
+     * @param mainController The main controller.
      */
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**
@@ -57,7 +57,7 @@ public class NotePresenter {
         this.tagsField.setText(note.getTagsAsString());
         this.categoryComboBox.setValue(note.getCategory());
         this.isEditMode = true;
-        deleteButton.setVisible(true); // Show the delete button when editing an existing note
+        deleteButton.setVisible(true);
     }
 
     /**
@@ -70,7 +70,7 @@ public class NotePresenter {
             saveButton.setText(resources.getString("note.saveButton"));
         } else {
             saveButton.setText(resources.getString("note.addButton"));
-            deleteButton.setVisible(false); // Hide the delete button when adding a new note
+            deleteButton.setVisible(false);
         }
     }
 
@@ -135,12 +135,12 @@ public class NotePresenter {
                 note.setContent(content);
                 note.setTags(tags);
                 note.setCategory(selectedCategory);
-                mainPresenter.updateNote();
+                mainController.updateNote();
             } else {
                 Note newNote = new Note(content, content, String.join(", ", tags), selectedCategory);
-                mainPresenter.addNote(newNote);
+                mainController.addNote(newNote);
             }
-            mainPresenter.refreshViews();
+            mainController.refreshViews();
             closeWindow();
         }
     }
@@ -183,9 +183,9 @@ public class NotePresenter {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == deleteButtonType) {
-                mainPresenter.deleteNote(note);
+                mainController.deleteNote(note);
                 closeWindow();
-                mainPresenter.refreshViews();
+                mainController.refreshViews();
             }
         });
     }

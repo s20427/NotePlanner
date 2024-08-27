@@ -50,6 +50,10 @@ public class Note {
         this.tags = new ArrayList<>(uniqueTags);
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
     @JsonIgnore
     public String getTagsAsString() {
         return String.join(", ", tags);

@@ -17,9 +17,9 @@ public class DataStorage {
     private static final String NOTES_FILE_PATH = "notes.json";
     private static final String EVENTS_FILE_PATH = "events.json";
     private static final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())  // Register the module for Java 8 Date/Time
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)  // Optional: if you want human-readable date formats
-            .enable(SerializationFeature.INDENT_OUTPUT);  // To format the output JSON nicely
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .enable(SerializationFeature.INDENT_OUTPUT);
 
     public static void saveNotes(List<Note> notes) throws IOException {
         objectMapper.writeValue(new File(NOTES_FILE_PATH), notes);

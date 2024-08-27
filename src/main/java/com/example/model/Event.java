@@ -73,6 +73,10 @@ public class Event {
         this.tags = new ArrayList<>(uniqueTags);
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
     @JsonIgnore
     public String getTagsAsString() {
         return String.join(", ", tags);

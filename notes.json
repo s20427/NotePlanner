@@ -1,37 +1,176 @@
 [ {
-  "title" : "Plan weekendu",
-  "content" : "Plan weekendu\nSobota:\n- Spacer w parku\n- Wizyta w muzeum\nNiedziela:\n- Kino\n- Obiad z rodziną",
+  "title" : "Pomysły na romantyczną randkę",
+  "content" : "Pomysły na romantyczną randkę.\n- Kolacja przy świecach\n- Spacer po plaży",
+  "tags" : [ "romantyzm", "randka" ],
   "category" : "PRIVATE"
+}, {
+  "title" : "Pomysły na poprawę wydajności",
+  "content" : "Pomysły na poprawę wydajności w pracy.\n- Automatyzacja procesów\n- Optymalizacja działań",
+  "tags" : [ "praca", "wydajność" ],
+  "category" : "WORK"
 }, {
   "title" : "Notatki ze spotkania",
   "content" : "Notatki ze spotkania\nSpotkanie z klientem dotyczącym projektu X.\nZadania:\n- Zaktualizować specyfikację\n- Przygotować prototyp",
+  "tags" : [ "projekt", "praca", "spotkanie" ],
+  "category" : "MEETING"
+}, {
+  "title" : "Plan tygodnia",
+  "content" : "Plan tygodnia.\n- Rozkład zajęć\n- Spotkania",
+  "tags" : [ "tydzień", "plan" ],
   "category" : "WORK"
 }, {
-  "title" : "Pomysły na artykuł",
-  "content" : "Pomysły na artykuł\n1. Nowe technologie w branży IT\n2. Sztuczna inteligencja i przyszłość\n3. Przyszłość pracy zdalnej",
+  "title" : "Plan porządków",
+  "content" : "Plan porządków na weekend.\n- Sprzątanie\n- Organizacja przestrzeni",
+  "tags" : [ "dom", "porządki" ],
+  "category" : "HOME"
+}, {
+  "title" : "Lista książek do przeczytania",
+  "content" : "Lista książek do przeczytania.\n- Klasyka literatury\n- Nowości",
+  "tags" : [ "czytanie", "inne", "książki" ],
+  "category" : "OTHER"
+}, {
+  "title" : "Plan dnia urodzin",
+  "content" : "Plan dnia urodzin.\n- Przyjęcie\n- Prezentacja",
+  "tags" : [ "urodziny", "przyjęcie" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Lista rzeczy do zabrania na wyjazd",
+  "content" : "Lista rzeczy do zabrania na wyjazd.\n- Ubrania\n- Kosmetyki",
+  "tags" : [ "lista", "wyjazd" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Przygotowania do świąt",
+  "content" : "Przygotowania do świąt.\n- Lista dań\n- Dekoracje",
+  "tags" : [ "święta", "przygotowania" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Pomysły na prezent ślubny",
+  "content" : "Pomysły na prezent ślubny.\n- Zestaw porcelany\n- Biżuteria",
+  "tags" : [ "ślub", "prezent" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Pomysły na weekendowy relaks",
+  "content" : "Pomysły na weekendowy relaks.\n- Wyjście na masaż\n- Wieczór filmowy",
+  "tags" : [ "weekend", "relaks" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Plan wyjazdu na weekend",
+  "content" : "Plan wyjazdu na weekend.\n- Atrakcje\n- Zakwaterowanie",
+  "tags" : [ "weekend", "wyjazd" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Plan odnowy osobistej",
+  "content" : "Plan odnowy osobistej.\n- Czas na hobby\n- Aktywność fizyczna",
+  "tags" : [ "odnowa", "hobby" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Raport postępów projektu",
+  "content" : "Raport postępów projektu X.\n- Zrealizowane zadania\n- Problemy",
+  "tags" : [ "projekt", "postępy" ],
   "category" : "WORK"
 }, {
-  "title" : "Spotkanie zespołu",
-  "content" : "Spotkanie zespołu\nOmawiane tematy:\n- Postępy w projekcie Y\n- Nowe zadania na kolejny tydzień\n- Problemy do rozwiązania",
+  "title" : "Plan podróży służbowej",
+  "content" : "Plan podróży służbowej.\n- Data wyjazdu\n- Zadania do wykonania",
+  "tags" : [ "służbowa", "podróż" ],
   "category" : "WORK"
 }, {
-  "title" : "Pomysły na prezent",
-  "content" : "Pomysły na prezent\n1. Książka\n2. Zegarek\n3. Voucher na masaż\n4. Kwiaty",
+  "title" : "Zakupy do ogrodu",
+  "content" : "Zakupy do ogrodu.\n- Rośliny\n- Narzędzia",
+  "tags" : [ "zakupy", "ogród" ],
+  "category" : "HOME"
+}, {
+  "title" : "Plan szkolenia",
+  "content" : "Plan szkolenia dla nowego zespołu.\n- Tematy do omówienia\n- Harmonogram",
+  "tags" : [ "zespół", "szkolenie" ],
+  "category" : "WORK"
+}, {
+  "title" : "Harmonogram spotkań",
+  "content" : "Harmonogram spotkań na przyszły miesiąc.\n- Daty\n- Tematy",
+  "tags" : [ "spotkania", "harmonogram" ],
+  "category" : "WORK"
+}, {
+  "title" : "Lista rzeczy do zrobienia na wakacjach",
+  "content" : "Lista rzeczy do zrobienia na wakacjach.\n- Zwiedzanie\n- Relaks",
+  "tags" : [ "lista", "wakacje" ],
   "category" : "PRIVATE"
 }, {
-  "title" : "Lista rzeczy do zrobienia",
-  "content" : "Lista rzeczy do zrobienia\n1. Zapłacić rachunki\n2. Zadzwonić do mechanika\n3. Zarezerwować wizytę u lekarza",
-  "category" : "PRIVATE"
-}, {
-  "title" : "Plany na weekend",
-  "content" : "Plany na weekend\nSobota:\n- Wizyta u rodziców\n- Zakupy w centrum handlowym\nNiedziela:\n- Odpoczynek\n- Spacer w lesie",
-  "category" : "PRIVATE"
-}, {
-  "title" : "Lista zakupów",
-  "content" : "Lista zakupów\n1. Chleb\n2. Mleko\n3. Masło\n4. Jajka",
+  "title" : "Zakupy do kuchni",
+  "content" : "Zakupy do kuchni.\n- Garnki\n- Naczynia",
+  "tags" : [ "kuchnia", "zakupy" ],
   "category" : "HOME"
 }, {
   "title" : "Przepis na ciasto",
   "content" : "Przepis na ciasto\nSkładniki:\n- 200g mąki\n- 100g cukru\n- 2 jajka\n- 100g masła\nInstrukcje:\n1. Wymieszać składniki\n2. Piec w temperaturze 180°C przez 40 minut",
+  "tags" : [ "kuchnia", "przepis" ],
+  "category" : "HOME"
+}, {
+  "title" : "Ocena pracy zespołu",
+  "content" : "Ocena pracy zespołu za ostatni miesiąc.\n- Wyniki\n- Obszary do poprawy",
+  "tags" : [ "zespół", "ocena" ],
+  "category" : "WORK"
+}, {
+  "title" : "Lista napraw w domu",
+  "content" : "Lista napraw w domu.\n- Wymiana żarówek\n- Malowanie ścian",
+  "tags" : [ "dom", "naprawy" ],
+  "category" : "HOME"
+}, {
+  "title" : "Plan remontu",
+  "content" : "Plan remontu łazienki.\n- Zakupy materiałów\n- Harmonogram prac",
+  "tags" : [ "łazienka", "remont" ],
+  "category" : "HOME"
+}, {
+  "title" : "Lista zakupów",
+  "content" : "Lista zakupów\n1. Chleb\n2. Mleko\n3. Masło\n4. Jajka",
+  "tags" : [ "zakupy", "dom", "testowanie" ],
+  "category" : "HOME"
+}, {
+  "title" : "Notatki z warsztatów",
+  "content" : "Notatki z warsztatów dotyczących zarządzania projektami.\n- Techniki Agile\n- Najlepsze praktyki",
+  "tags" : [ "projekt", "warsztaty" ],
+  "category" : "WORK"
+}, {
+  "title" : "Raport miesięczny",
+  "content" : "Raport miesięczny dotyczący postępów w projekcie.\nWymaga:\n- Analizy danych\n- Podsumowania wyników",
+  "tags" : [ "projekt", "raport" ],
+  "category" : "WORK"
+}, {
+  "title" : "Plan porządków",
+  "content" : "Plan porządków na weekend.\n- Sprzątanie\n- Organizacja przestrzeni",
+  "tags" : [ "dom", "porządki" ],
+  "category" : "HOME"
+}, {
+  "title" : "Plan na ferie",
+  "content" : "Plan na ferie zimowe.\n- Gdzie pojechać\n- Co zabrać",
+  "tags" : [ "ferie", "zimowe" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Plan wyjazdu na weekend",
+  "content" : "Plan wyjazdu na weekend.\n- Atrakcje\n- Zakwaterowanie",
+  "tags" : [ "weekend", "wyjazd" ],
+  "category" : "PRIVATE"
+}, {
+  "title" : "Plan podróży służbowej",
+  "content" : "Plan podróży służbowej.\n- Data wyjazdu\n- Zadania do wykonania",
+  "tags" : [ "służbowa", "podróż" ],
+  "category" : "WORK"
+}, {
+  "title" : "Zakupy do ogrodu",
+  "content" : "Zakupy do ogrodu.\n- Rośliny\n- Narzędzia",
+  "tags" : [ "zakupy", "ogród" ],
+  "category" : "HOME"
+}, {
+  "title" : "Lista obowiązków domowych",
+  "content" : "Lista obowiązków domowych.\n- Sprzątanie\n- Zakupy",
+  "tags" : [ "obowiązki", "dom" ],
+  "category" : "HOME"
+}, {
+  "title" : "Spis rzeczy do sprzątania",
+  "content" : "Spis rzeczy do sprzątania w domu.\n- Pomieszczenia\n- Narzędzia",
+  "tags" : [ "sprzątanie", "dom" ],
+  "category" : "HOME"
+}, {
+  "title" : "Plan remontu",
+  "content" : "Plan remontu łazienki.\n- Zakupy materiałów\n- Harmonogram prac",
+  "tags" : [ "łazienka", "remont" ],
   "category" : "HOME"
 } ]
