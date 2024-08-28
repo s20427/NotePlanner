@@ -1,6 +1,7 @@
 plugins {
+    id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 repositories {
@@ -10,11 +11,14 @@ repositories {
 dependencies {
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-fxml:17'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+}
 
+application {
+    mainClass = 'com.example.Main'
 }
 
 javafx {
@@ -22,18 +26,17 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-application {
-    mainClass = 'com.example.Main'
-}
+jar {
+    manifest {
+        attributes(
+                'Main-Class': application.mainClass.get()
+        )
+    }
 
-sourceSets {
-    main {
-        resources {
-            srcDir 'src/main/resources'
-        }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
-tasks.withType(ProcessResources) {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}

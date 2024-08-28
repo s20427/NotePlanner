@@ -1,0 +1,102 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NotePlanner.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NotePlanner_main_jar</output-path>
+    <root id="archive" name="NotePlanner.main.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="NotePlanner.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.14.1/f24e8cb1437e05149b7a3049ebd6700f42e664b1/jackson-datatype-jsr310-2.14.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.14.1/268524b9056cae1211b9f1f52560ef19347f4d17/jackson-databind-2.14.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/17/7116001b777530c89e5c7381d39a2c9268f71e7e/javafx-controls-17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17/616d987ba02a86196d7feca443677fff908d5737/javafx-graphics-17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17/2c56d252b97eba8b42f049c6ce145172d744ce08/javafx-graphics-17-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/17/b63b9696f73009ca5002f49ec4db73576e2de168/javafx-base-17-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/17/efc0f4edde079c22987064922530c67fa1350a9b/javafx-controls-17-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.14.1/7a07bc535ccf0b7f6929c4d0f2ab9b294ef7c4a3/jackson-core-2.14.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/17/1e6732190939254735dc2a88eca88c5c7ccc719d/javafx-base-17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.14.1/2a6ad504d591a7903ffdec76b5b7252819a2d162/jackson-annotations-2.14.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/17/8d79ed85fa9dde644d4b37d93a02a2ef2818769/javafx-fxml-17-win.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.14.1" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.14.1" />
+      <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.14.1" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-fxml:win:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-controls:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-controls:win:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-graphics:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-graphics:win:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-base:17" />
+      <element id="library" level="project" name="Gradle: org.openjfx:javafx-base:win:17" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-console-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-errorhandling-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-libraryloader-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-environment-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/javafx_iio.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/prism_sw.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-synch-l1-2-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/msvcp140_2.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-string-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-rtlsupport-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-locale-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/glass.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-file-l1-2-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-heap-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-util-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-time-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-interlocked-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-filesystem-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/decora_sse.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-string-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/jfxmedia.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-private-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/jfxwebkit.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-runtime-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-processthreads-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-console-l1-2-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-timezone-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-localization-l1-2-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/ucrtbase.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/msvcp140_1.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/vcruntime140.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/msvcp140.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-datetime-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/prism_common.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-file-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-sysinfo-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-profile-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/javafx_font.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-synch-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-file-l2-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/glib-lite.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-memory-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-processthreads-l1-1-1.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-processenvironment-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-process-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-debug-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-namedpipe-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-convert-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/gstreamer-lite.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/fxplugins.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/prism_d3d.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-math-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-multibyte-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/vcruntime140_1.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-conio-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-heap-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-stdio-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-core-handle-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/bin/api-ms-win-crt-utility-l1-1-0.dll" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx-swt.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.swing.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.web.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.controls.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.media.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.fxml.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/lib.iml" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.graphics.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.base.jar" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/javafx-sdk-17.0.11/lib/javafx.properties" />
+    </root>
+  </artifact>
+</component>
